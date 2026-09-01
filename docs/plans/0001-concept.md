@@ -254,7 +254,13 @@ listed as candidates, not a chosen set:**
   it, not re-verified this pass).
 - **Show HN / "Launch HN" threads specifically** — a real, distinct sub-pattern within the HN
   source already named above (source 1's API access applies here too), worth treating as its own
-  signal type since a Show HN post is explicitly "I built this," not a complaint.
+  signal type since a Show HN post is explicitly "I built this," not a complaint. **Also confirmed
+  2026-09-01 as the compliant substitute channel for hackathon/Lovable/Replit signal** (see the
+  Devpost/AI-builder-showcase bullets below): `query=vibe coded&tags=story` (2,007 real hits),
+  `query=Show HN hackathon&tags=story` (432 real hits), `query=lovable&tags=show_hn` (376 real,
+  on-topic hits) all returned genuine results when tested directly. Note: Algolia's `query` param is
+  plain full-text, not a query language — combining terms with `OR` or quotes returned 0 hits in
+  testing; use single terms or `tags` scoping instead.
 - **Hackathon/demo-day galleries (Devpost)** — **researched 2026-09-01, ruled out**: no official
   API (only unofficial community scrapers exist); `devpost.com/robots.txt` blocks most named AI/LLM
   crawlers but leaves the default user-agent open; its actual Terms (`info.devpost.com/terms`)
@@ -267,28 +273,48 @@ listed as candidates, not a chosen set:**
   scraping-specific ToS language could not be confirmed (Bolt.new/StackBlitz's actual terms document
   wasn't retrievable; Vercel's general ToS doesn't mention v0 community pages) — **genuinely unclear,
   an open gap, not a clearance; don't treat robots.txt permissiveness as equivalent to ToS
-  clearance.**
+  clearance.** **Compliant substitute for Devpost/Lovable/Replit signal, confirmed working
+  2026-09-01** (tracked at [issue #10](https://github.com/qte77/agentic-signal-to-concept/issues/10),
+  opened after the user asked to scrape these directly despite the ToS findings above — declined for
+  that reason, this is the alternative pursued instead): GitHub topic search — `topic:hackathon`
+  (13,544 hits, real but noisy, dominated by boilerplate/starter-kit repos rather than individual
+  submissions, needs per-repo README inspection to confirm which hackathon/when/who) and
+  `topic:lovable`/`topic:replit` (584/998 hits, credible ecosystem-adjacent signal — tooling and
+  alternatives built around these platforms, not a 1:1 substitute for browsing their own user-project
+  showcases). Combined with the Show HN queries above, this recovers a real, if noisier and
+  ToS-compliant, share of the same underlying signal.
+- **TrustMRR** (`trustmrr.com`, a public directory of indie-startup MRR verified via payment-provider
+  API keys) — suggested as an additional build-in-public source, **researched and ruled out
+  2026-09-01**: has a real public API (its ToS has a dedicated "API Acceptable Use Policy"), but that
+  policy explicitly bans "us[ing] API data to train, fine-tune, ground, evaluate, or populate an AI
+  model, dataset, search index, recommendation system, or automated content generator without prior
+  written permission" — exactly this pipeline's use case — and separately bans scraping the site
+  outright ("Scrape, harvest, archive, or systematically reconstruct TrustMRR's database"). Unlike
+  Devpost/Lovable's flat bans, the "without prior written permission" wording leaves a real door open:
+  **the actionable next step is asking TrustMRR directly for permission**, not scraping around the
+  restriction. Tracked at [issue #10](https://github.com/qte77/agentic-signal-to-concept/issues/10).
 - **Build-in-public social threads (X/Twitter, Bluesky, Indie Hackers)** — **researched 2026-09-01,
   mixed, sharpened further by direct testing**: **X/Twitter** has no viable free or affordable API
   for aggregate search as of its Feb 2026 pricing overhaul (pay-per-usage, $0.015/post created +
   $0.005/post read; legacy $200 and $5,000/mo tiers retired/closed; full-archive search needs
   $42,000+/mo Enterprise) — **ruled out on cost**. **Indie Hackers**
   (`indiehackers.com/terms`) explicitly bans crawling/scraping/spidering in its ToS — **ruled out**,
-  regardless of a possibly-permissive `robots.txt` (a direct check returned HTTP 403, likely
-  bot-blocking the fetch tool itself; a cached copy suggested it's open, but the ToS prohibition
-  governs regardless). **Bluesky's AT Protocol is legally the cleanest (no ToS bar, no paid tier) but
-  practically blocked here, and confirmed by direct testing, not assumption**: `getProfile` (a
-  read-only lookup) works fine, no auth, on `public.api.bsky.app` — but the actual keyword-search
-  endpoint needed for this pipeline, `app.bsky.feed.searchPosts`, returned a clean HTTP 403 on *every*
-  fetch tier tried (plain `httpx` through patchright's stealth browser tier), reproducible across two
-  different queries. Same pattern as the Reddit finding: **this is evidence about blocking on this
-  runner's network specifically, not proof the endpoint is walled off for everyone** — retesting from
-  a different network/residential exit is the natural next step, not a conclusion that Bluesky search
-  is unusable. Separately, the raw firehose (`com.atproto.sync.subscribeRepos`) is a continuous,
-  unfiltered, network-wide WebSocket stream, not a simple fetchable search — using it for
-  keyword-targeted research needs a persistent stream consumer doing its own filtering, a materially
-  bigger engineering lift than "call an API with a keyword," independent of the search-endpoint block
-  above.
+  and confirmed 2026-09-01 to have no benign alternative either: no RSS/Atom feed exists
+  (`/rss` and `/feed` both return HTTP 404, no feed `<link>` tag on the homepage, no API/feed mention
+  on `/about`) — fully out of scope, no path in. **Bluesky's AT Protocol is legally the cleanest (no
+  ToS bar, no paid tier) but its search endpoint is confirmed blocked, and this is now a stronger
+  finding than a single-runner artifact**: `getProfile` (a read-only lookup) works fine, no auth, on
+  `public.api.bsky.app` — but `app.bsky.feed.searchPosts` returned a clean HTTP 403 (an HTML WAF
+  block page, not a JSON API error) reproduced from **two independent networks/environments** via
+  three different fetch methods (polyfetch, WebFetch, Python `urllib`), with the same working
+  `getProfile` control on both. This looks like a path-specific edge block on the search endpoint
+  itself, not IP-reputation blocking of one runner — real evidence of a genuine access barrier, not
+  just "try a different network." Separately, the raw firehose (`com.atproto.sync.subscribeRepos`)
+  is a continuous, unfiltered, network-wide WebSocket stream, not a simple fetchable search — using
+  it for keyword-targeted research needs a persistent stream consumer doing its own filtering, a
+  materially bigger engineering lift than "call an API with a keyword," independent of the
+  search-endpoint block above. **Recommended: keep the spec's Bluesky step, but treat it as blocked
+  until proven otherwise — re-check periodically rather than budgeting real effort toward it now.**
 
 The legitimate version of this signal, regardless of which of the above it comes from, is: **the
 existence of many independent people building small, unscaled attempts at the same problem is
@@ -366,15 +392,18 @@ small missing detail.
   pricing is unconfirmed and its actual software/SaaS category coverage hasn't been audited.
   Independent scraping is ruled out for both Apple and Trustpilot (explicit ToS prohibitions,
   primary-source confirmed).
-- GitHub/Devpost/AI-builder-tool-showcase/build-in-public access and ToS — **mostly resolved,
-  2026-09-01** (see §3): Devpost, Lovable, Replit, Indie Hackers all explicitly ban scraping — ruled
-  out. Bolt.new and v0/Vercel are a genuine open gap (permissive `robots.txt`, unconfirmed ToS). X is
-  ruled out on cost. Bluesky's AT Protocol is legally the cleanest option (no ToS bar, no paid tier)
-  but its search endpoint (`app.bsky.feed.searchPosts`) is confirmed blocked (HTTP 403) on this
-  runner's network specifically, at every fetch tier — the same "network fact, not a universal fact"
-  caveat as the Reddit finding, worth retesting from a different network before ruling it out; its
-  raw firehose is also impractical for keyword search without a persistent stream consumer. GitHub's
-  own API remains well-known/stable but not freshly re-checked this pass.
+- GitHub/Devpost/AI-builder-tool-showcase/build-in-public access and ToS — **resolved, 2026-09-01,
+  tracked at [issue #10](https://github.com/qte77/agentic-signal-to-concept/issues/10)** (see §3):
+  Devpost, Lovable, Replit, Indie Hackers, and TrustMRR all explicitly ban scraping (TrustMRR's ban
+  is conditional on "prior written permission," a real door to ask through, not a flat bar) — ruled
+  out for direct access; a compliant substitute (GitHub `topic:hackathon`/`topic:lovable`/
+  `topic:replit` search + targeted Show HN queries) is confirmed working and recovers a real, if
+  noisier, share of the same signal. Bolt.new and v0/Vercel are a genuine open gap (permissive
+  `robots.txt`, unconfirmed ToS). X is ruled out on cost. Indie Hackers has no benign alternative
+  either (confirmed: no RSS/feed exists). Bluesky's search endpoint is confirmed blocked from two
+  independent networks — a real access barrier, not just this runner's network — while its firehose
+  remains impractical for keyword search without a persistent stream consumer. GitHub's own API
+  remains well-known/stable but not freshly re-checked this pass.
 - What makes multiple small builds "independent" rather than reposts of the same one — undefined.
 - Exact phase/subagent breakdown for the pipeline itself — undesigned.
 - Output format handoff into `agentic-grounded-persona-eval` — **answered, partially (2026-09-01)**:

@@ -1,11 +1,11 @@
 ---
 name: build-pattern-scanner
-description: Scans GitHub and Show HN for independent small-build activity converging on the same problem — aggregate signal only. Never identifies one active builder's unscaled project as a build-and-launch template.
+description: Scans GitHub, Show HN, and Bluesky for independent small-build activity converging on the same problem — aggregate signal only. Never identifies one active builder's unscaled project as a build-and-launch template.
 ---
 
 Gathers sourced evidence of independent small-build activity (AI-assisted "vibe coded" or
-conventionally built, treated identically) converging on the same problem — v1 scope covers GitHub
-and Show HN only. Same sourcing discipline as `complaint-miner`, plus a load-bearing ethical
+conventionally built, treated identically) converging on the same problem — v1 scope covers GitHub,
+Show HN, and Bluesky. Same sourcing discipline as `complaint-miner`, plus a load-bearing ethical
 boundary below.
 
 ## Input
@@ -22,23 +22,54 @@ independence-heuristic override.
    specific project above the pattern-level finding.
 2. Search Show HN specifically, via HN's own Algolia API (the same API `complaint-miner` uses),
    filtered to `Show HN:` titles — a Show HN post is "I built this," a distinct signal type from a
-   complaint, not a sub-case of one.
-3. **Devpost, AI-builder-tool showcases (Bolt.new/Lovable/v0/Replit galleries), and build-in-public
-   threads (X/Bluesky/Indie Hackers) are explicitly deferred, not attempted.** Each needs its own
-   access/ToS check before this spec is extended to cover it (see `docs/plans/0002-signal-to-concept-v1.md`'s
-   remaining-work table).
-4. **Independence heuristic (v1 default — explicitly coarse, revisitable via `config/scope.md`)**:
+   complaint, not a sub-case of one. **Algolia's `query` param is plain full-text, not a query
+   language** (confirmed 2026-09-01: combining terms with `OR` or quotes returns 0 hits) — run
+   single-term or `tags`-scoped queries instead. This channel is also the confirmed, compliant
+   substitute for hackathon/Lovable/Replit-showcase signal (see step 4): `query=vibe coded&tags=story`,
+   `query=Show HN hackathon&tags=story`, and `query=lovable&tags=show_hn` all returned real,
+   on-topic, high-quality results when tested directly.
+3. Search Bluesky's public post-search API
+   (`https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=<keywords>`, no auth) for
+   build-in-public posts matching the scope's category. **Confirmed blocked as of 2026-09-01,
+   verified from two independent networks/environments via three fetch methods (polyfetch,
+   WebFetch, Python `urllib`)**: the endpoint returns a clean HTTP 403 with an HTML WAF block page
+   (not a JSON API error), while the sibling `app.bsky.actor.getProfile` endpoint on the same host
+   succeeds normally both times. This looks like a path-specific edge block on `searchPosts` itself,
+   not simple IP-reputation blocking of one runner — treat it as blocked, per the "If a source is
+   blocked" discipline below, and re-check periodically rather than assuming it's permanent. Do not
+   attempt the raw AT Protocol firehose (`com.atproto.sync.subscribeRepos`) as a substitute — it's a
+   continuous, unfiltered, network-wide stream requiring a persistent consumer to filter by keyword,
+   a materially bigger lift than a search call, out of scope for v1.
+4. **Devpost, AI-builder-tool showcases (Lovable, Replit — confirmed banning scraping in their own
+   ToS), Indie Hackers/X (build-in-public), and TrustMRR are ruled out, not merely deferred**: each
+   was checked directly and either explicitly bans automated scraping in its ToS, has no viable
+   affordable API (X), or — TrustMRR specifically — bans "using API data to train, fine-tune,
+   ground, evaluate, or populate an AI model... without prior written permission" in its own API
+   Acceptable Use Policy, which is exactly this pipeline's use case. Tracked at
+   [issue #10](https://github.com/qte77/agentic-signal-to-concept/issues/10). **Bolt.new and
+   v0/Vercel remain a genuine open gap**: permissive `robots.txt` but unconfirmed scraping-specific
+   ToS — do not add either until that's resolved; a permissive `robots.txt` is not equivalent to ToS
+   clearance. See `docs/plans/0001-concept.md` §3 for the full per-platform citations.
+   **Compliant substitute, confirmed working 2026-09-01**: the same underlying signal (hackathon
+   builds, Lovable/Replit-ecosystem activity, "vibe coded" projects) is recoverable through GitHub
+   topic search (`topic:hackathon` — 13,544 hits, real but noisy, needs per-repo README inspection
+   to confirm which hackathon/when; `topic:lovable`/`topic:replit` — 584/998 hits, credible
+   ecosystem-adjacent signal, not a 1:1 substitute for the platforms' own user-project showcases) and
+   the Show HN queries in step 2 above. Indie Hackers has no RSS/Atom feed (confirmed absent:
+   `/rss` and `/feed` both 404, no feed `<link>` tag, nothing on `/about`) — there is no benign
+   alternative access path for that one; it stays fully out of scope.
+5. **Independence heuristic (v1 default — explicitly coarse, revisitable via `config/scope.md`)**:
    count two builds as independent only if ALL of: distinct author/org handles; both created within
    the run's date window (default 12 months if unset); no direct fork/clone relationship to each
    other; no shared canonical upstream repo. State this default plainly in the output as a heuristic,
    not a validated methodology.
-5. Evidence is the repo/post URL, author handle, and creation date per instance. A pattern names the
+6. Evidence is the repo/post URL, author handle, and creation date per instance. A pattern names the
    count and the specific instances of independent attempts — never collapses them into an unsourced
    "many people are building this."
 
 ## Fetch tooling
 
-Fetch every URL (GitHub API calls, Show HN pages) via
+Fetch every URL (GitHub API calls, Show HN pages, Bluesky search once unblocked) via
 [`polyfetch-scrape`](https://github.com/qte77/polyfetch-scrape) rather than a summarizing web-fetch
 tool — available in this workspace as a sibling clone, no install needed:
 `uv run --directory ../polyfetch-scrape polyfetch fetch <url> --json` (or `--show-body` for the raw

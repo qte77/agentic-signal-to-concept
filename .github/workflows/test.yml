@@ -1,0 +1,23 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv run pytest
+      - name: Verify sourcing in checked-in findings/candidates
+        run: |
+          shopt -s nullglob
+          files=(examples/*/findings.md candidates/*-candidate.md)
+          if [ ${#files[@]} -gt 0 ]; then
+            uv run python scripts/verify_sourcing.py "${files[@]}"
+          else
+            echo "No findings/candidate files to verify yet."
+          fi

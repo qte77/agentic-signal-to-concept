@@ -1,7 +1,12 @@
 # agentic-signal-to-concept
 
-Mine public complaint and build-signal (Reddit, Hacker News, Product Hunt, app-store reviews) into
-grounded, honestly-sourced product concept candidates — the discovery stage of a three-tool chain.
+Mine public complaint and build signal — complaints and requests (Reddit, Hacker News, Product
+Hunt, app-store reviews), and real build activity, "vibe coded" or conventionally built (GitHub,
+Show HN, hackathon/demo galleries, AI-builder-tool showcases, build-in-public threads), plus
+whatever other source turns out to matter — into grounded, honestly-sourced product concept
+candidates. The discovery stage of a three-tool chain. See
+[`docs/plans/0001-concept.md`](docs/plans/0001-concept.md) for the real source-by-source breakdown
+and what's verified vs. still open per source.
 
 ## Where this sits in the chain
 

@@ -134,10 +134,23 @@ empirically blocked: a real run in the sibling `agentic-grounded-persona-eval` r
 `WebFetch`, a raw `urllib` request, and `polyfetch-scrape`'s stealth-Patchright tier — across two
 subreddits, all returning HTTP 403 after retries. That doc is explicit this is a fact about *that
 runner's network*, not evidence the discussion doesn't exist on Reddit. (b) The official OAuth API's
-post-2023 pricing/terms and free-tier limits remain **unverified** — that run never tested the
-official API, and neither has this one. Recommended default: exclude Reddit-via-scraping from Phase
-1 scope; the OAuth-API question stays open until someone actually checks Reddit's current developer
-terms.
+post-2023 pricing/terms remain **not primary-source-verified**: a 2026-09-01 research pass could not
+reach any Reddit-owned domain directly (`reddit.com`/`redditinc.com`/`developers.reddit.com` refused
+outright at the fetch-tool level; `support.reddithelp.com`'s API-terms and Responsible-Builder-Policy
+articles both returned HTTP 403; `web.archive.org`/`archive.ph` mirrors were also blocked). What
+several convergent third-party sources (not Reddit's own text) report: the free non-commercial tier
+is still 100 queries/minute at no cost, and commercial pricing (~$0.24/1,000 calls, ~$12,000/mo for
+50M calls) looks unchanged since 2023 — but a "Responsible Builder Policy" reportedly introduced
+around November 2025 closed **self-service OAuth app registration entirely**. All new API access —
+free or paid — now reportedly requires manual approval (2–4 week turnaround, not guaranteed;
+pre-Nov-2025 apps are grandfathered). Best corroboration found: a dated GitHub issue
+(`Apollo-Reborn/Apollo-Reborn#82`, opened 2025-12-07) reporting the same self-service shutdown,
+linking to a live r/redditdev thread titled "Introducing the Responsible Builder Policy" that could
+not be fetched directly to confirm its exact wording. **Recommended default: exclude Reddit from v1
+scope regardless of route** — even if the OAuth path's terms turn out workable, its access model has
+shifted from instant self-service to an approval process with real rejection risk, which changes the
+buildability calculus, not just the terms. Re-verify against Reddit's own text (not
+third-party summaries) before budgeting real effort toward a Reddit-based Phase 1 pass.
 
 ### 2. App-store review mining — gap analysis, not cloning
 
@@ -147,12 +160,38 @@ A concept candidate coming out of this source must be a genuinely different impl
 the same underlying complaint — different branding, different code, real differentiation — not a
 reproduction of any specific existing app's UI, branding, or backend logic.
 
-**Real access gap, unresolved**: official first-party APIs don't cover this (Apple's App Store
-Connect API only covers apps you already own; there is no equivalent first-party review-scraping
-API for competitors on either store). Realistically this needs either a paid third-party review
-aggregator (e.g. AppFollow, Sensor Tower — neither evaluated here) or careful, ToS-verified scraping
-of public review pages. **Not evaluated this pass — a real prerequisite before this source is
-usable, not a detail to skip.**
+**Real access gap, researched 2026-09-01 — a real decision is now possible, though two pricing
+details remain unconfirmed at primary source:**
+
+- **First-party APIs confirmed unusable for competitor data.** Apple's App Store Connect API
+  (`GET /v1/apps/{id}/customerReviews`) is scoped per-team/per-app — confirmed via Apple's own
+  developer forum (`developer.apple.com/forums/thread/654751`; Apple's API reference page itself is
+  JS-rendered and didn't return body text to direct fetch, so the exact scoping sentence is
+  unconfirmed, though the mechanism is). Google Play's `reviews.list` similarly requires the
+  `androidpublisher` OAuth scope, grantable only to accounts with Play Console access to that
+  package. Neither has a path to a competitor's reviews.
+- **Independent scraping is explicitly, broadly prohibited by Apple.** Apple's Media Services Terms
+  (`apple.com/legal/internet-services/itunes/us/terms.html`, confirmed direct quote): "You may not
+  use any software, device, automated process, or any similar or equivalent manual process to
+  scrape, copy, or perform measurement, analysis, or monitoring of, any portion of the Content or
+  Services." Google's Play-specific terms are silent on scraping; Google's general ToS conditions
+  automated access on robots.txt compliance — narrower than Apple's blanket ban, not an equivalent
+  clearance.
+- **Third-party aggregators — a real, chosen default is now possible.** **Appbot**
+  (`appbot.co/plans/`, confirmed direct fetch): self-serve tiers from $49/mo (Small) through
+  $479+/mo (Premium, annual billing), marketed as including unlimited competitor-app tracking —
+  *which tier actually unlocks that feature is not stated on the pricing page itself, unconfirmed*.
+  **AppFollow**: its own pricing page is JS-rendered and returned no data directly; a third-party
+  pricing aggregator (`vendr.com/marketplace/appfollow`) reports a free 2-app tier and a $99/mo
+  Growth tier including competitor tracking — *this is a third-party estimate, not confirmed on
+  AppFollow's own site*. **Sensor Tower** (`sensortower.com/pricing`, confirmed direct fetch) is
+  quote-only/enterprise, no self-serve tier.
+
+**Recommended default: Appbot**, as the one aggregator with confirmed self-serve pricing and a
+marketed competitor-tracking feature — but confirm which tier actually includes it (unconfirmed
+above) before committing budget. Never pursue independent scraping of Apple's review pages given the
+explicit ToS prohibition; a Google-only scraping path is comparatively less clearly barred but still
+unevaluated for practical robots.txt/rate-limit behavior.
 
 ### 3. Build-pattern signal (real projects, "vibe coded" or conventionally built) — aggregate only, by design
 
@@ -171,12 +210,31 @@ listed as candidates, not a chosen set:**
 - **Show HN / "Launch HN" threads specifically** — a real, distinct sub-pattern within the HN
   source already named above (source 1's API access applies here too), worth treating as its own
   signal type since a Show HN post is explicitly "I built this," not a complaint.
-- **Hackathon/demo-day galleries** (e.g. Devpost) — real submissions, explicit build activity,
-  access/ToS not evaluated.
-- **AI-builder-tool showcases** (e.g. Bolt.new, Lovable, v0, Replit community galleries) — the
-  most direct source for specifically "vibe coded" projects, access/ToS not evaluated.
-- **Build-in-public social threads** (X/Twitter, Bluesky, Indie Hackers milestones) — real signal,
-  fragmented across platforms, access/ToS not evaluated per platform.
+- **Hackathon/demo-day galleries (Devpost)** — **researched 2026-09-01, ruled out**: no official
+  API (only unofficial community scrapers exist); `devpost.com/robots.txt` blocks most named AI/LLM
+  crawlers but leaves the default user-agent open; its actual Terms (`info.devpost.com/terms`)
+  explicitly ban "scrape," "crawl," or "spider" of the site or user content, on pain of account
+  termination and hackathon disqualification. **No compliant read path — do not add.**
+- **AI-builder-tool showcases (Bolt.new, Lovable, v0, Replit)** — **researched 2026-09-01, mixed**:
+  **Lovable** (`lovable.dev/terms`) and **Replit** (`replit.com/site/terms`) both explicitly ban
+  automated scraping/bots in their ToS, independent of their permissive `robots.txt` files — **ruled
+  out**, same as Devpost. **Bolt.new** and **v0/Vercel** have permissive `robots.txt` but their
+  scraping-specific ToS language could not be confirmed (Bolt.new/StackBlitz's actual terms document
+  wasn't retrievable; Vercel's general ToS doesn't mention v0 community pages) — **genuinely unclear,
+  an open gap, not a clearance; don't treat robots.txt permissiveness as equivalent to ToS
+  clearance.**
+- **Build-in-public social threads (X/Twitter, Bluesky, Indie Hackers)** — **researched 2026-09-01,
+  one clear winner**: **X/Twitter** has no viable free or affordable API for aggregate search as of
+  its Feb 2026 pricing overhaul (pay-per-usage, $0.015/post created + $0.005/post read; legacy $200
+  and $5,000/mo tiers retired/closed; full-archive search needs $42,000+/mo Enterprise) — **ruled out
+  on cost**. **Indie Hackers** (`indiehackers.com/terms`) explicitly bans crawling/scraping/spidering
+  in its ToS — **ruled out**, regardless of a possibly-permissive `robots.txt` (a direct check
+  returned HTTP 403, likely bot-blocking the fetch tool itself; a cached copy suggested it's open,
+  but the ToS prohibition governs regardless). **Bluesky's AT Protocol** is the exception: its public
+  firehose (`com.atproto.sync.subscribeRepos`) and read API are free and require no auth or API key
+  (per secondary/aggregated sources — the primary `docs.bsky.app` fetch itself returned no
+  extractable content, so re-verify directly before relying on this for real work) — **the strongest
+  legal candidate among build-in-public platforms, worth prioritizing if this category is picked up.**
 
 The legitimate version of this signal, regardless of which of the above it comes from, is: **the
 existence of many independent people building small, unscaled attempts at the same problem is
@@ -238,11 +296,21 @@ small missing detail.
 
 ## Open questions
 
-- Reddit API: unauthenticated scraping confirmed blocked on a sibling run's network (see §1) —
-  official OAuth API's current terms and free-tier viability remain unverified.
-- App-store review access: aggregator vs. compliant scraping — unevaluated, no default chosen.
-- GitHub/Devpost/AI-builder-tool-showcase/build-in-public access and ToS, per source — unevaluated;
-  GitHub's own API is well-known and stable but not freshly re-checked this pass either.
+- Reddit API: unauthenticated scraping confirmed blocked on a sibling run's network (see §1).
+  Official OAuth API terms are still **not primary-source-verified** (2026-09-01 research pass
+  blocked from every Reddit-owned domain) — convergent third-party sources report pricing unchanged
+  since 2023 but self-service registration closed (~Nov 2025 "Responsible Builder Policy"), gating
+  all new access behind manual approval. Recommended default: exclude Reddit from v1 regardless of
+  how the terms question resolves — the access-model shift matters as much as the terms themselves.
+- App-store review access: **resolved, 2026-09-01** — Appbot recommended as default aggregator (self-
+  serve, confirmed pricing, marketed competitor-tracking; exact qualifying tier still unconfirmed);
+  independent scraping ruled out for Apple (explicit ToS prohibition, primary-source confirmed).
+- GitHub/Devpost/AI-builder-tool-showcase/build-in-public access and ToS — **mostly resolved,
+  2026-09-01** (see §3): Devpost, Lovable, Replit, Indie Hackers all explicitly ban scraping — ruled
+  out. Bolt.new and v0/Vercel are a genuine open gap (permissive `robots.txt`, unconfirmed ToS). X is
+  ruled out on cost. Bluesky's AT Protocol firehose is free/open/unauthenticated — the strongest
+  candidate if this category gets picked up. GitHub's own API remains well-known/stable but not
+  freshly re-checked this pass.
 - What makes multiple small builds "independent" rather than reposts of the same one — undefined.
 - Exact phase/subagent breakdown for the pipeline itself — undesigned.
 - Output format handoff into `agentic-grounded-persona-eval` — **answered, partially (2026-09-01)**:

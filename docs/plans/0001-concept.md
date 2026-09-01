@@ -95,7 +95,17 @@ demand validation and, further downstream,
 [`agentic-market-research-to-gtm`](https://github.com/qte77/agentic-market-research-to-gtm) for
 PMF/GTM once a concept is validated.
 
-## The three signal sources, and how each is scoped
+## Signal source categories — not an exhaustive list
+
+**Corrected 2026-09-01**: the three categories below were too narrow as originally scoped —
+specifically, source 3 undersold itself as "small prototype projects" when the real intent is
+broader: scan real, working codebases and demos — both AI-assisted ("vibe coded") and
+conventionally-built — for promising, unscaled build activity, from wherever that activity is
+actually visible. A fourth, deliberately open-ended category is added to make explicit that these
+three are starting points, not the full list — the method should generalize to any source where the
+relevant builder or user community actually is, matching `agentic-grounded-persona-eval`'s own
+framing of its Phase 1 ("Reddit, Hacker News, ProductHunt, Trustpilot, or industry-appropriate
+equivalents").
 
 ### 1. Reddit / Hacker News / Product Hunt complaint and request mining
 
@@ -132,16 +142,36 @@ aggregator (e.g. AppFollow, Sensor Tower — neither evaluated here) or careful,
 of public review pages. **Not evaluated this pass — a real prerequisite before this source is
 usable, not a detail to skip.**
 
-### 3. Build-pattern signal (small / prototype / MVP-stage projects) — aggregate only, by design
+### 3. Build-pattern signal (real projects, "vibe coded" or conventionally built) — aggregate only, by design
 
 **This is the source with the real ethical boundary, and it constrains the design, not just a
-caveat appended after the fact.**
+caveat appended after the fact.** It covers both AI-assisted rapid-prototyped ("vibe coded")
+projects and conventionally-built ones equally — the boundary below doesn't distinguish between
+them, because the ethical concern (racing a specific active builder using their own work) doesn't
+either.
 
-The legitimate version of this signal is: **the existence of many independent people building
-small, unscaled attempts at the same problem is evidence a real need exists** — the same reading
-this project's own sibling concepts (ToolPop/TuneValue/GiveWorth, and Poptart's own competitive
-scan before them) already gave to "19+ independently built apps, same shape, same problem": read as
-validated demand, never as "here is the best one, go build that instead."
+**Real, plausible starting points for where this signal actually lives — none verified this pass,
+listed as candidates, not a chosen set:**
+- **GitHub** — trending repos, topic/tag search, recently-created-and-active repos in a category.
+  The REST/GraphQL API itself is well-documented, public, and has generous rate limits (a
+  long-standing, stable API shape, unlike Reddit's — still worth a fresh check before depending on
+  it, not re-verified this pass).
+- **Show HN / "Launch HN" threads specifically** — a real, distinct sub-pattern within the HN
+  source already named above (source 1's API access applies here too), worth treating as its own
+  signal type since a Show HN post is explicitly "I built this," not a complaint.
+- **Hackathon/demo-day galleries** (e.g. Devpost) — real submissions, explicit build activity,
+  access/ToS not evaluated.
+- **AI-builder-tool showcases** (e.g. Bolt.new, Lovable, v0, Replit community galleries) — the
+  most direct source for specifically "vibe coded" projects, access/ToS not evaluated.
+- **Build-in-public social threads** (X/Twitter, Bluesky, Indie Hackers milestones) — real signal,
+  fragmented across platforms, access/ToS not evaluated per platform.
+
+The legitimate version of this signal, regardless of which of the above it comes from, is: **the
+existence of many independent people building small, unscaled attempts at the same problem is
+evidence a real need exists** — the same reading this project's own sibling concepts
+(ToolPop/TuneValue/GiveWorth, and Poptart's own competitive scan before them) already gave to "19+
+independently built apps, same shape, same problem": read as validated demand, never as "here is
+the best one, go build that instead."
 
 **What this tool will never do, regardless of a project's license or public visibility:** identify
 one specific person's specific, currently-active, unscaled project and use it as a direct
@@ -162,6 +192,15 @@ should surface such a project as an *outreach candidate*, never as ready-to-buil
 the same problem" (which sources, what counts as independent, how to avoid false patterns from one
 viral post being reposted many times) is real design work, not done in this pass.
 
+### 4. Other sources — deliberately open-ended, not a closed list
+
+The three categories above are real starting points, not the full set. The method itself — sourced
+quotes over paraphrase, aggregate pattern over specific target, real access/ToS check before
+depending on any source — generalizes to any place a relevant builder or user community actually
+talks. Don't treat the absence of a source from the list above as it being out of scope; treat its
+absence as "not yet evaluated," and apply the same discipline (real access check, same ethical
+boundary for source 3-shaped signal) before adding it.
+
 ## Architecture sketch — not a build plan
 
 Each source above becomes its own research pass (mirroring how `agentic-grounded-persona-eval`
@@ -179,14 +218,21 @@ deliberate, considered structure, not a first guess.
 
 No implementation, no subagent specs, no `config/` structure, no tech-stack decision. No Reddit
 integration until its current API terms are verified. No app-store integration until a real access
-path (aggregator or verified-compliant scraping) is chosen. No detection heuristic for "independent
-build pattern" — that's real, unstarted design work, not a small missing detail.
+path (aggregator or verified-compliant scraping) is chosen. No GitHub/Devpost/AI-builder-showcase/
+build-in-public integration until each one's real access path is checked, same discipline as
+Reddit and app-stores — being newly-named in this doc is not the same as being verified usable. No
+detection heuristic for "independent build pattern" — that's real, unstarted design work, not a
+small missing detail.
 
 ## Open questions
 
 - Reddit API: current terms, current free-tier viability — unverified.
 - App-store review access: aggregator vs. compliant scraping — unevaluated, no default chosen.
+- GitHub/Devpost/AI-builder-tool-showcase/build-in-public access and ToS, per source — unevaluated;
+  GitHub's own API is well-known and stable but not freshly re-checked this pass either.
 - What makes multiple small builds "independent" rather than reposts of the same one — undefined.
 - Exact phase/subagent breakdown for the pipeline itself — undesigned.
 - Output format handoff into `agentic-grounded-persona-eval` — not yet matched against that repo's
   actual Phase 1 input expectations, only assumed compatible.
+- Which additional sources beyond the four named categories are worth adding — genuinely open,
+  not a fixed list by design (see §4 above).

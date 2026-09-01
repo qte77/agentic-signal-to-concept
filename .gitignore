@@ -13,3 +13,8 @@ findings/*-findings.md
 
 # Secrets — see .env.example
 .env
+
+# Python
+__pycache__/
+*.pyc
+.venv/

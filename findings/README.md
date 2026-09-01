@@ -6,8 +6,8 @@ share their `<date-time-iso>` prefix (generated once by the orchestrator), so re
 source pass later creates a new, independently-timestamped file rather than overwriting anything.
 
 `findings/*-findings.md` is gitignored by default — these are working evidence for a run, not the
-repo's tracked product output (see `candidates/README.md` for that). Keep a specific run's file
-tracked with `git add -f` if it's worth preserving.
+repo's tracked product output (see `candidates/README.md` for that). See
+[`examples/`](../examples/README.md) for a real, permanently-checked-in worked run.
 
 ## Expected structure
 

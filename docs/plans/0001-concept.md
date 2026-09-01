@@ -83,6 +83,13 @@ Concept — no pipeline implementation yet. This document records the design dec
 explicit ethical boundary this tool is built around, and what's genuinely still open. It is not a
 build plan.
 
+**Superseded in part by `docs/plans/0002-signal-to-concept-v1.md` (2026-09-01)**: that arc drafted
+the actual `.claude/agents/*.md` phase specs, `config/`, and `AGENTS.md` orchestrator this doc's
+"Explicit KISS boundaries" section (below) said not to build yet — scoped to v1's smallest workable
+slice (HN+ProductHunt complaints, GitHub+Show HN build-pattern scanning). The open questions below
+that 0002 doesn't touch (app-store access, Reddit's OAuth API terms, the deferred build-pattern
+sub-sources) remain open; see 0002's remaining-work table for their exact status.
+
 ## Problem / opportunity
 
 Product idea generation is usually either pure guessing, or individually-run research passes with
@@ -121,11 +128,16 @@ that repo's own README:
 - **ProductHunt** — GraphQL API v2, `https://api.producthunt.com/v2/api/graphql`, self-serve
   `developer_token`, no app review needed.
 
-**Reddit is explicitly unresolved here, not assumed available.** Reddit's official API pricing
-changed materially in 2023 (a real, publicized policy shift) — current terms, current free-tier
-limits, and whether they're workable for this use case have **not been checked this pass**. Verify
-before building anything that depends on Reddit specifically; don't assume the pre-2023 free-access
-shape still holds.
+**Reddit — two separate facts, not one (corrected 2026-09-01).** (a) Unauthenticated scraping is
+empirically blocked: a real run in the sibling `agentic-grounded-persona-eval` repo
+(`examples/groundwork/findings.md`) found Reddit fingerprint-blocking every tool tried —
+`WebFetch`, a raw `urllib` request, and `polyfetch-scrape`'s stealth-Patchright tier — across two
+subreddits, all returning HTTP 403 after retries. That doc is explicit this is a fact about *that
+runner's network*, not evidence the discussion doesn't exist on Reddit. (b) The official OAuth API's
+post-2023 pricing/terms and free-tier limits remain **unverified** — that run never tested the
+official API, and neither has this one. Recommended default: exclude Reddit-via-scraping from Phase
+1 scope; the OAuth-API question stays open until someone actually checks Reddit's current developer
+terms.
 
 ### 2. App-store review mining — gap analysis, not cloning
 
@@ -226,13 +238,18 @@ small missing detail.
 
 ## Open questions
 
-- Reddit API: current terms, current free-tier viability — unverified.
+- Reddit API: unauthenticated scraping confirmed blocked on a sibling run's network (see §1) —
+  official OAuth API's current terms and free-tier viability remain unverified.
 - App-store review access: aggregator vs. compliant scraping — unevaluated, no default chosen.
 - GitHub/Devpost/AI-builder-tool-showcase/build-in-public access and ToS, per source — unevaluated;
   GitHub's own API is well-known and stable but not freshly re-checked this pass either.
 - What makes multiple small builds "independent" rather than reposts of the same one — undefined.
 - Exact phase/subagent breakdown for the pipeline itself — undesigned.
-- Output format handoff into `agentic-grounded-persona-eval` — not yet matched against that repo's
-  actual Phase 1 input expectations, only assumed compatible.
+- Output format handoff into `agentic-grounded-persona-eval` — **answered, partially (2026-09-01)**:
+  `config/target.example.md` requires a **Live URL** field, since that repo's Phase 3 live-evaluates
+  a real running product. A concept candidate here has no live product yet, so it can only feed
+  Phases 1–2 (demand-side research + grounded personas for the assumed ICP), not Phase 3, until
+  something ships. The candidate doc's output shape should match `target.example.md`'s fields
+  (Name / Live URL — blank until launch / Assumed ICPs / Research constraints).
 - Which additional sources beyond the four named categories are worth adding — genuinely open,
   not a fixed list by design (see §4 above).

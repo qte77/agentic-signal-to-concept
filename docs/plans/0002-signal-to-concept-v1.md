@@ -2,13 +2,13 @@
 
 ## Status
 
-**File-creation slice complete; ported tests + fixture check verified (2026-09-01).** All files
-listed in the code/file/source map below exist. Supersedes 0001's "no subagent specs, no `config/`"
-KISS boundary — see the note added to `0001-concept.md`'s Status section. Bash was denied for most
-of the session, then came back mid-session: `uv run pytest` (6/6 pass) and a hand-written
-mixed-sourcing fixture against `verify_sourcing.py` are both now genuinely verified, not just
-planned. Still not done: no pilot run, no branch, no commit, no PR. See the remaining-work table
-below for exactly what's open, owner-gated, or deferred.
+**File-creation slice merged to main (2026-09-01).** All files listed in the code/file/source map
+below exist and are committed via PR #4 (0001 corrections) and PR #5 (this arc's build), both
+squash-merged with `gh pr merge --squash --admin`, branches deleted. Supersedes 0001's "no subagent
+specs, no `config/`" KISS boundary — see the note added to `0001-concept.md`'s Status section.
+`uv run pytest` (6/6 pass) and a hand-written mixed-sourcing fixture against `verify_sourcing.py`
+are both genuinely verified, not just planned. Still not done: the HN-only pilot run. See the
+remaining-work table below for exactly what's open, owner-gated, or deferred.
 
 ## Convention note
 
@@ -133,21 +133,21 @@ Phase 2:  concept-synthesizer    → candidates/<ts>-<slug>-candidate.md
 
 | Item | Gate | Done-when |
 |---|---|---|
-| `complaint-miner.md` spec | **shipped** (2026-09-01, uncommitted) | File exists with Input/What-to-do/If-blocked/Output sections; Reddit-exclusion stated verbatim-in-spirit. |
-| `build-pattern-scanner.md` spec | **shipped** (2026-09-01, uncommitted) | File exists with `## Ethical boundary` section (3 bullets) + independence-heuristic default documented. |
-| `concept-synthesizer.md` spec | **shipped** (2026-09-01, uncommitted) | File exists with dual-glob precondition + Output matching `candidates/*.md` field structure. |
-| Port `verify_sourcing.py` + `test_verify_sourcing.py` + minimal `pyproject.toml` | **shipped** (2026-09-01, uncommitted) | Files exist, byte-identical to sibling (confirmed by direct read before writing). |
-| `config/scope.example.md` | **shipped** (2026-09-01, uncommitted) | File exists; every field it names is referenced by name in at least one agent spec. |
-| `AGENTS.md` orchestrator | **shipped** (2026-09-01, uncommitted) | File exists; its filenames string-match each spec's Output/Precondition lines — no orphan references either direction. |
-| `findings/README.md`, `candidates/README.md`, `.gitignore` update | **shipped** (2026-09-01, uncommitted) | Files/edit exist; `findings/*-findings.md` gitignored, `candidates/*-candidate.md` NOT gitignored. |
-| `CONTRIBUTING.md` + README pointer section | **shipped** (2026-09-01, uncommitted) | Both exist; weight mirrors the chain sibling, not `Agents-eval`. |
+| `complaint-miner.md` spec | **shipped** (2026-09-01, PR #5) | File exists with Input/What-to-do/If-blocked/Output sections; Reddit-exclusion stated verbatim-in-spirit. |
+| `build-pattern-scanner.md` spec | **shipped** (2026-09-01, PR #5) | File exists with `## Ethical boundary` section (3 bullets) + independence-heuristic default documented. |
+| `concept-synthesizer.md` spec | **shipped** (2026-09-01, PR #5) | File exists with dual-glob precondition + Output matching `candidates/*.md` field structure. |
+| Port `verify_sourcing.py` + `test_verify_sourcing.py` + minimal `pyproject.toml` | **shipped** (2026-09-01, PR #5) | Files exist, byte-identical to sibling (confirmed by direct read before writing). |
+| `config/scope.example.md` | **shipped** (2026-09-01, PR #5) | File exists; every field it names is referenced by name in at least one agent spec. |
+| `AGENTS.md` orchestrator | **shipped** (2026-09-01, PR #5) | File exists; its filenames string-match each spec's Output/Precondition lines — no orphan references either direction. |
+| `findings/README.md`, `candidates/README.md`, `.gitignore` update | **shipped** (2026-09-01, PR #5) | Files/edit exist; `findings/*-findings.md` gitignored, `candidates/*-candidate.md` NOT gitignored. |
+| `CONTRIBUTING.md` + README pointer section | **shipped** (2026-09-01, PR #5) | Both exist; weight mirrors the chain sibling, not `Agents-eval`. |
 | Workspace SSOT rule (`documentation-hierarchy.md`) | **shipped** (2026-09-01, outside this repo) | File exists at `/workspaces/qte77/.claude/rules/`; not part of this repo's own commit. |
-| `0001-concept.md` supersession note | **shipped** (2026-09-01, uncommitted) | One-line note added pointing from 0001's boundaries/Status to this arc. |
-| README.md / CHANGELOG.md status update | **shipped** (2026-09-01, uncommitted) | Reflects "v1 agent specs drafted, pilot pending," not "concept-stage, zero specs." |
-| Run `uv run pytest` on ported tests | **shipped** (2026-09-01) | `pytest` exits 0 on the 6 ported tests — confirmed: `6 passed in 0.02s`. Bash access restored mid-session. |
+| `0001-concept.md` supersession note | **shipped** (2026-09-01, PR #5) | One-line note added pointing from 0001's boundaries/Status to this arc. |
+| README.md / CHANGELOG.md status update | **shipped** (2026-09-01, PR #5) | Reflects "v1 agent specs drafted, pilot pending," not "concept-stage, zero specs." |
+| Run `uv run pytest` on ported tests | **shipped** (2026-09-01) | `pytest` exits 0 on the 6 ported tests — confirmed twice (`6 passed`), once pre-merge. |
 | Fixture check on `verify_sourcing.py` | **shipped** (2026-09-01) | Hand-written mixed fixture (1 sourced + 1 unsourced block) correctly exits 1, flags only the unsourced block at its line. |
 | HN-only pilot run (real `complaint-miner` execution) | agent | Not yet run — a real pipeline execution (live HN/PH calls), not just script tests; recommend running only once explicitly requested, given external-API cost/time. A real `findings/*-complaints-findings.md` would need ≥1 genuine pattern; `verify_sourcing.py` exits 0 against it. |
-| Git branch + commit + PR for this arc's files | agent | Bash access restored; branch + local commits are safe to do now. Push + PR is a shared-visibility action — hold for explicit go-ahead per this session's own care-with-actions guidance. |
+| Git branch + commit + PR for this arc's files | **shipped** (2026-09-01, PR #4 + PR #5) | Both squash-merged with `gh pr merge --squash --admin`; branches deleted, remote-tracking refs pruned. |
 | ProductHunt `developer_token` | owner | Token provisioned (self-serve, needs a PH account) and referenced from `config/scope.md` or an untracked local secret file. |
 | App-store review access path (aggregator vs. compliant scraping) | owner, deferred | Default chosen and recorded in `0001-concept.md`'s open questions; no subagent spec written until then. |
 | Reddit OAuth API terms | owner, deferred | Someone checks current Reddit developer terms/pricing and records the verdict in `0001-concept.md`. |

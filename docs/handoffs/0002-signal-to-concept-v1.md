@@ -3,12 +3,13 @@
 Full design + remaining-work table: `docs/plans/0002-signal-to-concept-v1.md`. Don't duplicate that
 table here — this doc only onboards the next session to it.
 
-## Lead with this: everything below is uncommitted
+## Lead with this: merged to main, pilot still pending
 
-**Bash was denied for the entire session that wrote this arc.** No branch was created, nothing was
-committed, no tests were run, no pilot was executed. Every file this arc created sits directly on
-`main`'s working tree, uncommitted. Run `git status` before touching anything — this is deliberate
-in-progress work, not stray debris, and it should move to a feature branch before any of it lands.
+Bash was denied for most of the session that wrote this arc, then came back mid-session. Everything
+below is now on `main`: PR #4 (0001 corrections) and PR #5 (this arc's build) both squash-merged
+with `gh pr merge --squash --admin`, branches deleted and pruned. The 6 ported tests pass and a
+hand-written sourcing fixture behaves correctly. **Not done**: the HN-only pilot run (a real
+pipeline execution against live HN/PH APIs) hasn't happened — see "What's next" below.
 
 ## What shipped this session (agent-only, all file-creation, no execution)
 
@@ -46,13 +47,13 @@ in-progress work, not stray debris, and it should move to a feature branch befor
 
 ## What's next, in order
 
-1. `git status`, review the new/modified files, create a feature branch, commit by topic
-   (`feat: add complaint-miner spec`, `feat: add build-pattern-scanner spec`, etc. — see this
-   workspace's `unattended-execution.md` for the per-topic-commit convention), open a PR.
-   **Repo ruleset gate**: this repo has a ruleset requiring extra approval on agent-authored
-   changes. Standing practice (confirmed 2026-09-01, supersedes the "one-time exception" framing in
-   0001's original handoff): squash-merge with `gh pr merge --squash --admin` to satisfy the gate
-   per-merge — **never modify or disable the ruleset itself** to work around it.
+1. ~~Create feature branch(es), commit by topic, open PRs, squash-merge~~ — done this session: PR #4
+   and PR #5, both merged via `gh pr merge --squash --admin`. **Repo ruleset gate note, still live**:
+   this repo has a ruleset requiring extra approval on agent-authored changes; `--admin` on
+   squash-merge is standing practice (confirmed 2026-09-01) — **never modify or disable the ruleset
+   itself** to work around it. If `git push`/`gh` fail with an invalid-token or 403 error, unset both
+   `GH_TOKEN` and `GITHUB_TOKEN` env vars first (`env -u GH_TOKEN -u GITHUB_TOKEN <command>`) — an
+   invalid `GH_TOKEN` and an under-scoped `GITHUB_TOKEN` both shadow the working stored `gh` login.
 2. ~~Run `uv run pytest` on the ported test suite~~ — done this session, 6/6 pass.
 3. Run the HN-only pilot: execute `complaint-miner` for real against a real `config/scope.md` (copy
    from the example, fill in a real scope), confirm `scripts/verify_sourcing.py` exits 0 against its

@@ -44,9 +44,23 @@ project's license status or public visibility. The tool answers "does a real gap
 
 ## Status
 
-**Concept-stage — no pipeline implementation yet.** The actual phase design (how many stages, what
-each one produces, which subagents) hasn't been worked out. See
-[`docs/plans/0001-concept.md`](docs/plans/0001-concept.md) for what's decided vs. still open.
+**v1 agent specs drafted, pilot run pending.** `.claude/agents/{complaint-miner,
+build-pattern-scanner,concept-synthesizer}.md`, an `AGENTS.md` orchestrator, and a ported
+`scripts/verify_sourcing.py` exist, scoped to v1's smallest workable slice (HN + ProductHunt
+complaint mining, GitHub + Show HN build-pattern scanning). Nothing has been executed yet — no
+pilot run, no tests run. See [`docs/plans/0002-signal-to-concept-v1.md`](docs/plans/0002-signal-to-concept-v1.md)
+for the build plan and remaining work, and [`docs/plans/0001-concept.md`](docs/plans/0001-concept.md)
+for the original concept and what's still genuinely open (app-store access, Reddit's OAuth API
+terms, deferred build-pattern sub-sources).
+
+## Running or extending this
+
+- **Environment**: copy [`.env.example`](.env.example) to `.env` and fill in `PRODUCTHUNT_API_TOKEN`
+  (required for `complaint-miner`'s ProductHunt pass) and optionally `GITHUB_TOKEN` (raises
+  `build-pattern-scanner`'s GitHub rate limit).
+- **AI agents**: read [`AGENTS.md`](AGENTS.md) for the orchestration commands.
+- **Contributors (human or agent)**: read [`CONTRIBUTING.md`](CONTRIBUTING.md) for how to change
+  the method itself, run tests, and this repo's commit conventions.
 
 ## License
 

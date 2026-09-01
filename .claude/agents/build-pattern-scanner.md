@@ -52,12 +52,17 @@ independence-heuristic override.
    clearance. See `docs/plans/0001-concept.md` §3 for the full per-platform citations.
    **Compliant substitute, confirmed working 2026-09-01**: the same underlying signal (hackathon
    builds, Lovable/Replit-ecosystem activity, "vibe coded" projects) is recoverable through GitHub
-   topic search (`topic:hackathon` — 13,544 hits, real but noisy, needs per-repo README inspection
-   to confirm which hackathon/when; `topic:lovable`/`topic:replit` — 584/998 hits, credible
+   topic search (`topic:hackathon` — 13,544 hits, real but noisy, dominated by boilerplate/starter-kit
+   repos rather than individual submissions; `topic:lovable`/`topic:replit` — 584/998 hits, credible
    ecosystem-adjacent signal, not a 1:1 substitute for the platforms' own user-project showcases) and
-   the Show HN queries in step 2 above. Indie Hackers has no RSS/Atom feed (confirmed absent:
-   `/rss` and `/feed` both 404, no feed `<link>` tag, nothing on `/about`) — there is no benign
-   alternative access path for that one; it stays fully out of scope.
+   the Show HN queries in step 2 above. **Noise-reduction heuristic for `topic:hackathon` (v1 default,
+   explicitly coarse, revisitable via `config/scope.md`)**: exclude repos over ~500 stars (established
+   tools/starter-kits, e.g. `sahat/hackathon-starter` at 35k stars, not individual weekend
+   submissions) and prefer results within the run's date window over all-time search — state this
+   filter plainly in the output, and still inspect each remaining repo's README to confirm which
+   hackathon, when, and by whom before citing it as evidence. Indie Hackers has no RSS/Atom feed
+   (confirmed absent: `/rss` and `/feed` both 404, no feed `<link>` tag, nothing on `/about`) — there
+   is no benign alternative access path for that one; it stays fully out of scope.
 5. **Independence heuristic (v1 default — explicitly coarse, revisitable via `config/scope.md`)**:
    count two builds as independent only if ALL of: distinct author/org handles; both created within
    the run's date window (default 12 months if unset); no direct fork/clone relationship to each

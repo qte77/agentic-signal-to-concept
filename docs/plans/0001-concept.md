@@ -160,38 +160,83 @@ A concept candidate coming out of this source must be a genuinely different impl
 the same underlying complaint — different branding, different code, real differentiation — not a
 reproduction of any specific existing app's UI, branding, or backend logic.
 
-**Real access gap, researched 2026-09-01 — a real decision is now possible, though two pricing
-details remain unconfirmed at primary source:**
+**Real access gap, fully researched across two passes (2026-09-01) — catalog/discovery access and
+review-text access are two separate problems, addressed separately below.**
 
-- **First-party APIs confirmed unusable for competitor data.** Apple's App Store Connect API
-  (`GET /v1/apps/{id}/customerReviews`) is scoped per-team/per-app — confirmed via Apple's own
-  developer forum (`developer.apple.com/forums/thread/654751`; Apple's API reference page itself is
-  JS-rendered and didn't return body text to direct fetch, so the exact scoping sentence is
-  unconfirmed, though the mechanism is). Google Play's `reviews.list` similarly requires the
-  `androidpublisher` OAuth scope, grantable only to accounts with Play Console access to that
-  package. Neither has a path to a competitor's reviews.
-- **Independent scraping is explicitly, broadly prohibited by Apple.** Apple's Media Services Terms
-  (`apple.com/legal/internet-services/itunes/us/terms.html`, confirmed direct quote): "You may not
-  use any software, device, automated process, or any similar or equivalent manual process to
-  scrape, copy, or perform measurement, analysis, or monitoring of, any portion of the Content or
-  Services." Google's Play-specific terms are silent on scraping; Google's general ToS conditions
-  automated access on robots.txt compliance — narrower than Apple's blanket ban, not an equivalent
-  clearance.
-- **Third-party aggregators — a real, chosen default is now possible.** **Appbot**
-  (`appbot.co/plans/`, confirmed direct fetch): self-serve tiers from $49/mo (Small) through
-  $479+/mo (Premium, annual billing), marketed as including unlimited competitor-app tracking —
-  *which tier actually unlocks that feature is not stated on the pricing page itself, unconfirmed*.
-  **AppFollow**: its own pricing page is JS-rendered and returned no data directly; a third-party
-  pricing aggregator (`vendr.com/marketplace/appfollow`) reports a free 2-app tier and a $99/mo
-  Growth tier including competitor tracking — *this is a third-party estimate, not confirmed on
-  AppFollow's own site*. **Sensor Tower** (`sensortower.com/pricing`, confirmed direct fetch) is
-  quote-only/enterprise, no self-serve tier.
+**Catalog/discovery (finding which apps exist in a category, before mining their reviews):**
+- **Apple — confirmed working, free, public, no auth.** The iTunes Search API
+  (`https://itunes.apple.com/search?term=<kw>&country=us&entity=software`) was tested directly this
+  session (not assumed) — returns real catalog metadata (name, developer, category, price,
+  `averageUserRating`, `userRatingCount`) for any app. This is aggregate rating data, not individual
+  review text.
+- **Google Play — confirmed no first-party equivalent exists.** The Android Publisher API family
+  (`developers.google.com/android-publisher/api-ref/rest/v3/reviews/list`) is fully OAuth-gated and
+  scoped only to `packageName`s the caller's own dev account owns — no term-search/catalog endpoint
+  exists in this API at all. The only route is unofficial scraper libraries (e.g.
+  `google-play-scraper`) that scrape rendered `play.google.com/store/*` pages — their exact backing
+  mechanism (documented internal endpoint vs. raw HTML scrape) was not verified at source, treat as
+  unconfirmed. `play.google.com/robots.txt` (confirmed direct fetch) explicitly disallows
+  `/store/search` and general `/apps`, but does **not** explicitly disallow individual
+  `/store/apps/details` pages — a real technical nuance, though a robots.txt gap is not the same as
+  ToS clearance (Play's ToS text itself was not checked specifically for a scraping clause this
+  pass).
 
-**Recommended default: Appbot**, as the one aggregator with confirmed self-serve pricing and a
-marketed competitor-tracking feature — but confirm which tier actually includes it (unconfirmed
-above) before committing budget. Never pursue independent scraping of Apple's review pages given the
-explicit ToS prohibition; a Google-only scraping path is comparatively less clearly barred but still
-unevaluated for practical robots.txt/rate-limit behavior.
+**Review-text access:**
+- **Apple's App Store Connect API is confirmed owner-scoped, verbatim.** Fetched the doc's
+  underlying JSON data path directly (the HTML page is JS-rendered and returns nothing to a plain
+  fetch): "This endpoint allows you to retrieve customer reviews for an app associated with your
+  team account in App Store Connect" — no ambiguity, no path to a competitor's reviews.
+- **Apple's legacy public reviews RSS/JSON feed is confirmed dead, tested directly.** A once-common,
+  widely-blogged trick (`itunes.apple.com/{country}/rss/customerreviews/id={appId}/sortby=mostrecent/json`)
+  for pulling review text for *any* app without auth was tested against two app IDs (including
+  Notion's real ID, 89,930 ratings) across two URL shapes — both returned only feed metadata, zero
+  review entries. **Do not rely on tutorials/StackOverflow answers describing this feed as working —
+  it does not, as of 2026-09-01.**
+- **Google Play has no equivalent public feed either.** `reviews.list` is the only first-party
+  option and is owner-scoped/OAuth-gated, same restriction as catalog access above. Unofficial
+  scraper libraries' `reviews()` method is the only unofficial route, mechanism unconfirmed.
+- **Independent scraping is explicitly, broadly prohibited by Apple** (confirmed direct quote,
+  `apple.com/legal/internet-services/itunes/us/terms.html`): "You may not use any software, device,
+  automated process, or any similar or equivalent manual process to scrape, copy, or perform
+  measurement, analysis, or monitoring of, any portion of the Content or Services." Google's
+  Play-specific terms are silent on scraping; Google's general ToS conditions automated access on
+  robots.txt compliance — narrower than Apple's blanket ban, not an equivalent clearance.
+
+**Third-party aggregators — now fully resolved, no remaining pricing gaps:**
+- **Appbot** (`appbot.co/plans/` + `support.appbot.co`, both confirmed direct fetch): pricing is
+  source-count-based (Small=5/Medium=40/Large=100 sources, from $49/mo). Any tier can track a
+  competitor app as an ordinary "source" — competitor tracking itself is **not** tier-gated. The
+  side-by-side "Compare Apps" dashboard specifically requires Medium tier or above (~$99/mo).
+- **AppFollow** (`appfollow.io/blog/new-plans-at-appfollow-and-how-to-choose-the-right-one`,
+  first-party, confirmed direct fetch — the `/pricing` page itself remains JS-rendered/empty): Free
+  $0/mo (2 apps, 10 competitors), ASO $19/mo (30 competitors), Essential $179/mo or $129/mo annual
+  (100 competitors), Team $599/mo or $425/mo annual (250 competitors), Enterprise custom.
+- **Sensor Tower** (`sensortower.com/pricing`, confirmed direct fetch): quote-only/enterprise, no
+  self-serve tier.
+
+**Trustpilot — evaluated 2026-09-01, per a direct follow-up question (does it cover software/apps,
+not just retail):**
+- Trustpilot's **Business Units API (public)** (`developers.trustpilot.com/business-units-api-(public)`,
+  confirmed direct fetch, API-key auth) explicitly returns "public business information for any
+  business unit," including reviews — genuinely queryable for a company you don't own, unlike
+  Apple/Google's owner-scoped APIs. Service Reviews and Product Reviews APIs also exist.
+- **Self-serve API pricing is unconfirmed** — no price table found; sign-up funnels into a sales-led
+  "Trustpilot for Business" flow with no visible self-serve price for API access specifically.
+- **Independent scraping is explicitly, broadly prohibited** (confirmed direct quote,
+  `corporate.trustpilot.com/legal/for-everyone/action-we-take/mar-2026`): bans "automated tools (such
+  as AI agents, bots, crawlers, spiders or scrapers)," "text mining, data mining or web scraping,"
+  "republishing... scraped data," **and explicitly "use of our data... to train and develop
+  artificial intelligence models."** `robots.txt` disallows `/reviews/`, `/api/*`, and ends with a
+  catch-all disallow — reinforcing the API is the only sanctioned path, not scraping.
+- **Not evaluated**: how much genuine software/SaaS coverage Trustpilot actually has (category mix
+  wasn't audited) — a real open question before treating it as a viable source for this category.
+
+**Recommended default: Appbot for app-store review mining** (confirmed self-serve pricing, competitor
+tracking available at every tier). **Trustpilot is a real candidate for a broader "software/SaaS
+company reviews" source** (not app-store-specific) if its self-serve API pricing resolves favorably
+and its software-category coverage checks out — both still open. Never pursue independent scraping
+of Apple's or Trustpilot's review pages given their explicit ToS prohibitions; a Google-Play-only
+scraping path is comparatively less clearly barred but still practically unevaluated.
 
 ### 3. Build-pattern signal (real projects, "vibe coded" or conventionally built) — aggregate only, by design
 
@@ -224,17 +269,26 @@ listed as candidates, not a chosen set:**
   an open gap, not a clearance; don't treat robots.txt permissiveness as equivalent to ToS
   clearance.**
 - **Build-in-public social threads (X/Twitter, Bluesky, Indie Hackers)** — **researched 2026-09-01,
-  one clear winner**: **X/Twitter** has no viable free or affordable API for aggregate search as of
-  its Feb 2026 pricing overhaul (pay-per-usage, $0.015/post created + $0.005/post read; legacy $200
-  and $5,000/mo tiers retired/closed; full-archive search needs $42,000+/mo Enterprise) — **ruled out
-  on cost**. **Indie Hackers** (`indiehackers.com/terms`) explicitly bans crawling/scraping/spidering
-  in its ToS — **ruled out**, regardless of a possibly-permissive `robots.txt` (a direct check
-  returned HTTP 403, likely bot-blocking the fetch tool itself; a cached copy suggested it's open,
-  but the ToS prohibition governs regardless). **Bluesky's AT Protocol** is the exception: its public
-  firehose (`com.atproto.sync.subscribeRepos`) and read API are free and require no auth or API key
-  (per secondary/aggregated sources — the primary `docs.bsky.app` fetch itself returned no
-  extractable content, so re-verify directly before relying on this for real work) — **the strongest
-  legal candidate among build-in-public platforms, worth prioritizing if this category is picked up.**
+  mixed, sharpened further by direct testing**: **X/Twitter** has no viable free or affordable API
+  for aggregate search as of its Feb 2026 pricing overhaul (pay-per-usage, $0.015/post created +
+  $0.005/post read; legacy $200 and $5,000/mo tiers retired/closed; full-archive search needs
+  $42,000+/mo Enterprise) — **ruled out on cost**. **Indie Hackers**
+  (`indiehackers.com/terms`) explicitly bans crawling/scraping/spidering in its ToS — **ruled out**,
+  regardless of a possibly-permissive `robots.txt` (a direct check returned HTTP 403, likely
+  bot-blocking the fetch tool itself; a cached copy suggested it's open, but the ToS prohibition
+  governs regardless). **Bluesky's AT Protocol is legally the cleanest (no ToS bar, no paid tier) but
+  practically blocked here, and confirmed by direct testing, not assumption**: `getProfile` (a
+  read-only lookup) works fine, no auth, on `public.api.bsky.app` — but the actual keyword-search
+  endpoint needed for this pipeline, `app.bsky.feed.searchPosts`, returned a clean HTTP 403 on *every*
+  fetch tier tried (plain `httpx` through patchright's stealth browser tier), reproducible across two
+  different queries. Same pattern as the Reddit finding: **this is evidence about blocking on this
+  runner's network specifically, not proof the endpoint is walled off for everyone** — retesting from
+  a different network/residential exit is the natural next step, not a conclusion that Bluesky search
+  is unusable. Separately, the raw firehose (`com.atproto.sync.subscribeRepos`) is a continuous,
+  unfiltered, network-wide WebSocket stream, not a simple fetchable search — using it for
+  keyword-targeted research needs a persistent stream consumer doing its own filtering, a materially
+  bigger engineering lift than "call an API with a keyword," independent of the search-endpoint block
+  above.
 
 The legitimate version of this signal, regardless of which of the above it comes from, is: **the
 existence of many independent people building small, unscaled attempts at the same problem is
@@ -302,15 +356,25 @@ small missing detail.
   since 2023 but self-service registration closed (~Nov 2025 "Responsible Builder Policy"), gating
   all new access behind manual approval. Recommended default: exclude Reddit from v1 regardless of
   how the terms question resolves — the access-model shift matters as much as the terms themselves.
-- App-store review access: **resolved, 2026-09-01** — Appbot recommended as default aggregator (self-
-  serve, confirmed pricing, marketed competitor-tracking; exact qualifying tier still unconfirmed);
-  independent scraping ruled out for Apple (explicit ToS prohibition, primary-source confirmed).
+- App-store review access: **fully resolved, 2026-09-01** (see §2, two research passes). Catalog
+  discovery: Apple's iTunes Search API confirmed free/public/working; Google Play has no first-party
+  equivalent. Review text: both Apple's App Store Connect API and Google's `reviews.list` are
+  confirmed owner-scoped only; Apple's legacy public reviews feed is confirmed dead by direct test.
+  Appbot is the recommended default aggregator (confirmed pricing, competitor tracking on every
+  tier, comparison dashboard needs Medium+); AppFollow's pricing is now first-party confirmed too.
+  Trustpilot has a real, queryable public API for companies you don't own, but its self-serve API
+  pricing is unconfirmed and its actual software/SaaS category coverage hasn't been audited.
+  Independent scraping is ruled out for both Apple and Trustpilot (explicit ToS prohibitions,
+  primary-source confirmed).
 - GitHub/Devpost/AI-builder-tool-showcase/build-in-public access and ToS — **mostly resolved,
   2026-09-01** (see §3): Devpost, Lovable, Replit, Indie Hackers all explicitly ban scraping — ruled
   out. Bolt.new and v0/Vercel are a genuine open gap (permissive `robots.txt`, unconfirmed ToS). X is
-  ruled out on cost. Bluesky's AT Protocol firehose is free/open/unauthenticated — the strongest
-  candidate if this category gets picked up. GitHub's own API remains well-known/stable but not
-  freshly re-checked this pass.
+  ruled out on cost. Bluesky's AT Protocol is legally the cleanest option (no ToS bar, no paid tier)
+  but its search endpoint (`app.bsky.feed.searchPosts`) is confirmed blocked (HTTP 403) on this
+  runner's network specifically, at every fetch tier — the same "network fact, not a universal fact"
+  caveat as the Reddit finding, worth retesting from a different network before ruling it out; its
+  raw firehose is also impractical for keyword search without a persistent stream consumer. GitHub's
+  own API remains well-known/stable but not freshly re-checked this pass.
 - What makes multiple small builds "independent" rather than reposts of the same one — undefined.
 - Exact phase/subagent breakdown for the pipeline itself — undesigned.
 - Output format handoff into `agentic-grounded-persona-eval` — **answered, partially (2026-09-01)**:

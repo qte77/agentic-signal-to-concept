@@ -2,13 +2,14 @@
 
 ## Status
 
-**File-creation slice merged to main (2026-09-01).** All files listed in the code/file/source map
-below exist and are committed via PR #4 (0001 corrections) and PR #5 (this arc's build), both
-squash-merged with `gh pr merge --squash --admin`, branches deleted. Supersedes 0001's "no subagent
-specs, no `config/`" KISS boundary — see the note added to `0001-concept.md`'s Status section.
-`uv run pytest` (6/6 pass) and a hand-written mixed-sourcing fixture against `verify_sourcing.py`
-are both genuinely verified, not just planned. Still not done: the HN-only pilot run. See the
-remaining-work table below for exactly what's open, owner-gated, or deferred.
+**File-creation slice merged to main; HN-only pilot run complete (2026-09-01).** All files listed in
+the code/file/source map below exist and are committed via PR #4 (0001 corrections) and PR #5 (this
+arc's build), both squash-merged with `gh pr merge --squash --admin`, branches deleted. Supersedes
+0001's "no subagent specs, no `config/`" KISS boundary — see the note added to `0001-concept.md`'s
+Status section. `uv run pytest` (6/6 pass), a hand-written mixed-sourcing fixture, and a real
+`complaint-miner` pilot run (3 patterns, 6 sourced HN quotes, checked in at
+`examples/pkm-tools-pilot/`) are all genuinely verified, not just planned. See the remaining-work
+table below for what's still open, owner-gated, or deferred.
 
 ## Convention note
 
@@ -82,6 +83,10 @@ CONTRIBUTING.md                                    (new — mirrors agentic-grou
 .env.example                                       (new — PRODUCTHUNT_API_TOKEN required, GITHUB_TOKEN
                                                      optional; closes a docs-audit gap: the PH token had
                                                      no defined env var name before this)
+examples/README.md                                 (new)
+examples/pkm-tools-pilot/{scope.md,findings.md}    (new — the real HN-only pilot run, checked in
+                                                     permanently, mirrors the sibling repo's
+                                                     examples/groundwork/ convention)
 ```
 **Workspace-level, outside this repo's git history — not part of this repo's own file map, noted
 here only so the next session knows it exists:**
@@ -146,7 +151,7 @@ Phase 2:  concept-synthesizer    → candidates/<ts>-<slug>-candidate.md
 | README.md / CHANGELOG.md status update | **shipped** (2026-09-01, PR #5) | Reflects "v1 agent specs drafted, pilot pending," not "concept-stage, zero specs." |
 | Run `uv run pytest` on ported tests | **shipped** (2026-09-01) | `pytest` exits 0 on the 6 ported tests — confirmed twice (`6 passed`), once pre-merge. |
 | Fixture check on `verify_sourcing.py` | **shipped** (2026-09-01) | Hand-written mixed fixture (1 sourced + 1 unsourced block) correctly exits 1, flags only the unsourced block at its line. |
-| HN-only pilot run (real `complaint-miner` execution) | agent | Not yet run — a real pipeline execution (live HN/PH calls), not just script tests; recommend running only once explicitly requested, given external-API cost/time. A real `findings/*-complaints-findings.md` would need ≥1 genuine pattern; `verify_sourcing.py` exits 0 against it. |
+| HN-only pilot run (real `complaint-miner` execution) | **shipped** (2026-09-01) | Real run against a "PKM tool complaints" scope, via `polyfetch fetch --show-body` per the spec's fetch-tooling section. 3 patterns, 6 sourced quotes, 2 independent authors per pattern. `verify_sourcing.py` exits 0. Checked in permanently at `examples/pkm-tools-pilot/` (mirrors the sibling repo's `examples/groundwork/` convention). |
 | Git branch + commit + PR for this arc's files | **shipped** (2026-09-01, PR #4 + PR #5) | Both squash-merged with `gh pr merge --squash --admin`; branches deleted, remote-tracking refs pruned. |
 | ProductHunt `developer_token` | owner | Token provisioned (self-serve, needs a PH account) and referenced from `config/scope.md` or an untracked local secret file. |
 | App-store review access path (aggregator vs. compliant scraping) | owner, deferred | Default chosen and recorded in `0001-concept.md`'s open questions; no subagent spec written until then. |

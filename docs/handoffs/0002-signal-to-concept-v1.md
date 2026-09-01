@@ -3,13 +3,13 @@
 Full design + remaining-work table: `docs/plans/0002-signal-to-concept-v1.md`. Don't duplicate that
 table here — this doc only onboards the next session to it.
 
-## Lead with this: merged to main, pilot still pending
+## Lead with this: merged to main, pilot run complete
 
 Bash was denied for most of the session that wrote this arc, then came back mid-session. Everything
-below is now on `main`: PR #4 (0001 corrections) and PR #5 (this arc's build) both squash-merged
-with `gh pr merge --squash --admin`, branches deleted and pruned. The 6 ported tests pass and a
-hand-written sourcing fixture behaves correctly. **Not done**: the HN-only pilot run (a real
-pipeline execution against live HN/PH APIs) hasn't happened — see "What's next" below.
+is now on `main`: PR #4 (0001 corrections) and PR #5 (this arc's build) both squash-merged with
+`gh pr merge --squash --admin`, branches deleted and pruned. The 6 ported tests pass, a hand-written
+sourcing fixture behaves correctly, and a real HN-only `complaint-miner` pilot ran successfully —
+3 patterns, 6 sourced quotes, checked in permanently at `examples/pkm-tools-pilot/`.
 
 ## What shipped this session (agent-only, all file-creation, no execution)
 
@@ -55,13 +55,13 @@ pipeline execution against live HN/PH APIs) hasn't happened — see "What's next
    `GH_TOKEN` and `GITHUB_TOKEN` env vars first (`env -u GH_TOKEN -u GITHUB_TOKEN <command>`) — an
    invalid `GH_TOKEN` and an under-scoped `GITHUB_TOKEN` both shadow the working stored `gh` login.
 2. ~~Run `uv run pytest` on the ported test suite~~ — done this session, 6/6 pass.
-3. Run the HN-only pilot: execute `complaint-miner` for real against a real `config/scope.md` (copy
-   from the example, fill in a real scope), confirm `scripts/verify_sourcing.py` exits 0 against its
-   output. Not yet run — recommend running only when explicitly requested, since it makes live
-   HN/PH calls. Fetch HN/GitHub/Show-HN URLs via `polyfetch-scrape` per the specs' "Fetch tooling"
-   sections; ProductHunt needs a direct HTTP client, not `polyfetch`.
-4. Only after the pilot works: consider `build-pattern-scanner`'s first real GitHub+Show-HN run, and
-   the ProductHunt `developer_token` step (owner-gated, self-serve).
+3. ~~Run the HN-only pilot~~ — done this session: `complaint-miner` run for real (scope: PKM tool
+   complaints), fetched via `polyfetch fetch --show-body` per the spec's "Fetch tooling" section, 3
+   patterns / 6 sourced quotes, `verify_sourcing.py` exits 0. Checked in at
+   `examples/pkm-tools-pilot/{scope.md,findings.md}` — read it before running a second pilot, it's
+   the reference shape.
+4. Next: `build-pattern-scanner`'s first real GitHub+Show-HN run, and the ProductHunt
+   `developer_token` step (owner-gated, self-serve) to unlock a PH-inclusive `complaint-miner` run.
 5. Everything else is either owner-gated (app-store access path, Reddit OAuth terms) or explicitly
    deferred (Devpost, AI-builder-tool showcases, build-in-public threads) — see the 0002 plan's
    table for exact done-whens. Don't build subagent coverage for any of these until their gate

@@ -37,13 +37,23 @@ single shared `config/scope.md`).
    actual vertical yield. Did not hold on raw volume (see the 0003 plan's remaining-work table for
    the full comparison) — a genuinely useful negative result for interpreting future discovery ranks,
    not a bug to fix.
-8. **Next real step, not yet started**: source breadth — what's addable beyond Show HN + ProductHunt
-   for *horizontal* discovery specifically (each candidate source needs its own access/ToS check,
-   same discipline `docs/plans/0001-concept.md` already applies to the vertical pipeline's sources).
-   This was explicitly prioritized over two other follow-on ideas (semantic clustering, trend-aware
-   recurring runs), which were deferred with tracking issues
-   ([#19](https://github.com/qte77/agentic-signal-to-concept/issues/19),
-   [#20](https://github.com/qte77/agentic-signal-to-concept/issues/20)) rather than built now.
+8. ~~Source breadth~~ — done 2026-09-04: GitHub added as a third discovery source (no new access/ToS
+   cost, reuses `build-pattern-scanner`'s `gh` CLI auth exactly). BetaList and GH Archive researched
+   and tracked as next-tier/owner-gated rather than built (see 0003 plan's table).
+9. ~~Second real `signal-discoverer` run (first with GitHub)~~ — done 2026-09-04: 9 categories (up
+   from 8), 5 rejected. Caught and correctly excluded a new kind of finding — a single project's
+   plugin ecosystem (33 repos, all for `deepseek-ai/deepseek-harness`) that looked cluster-shaped but
+   wasn't independent convergence; folded into the spec's ethical-boundary section as a worked
+   example. Two more corrections folded back: PH's `first`-capped-at-20 behavior, and explicit
+   window-overlap reporting (this run's window turned out ~99% overlapping the first run's, ~12h
+   apart — most counts were the same corpus re-measured, one category was genuinely new). Archived
+   at `examples/2026-09-04T081918Z-discovery/`.
+10. **Next real step, not yet decided**: two discovery runs now exist, giving real material toward
+    issue #20 (trend-aware recurring runs) once there's genuine time separation between runs — this
+    run's own note says spacing future runs further apart (or diffing `objectID`s against the prior
+    run) is needed before a velocity signal means anything. Otherwise: pick more categories from
+    either discovery run's list to run vertically, or wait for real elapsed time before a third
+    discovery run. Awaiting user direction.
 
 ## Watch-outs
 

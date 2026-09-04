@@ -85,3 +85,23 @@ cross-category inconsistency. Synthesized candidates:
 ("Freehold Finance" and "Upfront Terms"). A calibration check comparing discovery's predicted rank
 against actual yield across these three is recorded in `docs/plans/0003-broad-discovery.md`'s
 remaining-work table.
+
+## `2026-09-04T081918Z-discovery/`
+
+The second real `signal-discoverer` run, and the first to include GitHub (added to the spec after
+the first discovery run) alongside Show HN and ProductHunt. 9 candidate categories promoted (up from
+8), 5 rejected. Two things worth knowing before reusing this as a reference:
+
+- **This run's 30-day window overlaps ~99% with the first run's** (a ~2h14m shift) — most category
+  counts here re-measure the same underlying corpus, not two days of fresh growth; the file states
+  per-category which counts are re-measurement vs. genuinely new (one category, job-search/
+  interview-prep tooling, didn't appear in the first run at all and is real new signal).
+- **A new ethical-boundary case, correctly excluded**: 33 GitHub repos under `dsh-plugin`/
+  `deepseek-harness` topics all turned out to be plugins/wrappers for one specific upstream project
+  (`deepseek-ai/deepseek-harness`), not independent convergence — excluded outright rather than
+  reframed as an "ecosystem" category, per the spec's boundary.
+
+Also confirmed live: ProductHunt's `first` parameter silently caps at 20 regardless of what's
+requested (real daily volume is 431–1,331 posts, so this run's PH sample is ~2.7% of the window,
+correctly reported as a sample); GitHub's `stars:>500` threshold (216 repos, after `stars:>250`
+returned too many at 510) kept the pull in the low-hundreds range the spec asks for.

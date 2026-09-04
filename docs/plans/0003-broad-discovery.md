@@ -14,8 +14,17 @@ discovery-stage signal count did not reliably predict vertical-mode yield (see t
 below). Two follow-on ideas from mid-arc discussion were deferred with tracking issues rather than
 built ([#19](https://github.com/qte77/agentic-signal-to-concept/issues/19) semantic clustering,
 [#20](https://github.com/qte77/agentic-signal-to-concept/issues/20) trend-aware recurring runs).
-**Next real step**: source breadth (what's addable beyond Show HN + ProductHunt) — research, not yet
-started.
+**Source breadth done**: GitHub added as a third discovery source (no new access/ToS cost, reuses
+`build-pattern-scanner`'s existing `gh` CLI auth), researched and ranked against BetaList (no ban,
+no API — outreach candidate) and GH Archive (real next tier, needs BigQuery or raw-JSON parsing).
+**Second discovery run done**, first to exercise GitHub for real: 9 categories (up from 8), a new
+ethical-boundary case caught and correctly excluded (a single project's plugin ecosystem, not
+independent convergence), and two real corrections folded back into the spec (PH's `first`-capped-
+at-20 behavior; explicit window-overlap reporting against the prior run, since the two runs turned
+out ~99% overlapping). Archived at `examples/2026-09-04T081918Z-discovery/`.
+**Next real step**: not yet decided — awaiting user direction on whether to pick more categories
+from either discovery run, wait longer before a third discovery run (to get real window separation
+per the overlap lesson above), or something else.
 
 ## Why this arc exists
 
@@ -116,9 +125,10 @@ discovery/README.md                    (mirrors findings/README.md's shape)
 | Semantic (embeddings-based) clustering | deferred, tracked at [issue #19](https://github.com/qte77/agentic-signal-to-concept/issues/19) | Not built — keyword/bigram frequency hasn't yet demonstrably missed a real cluster; build once there's a concrete miss to point at. |
 | Trend-aware / recurring discovery runs | deferred, tracked at [issue #20](https://github.com/qte77/agentic-signal-to-concept/issues/20) | Not built — only one real discovery run exists; needs 2-3 more over real elapsed time before a velocity signal is calibratable. |
 | Worktree `.env` gap: gitignored files aren't carried by `git worktree add` | **shipped** (2026-09-04) | `AGENTS.md`'s "Running more than one category at once" section now states copying `.env` into each worktree as an explicit pre-dispatch step, before any subagent is launched into it — closes the timing race this run hit (all three categories' `complaint-miner` runs found ProductHunt blocked because `.env` was copied in mid-run, after each had already checked). |
-| Source breadth: GitHub added to `signal-discoverer` | **shipped in spec** (2026-09-04), not yet run for real | `signal-discoverer.md` step 3 added — broad `created:>X stars:>N sort:stars-desc` GitHub search, no new access/ToS work (reuses `build-pattern-scanner`'s existing `gh` CLI auth pattern exactly). Researched and ranked against 3 alternatives (GitHub's own unofficial "trending" page — no official API, not worth pursuing since this achieves the same signal legitimately; BetaList — no explicit ban but no public API/feed either, real next step is asking directly, not scraping; GH Archive — real candidate, but needs BigQuery credentials or raw-JSON parsing, bigger lift, tracked below). Next real discovery run should confirm it works as specified. |
+| Source breadth: GitHub added to `signal-discoverer` | **shipped** (2026-09-04) | `signal-discoverer.md` step 3 added — broad `created:>X stars:>N sort:stars-desc` GitHub search, no new access/ToS work (reuses `build-pattern-scanner`'s existing `gh` CLI auth pattern exactly). Researched and ranked against 3 alternatives (GitHub's own unofficial "trending" page — no official API, not worth pursuing since this achieves the same signal legitimately; BetaList — no explicit ban but no public API/feed either, real next step is asking directly, not scraping; GH Archive — real candidate, but needs BigQuery credentials or raw-JSON parsing, bigger lift, tracked below). Confirmed working in the second real discovery run: `stars:>500` (216 repos) after `stars:>250` returned too many (510). |
 | Source breadth: BetaList outreach | deferred, owner | No explicit ToS ban found, but no public API/RSS either — a real email/outreach step, not an agent task, same shape as the still-open TrustMRR ask from `docs/plans/0001-concept.md`. |
 | Source breadth: GH Archive | deferred, genuine next tier | Free, public, no usage restrictions found — the full GitHub public event firehose, richer than search-indexed repos alone. Needs BigQuery credentials (owner-gated) or raw hourly-JSON parsing (engineering lift) before it's addable; not attempted in v1. |
+| Second real `signal-discoverer` run (first with GitHub) | **shipped** (2026-09-04) | 9 categories promoted (up from 8), 5 rejected. New ethical-boundary case caught and correctly excluded (33 GitHub repos all plugins for one upstream project, `deepseek-ai/deepseek-harness` — not independent convergence) — worked example folded into the spec's ethical-boundary section. Two real corrections folded back into the spec: PH's `first` param silently caps at 20/page regardless of requested value (real daily volume 400-1,300+, so PH sampling is ~2-3% of the window, not exhaustive); explicit window-overlap reporting against the prior run added as a new step, since this run's window turned out ~99% overlapping with the first run's (~12h apart) — most category counts were the same corpus re-measured, one category (job-search/interview-prep tooling) was genuinely new. Archived at `examples/2026-09-04T081918Z-discovery/`. |
 
 ## Handoff
 

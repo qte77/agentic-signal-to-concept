@@ -60,9 +60,29 @@ sourcing fixture behaves correctly, and a real HN-only `complaint-miner` pilot r
    patterns / 6 sourced quotes, `verify_sourcing.py` exits 0. Checked in at
    `examples/pkm-tools-pilot/{scope.md,findings.md}` — read it before running a second pilot, it's
    the reference shape.
-4. Next: `build-pattern-scanner`'s first real GitHub+Show-HN run, and the ProductHunt
-   `developer_token` step (owner-gated, self-serve) to unlock a PH-inclusive `complaint-miner` run.
-5. Everything else is either owner-gated (app-store access path, Reddit OAuth terms) or explicitly
+4. ~~`build-pattern-scanner`'s first real GitHub+Show-HN run~~ — done 2026-09-03: real run against
+   the `pkm-tools` scope, 4 patterns, 24 independent instances, Bluesky reconfirmed blocked.
+   ~~Followed immediately by `concept-synthesizer`'s first real run~~ — also done 2026-09-03:
+   synthesized this repo's first concept candidate, "Recallect"
+   (`candidates/2026-09-03T231104Z-pkm-tools-candidate.md`). Both runs archived at
+   `examples/2026-09-03T231104Z-pkm-tools/` under the newly-generalized
+   `examples/<date-time-iso>-<slug>/` convention (see `examples/README.md`); the original pilot
+   entry was renamed to `examples/2026-09-01-pkm-tools-pilot/` to match. **Still open:** the
+   ProductHunt `developer_token` step (owner-gated, self-serve) to unlock a PH-inclusive
+   `complaint-miner` run — nothing has changed on that gate.
+5. Next real-data runs should cover categories beyond `pkm-tools` — per the user's explicit
+   direction 2026-09-03 ("we dont only want to look for PKM"), `pkm-tools` was reused for this arc
+   specifically to prove the full pipeline end-to-end, not meant as the only category going
+   forward. `config/scope.md` is per-run and disposable; point it at a new category + generate a
+   fresh timestamp for the next run.
+6. **Environment note for future sessions in this repo**: this session's Bash permission settings
+   intentionally deny shell-exploration commands (`ls`, `find`, version-probes like `rtk
+   --version`) while allowing substantive commands (`pwd`, `date`, `git`, `uv run`, `polyfetch
+   fetch`) — background subagents that aren't told this explicitly will get stuck retrying `ls` and
+   burn their turns without doing real work. Brief any dispatched subagent to use the Read/Write
+   tools for file checks/writes instead of Bash `ls`/`cat`/`>`, and go straight to substantive Bash
+   commands.
+7. Everything else is either owner-gated (app-store access path, Reddit OAuth terms) or explicitly
    deferred (Devpost, AI-builder-tool showcases, build-in-public threads) — see the 0002 plan's
    table for exact done-whens. Don't build subagent coverage for any of these until their gate
    clears; they're tracked, not forgotten.

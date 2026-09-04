@@ -15,7 +15,7 @@ jobs:
       - name: Verify sourcing in checked-in findings/candidates
         run: |
           shopt -s nullglob
-          files=(examples/*/findings.md candidates/*-candidate.md)
+          files=(examples/*/*findings*.md candidates/*-candidate.md)
           if [ ${#files[@]} -gt 0 ]; then
             uv run python scripts/verify_sourcing.py "${files[@]}"
           else

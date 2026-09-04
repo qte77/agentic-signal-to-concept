@@ -20,7 +20,17 @@ window, and any source inclusions/exclusions.
 2. Search ProductHunt via its GraphQL v2 API (`api.producthunt.com/v2/api/graphql`), authenticated
    with the `PRODUCTHUNT_API_TOKEN` environment variable (see `.env.example` — a self-serve
    `developer_token` from a PH account's API dashboard). If that variable is unset, record
-   ProductHunt as blocked (owner-gated), never as an absence of signal.
+   ProductHunt as blocked (owner-gated), never as an absence of signal. **Topic-based search is a
+   confirmed dead end (2026-09-04)**: PH's `topic`/generic-keyword search mostly surfaces 0-1-comment
+   maker-promo posts with no real discussion. **Default to direct `post(slug: "...")` lookups for
+   known products in the scope's category instead** (e.g. the specific tools named in
+   `config/scope.md` or already found via HN) — this surfaced real 7-74-comment launch-thread
+   discussions where topic search found nothing. **Known environment constraint, not a sourcing
+   gap**: this fetch environment has been observed redacting PH commenter usernames
+   (`user.username` returns `"[REDACTED]"`; confirmed content-based via a field-aliasing test, not a
+   field-name issue) — comment bodies, dates, and permalink URLs come through intact, so cite PH
+   quotes by comment-URL + date without a handle when this occurs; disclose it plainly in the
+   findings file rather than fabricating a plausible-looking username.
 3. **Reddit is excluded from v1 scope, by design, not oversight.** Unauthenticated scraping is
    confirmed fingerprint-blocked across three independent tools on a sibling repo's real run
    (`WebFetch`, a raw `urllib` request, and `polyfetch-scrape`'s stealth-Patchright tier — two

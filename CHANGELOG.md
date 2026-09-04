@@ -7,6 +7,18 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- Second full-pipeline run against the `pkm-tools` scope (2026-09-04), the first with
+  `PRODUCTHUNT_API_TOKEN` configured — ProductHunt genuinely contributed evidence for the first
+  time. Independently re-derived candidate `candidates/2026-09-04T043009Z-pkm-tools-candidate.md`
+  ("Recallect") from fresh evidence rather than anchoring on the prior run's candidate, landing on
+  the same concept but with a materially different, better-corroborated trust pillar. Archived at
+  `examples/2026-09-04T043009Z-pkm-tools/`.
+- `build-pattern-scanner`'s GitHub calls now authenticated via the `gh` CLI instead of unauthenticated
+  `polyfetch` requests — corrects a rate-limit claim in `.env.example` (GitHub's *search* API, which
+  this pipeline actually calls, is limited to 10/min unauthenticated / 30/min authenticated, not the
+  core API's 5,000/hour, confirmed live via `gh api rate_limit`).
+- `config/scope.example.md` gained an optional "Query terms used" field so re-runs of the same scope
+  can distinguish real population growth from a run simply trying different search terms.
 - First real execution of the full 3-phase pipeline (`complaint-miner` + `build-pattern-scanner` +
   `concept-synthesizer`) against the `pkm-tools` scope, producing this repo's first concept
   candidate, **Recallect** (`candidates/2026-09-03T231104Z-pkm-tools-candidate.md`). Archived at
@@ -39,3 +51,7 @@ All notable changes to agentic-signal-to-concept. Format follows
 - Corrected two open questions in `docs/plans/0001-concept.md` with verified evidence: Reddit's
   unauthenticated-scraping-vs-OAuth-API distinction, and the downstream-handoff scoping into
   `agentic-grounded-persona-eval` (Phases 1-2 only, not Phase 3, until something ships).
+- Bolt.new and v0/Vercel, previously recorded as a "genuine open gap" (permissive `robots.txt`,
+  unconfirmed ToS), are now confirmed ruled out — both checked at primary source 2026-09-04 (Bolt.new
+  via its operator StackBlitz's real terms; v0 via Vercel's Acceptable Use Policy), both explicitly
+  ban scraping/automated data extraction.

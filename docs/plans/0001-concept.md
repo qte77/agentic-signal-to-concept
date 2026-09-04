@@ -266,23 +266,33 @@ listed as candidates, not a chosen set:**
   crawlers but leaves the default user-agent open; its actual Terms (`info.devpost.com/terms`)
   explicitly ban "scrape," "crawl," or "spider" of the site or user content, on pain of account
   termination and hackathon disqualification. **No compliant read path — do not add.**
-- **AI-builder-tool showcases (Bolt.new, Lovable, v0, Replit)** — **researched 2026-09-01, mixed**:
-  **Lovable** (`lovable.dev/terms`) and **Replit** (`replit.com/site/terms`) both explicitly ban
-  automated scraping/bots in their ToS, independent of their permissive `robots.txt` files — **ruled
-  out**, same as Devpost. **Bolt.new** and **v0/Vercel** have permissive `robots.txt` but their
-  scraping-specific ToS language could not be confirmed (Bolt.new/StackBlitz's actual terms document
-  wasn't retrievable; Vercel's general ToS doesn't mention v0 community pages) — **genuinely unclear,
-  an open gap, not a clearance; don't treat robots.txt permissiveness as equivalent to ToS
-  clearance.** **Compliant substitute for Devpost/Lovable/Replit signal, confirmed working
-  2026-09-01** (tracked at [issue #10](https://github.com/qte77/agentic-signal-to-concept/issues/10),
-  opened after the user asked to scrape these directly despite the ToS findings above — declined for
-  that reason, this is the alternative pursued instead): GitHub topic search — `topic:hackathon`
-  (13,544 hits, real but noisy, dominated by boilerplate/starter-kit repos rather than individual
-  submissions, needs per-repo README inspection to confirm which hackathon/when/who) and
-  `topic:lovable`/`topic:replit` (584/998 hits, credible ecosystem-adjacent signal — tooling and
-  alternatives built around these platforms, not a 1:1 substitute for browsing their own user-project
-  showcases). Combined with the Show HN queries above, this recovers a real, if noisier and
-  ToS-compliant, share of the same underlying signal.
+- **AI-builder-tool showcases (Bolt.new, Lovable, v0, Replit)** — **researched 2026-09-01,
+  Bolt.new/v0 resolved 2026-09-04: all four now ruled out.** **Lovable** (`lovable.dev/terms`) and
+  **Replit** (`replit.com/site/terms`) both explicitly ban automated scraping/bots in their ToS,
+  independent of their permissive `robots.txt` files — **ruled out**, same as Devpost. **Bolt.new**
+  (confirmed via its operator StackBlitz's actual terms, `stackblitz.com/terms-of-service`, fetched
+  2026-09-04 — Bolt.new's own `/terms` page is not the real document, it redirects into StackBlitz's):
+  the Restrictions section explicitly bans "any automated tool (e.g., robots, spiders) to access or
+  use our Services" and bans compiling site content "as part of a database or other work" — **ruled
+  out, unambiguous.** **v0/Vercel** (confirmed via Vercel's Acceptable Use Policy,
+  `vercel.com/legal/acceptable-use-policy`, fetched 2026-09-04 — the general ToS and v0's own
+  AI-product terms are both silent on scraping, but the AUP they incorporate by reference is not):
+  explicitly prohibits "Scrape... or host media for hot-linking," bans "using automation to interact
+  with Vercel's website... extract data," and separately bans "Extract data through any method, such
+  as web scraping or web harvesting, from the AI Services" (v0 is a Vercel AI Service) — **ruled out,
+  unambiguous.** Neither's permissive `robots.txt` was equivalent to ToS clearance, confirming the
+  original caution about that distinction. **Compliant substitute for Devpost/Lovable/Replit/
+  Bolt.new/v0 signal, confirmed working 2026-09-01** (tracked at
+  [issue #10](https://github.com/qte77/agentic-signal-to-concept/issues/10), opened after the user
+  asked to scrape these directly despite the ToS findings above — declined for that reason, this is
+  the alternative pursued instead): GitHub topic search — `topic:hackathon` (13,544 hits, real but
+  noisy, dominated by boilerplate/starter-kit repos rather than individual submissions, needs
+  per-repo README inspection to confirm which hackathon/when/who) and `topic:lovable`/`topic:replit`
+  (584/998 hits, credible ecosystem-adjacent signal — tooling and alternatives built around these
+  platforms, not a 1:1 substitute for browsing their own user-project showcases); `topic:bolt` and
+  `"v0.dev"`/`"bolt.new"` free-text GitHub search are the equivalent substitute for the newly-ruled-out
+  pair, not yet run for real. Combined with the Show HN queries above, this recovers a real, if
+  noisier and ToS-compliant, share of the same underlying signal.
 - **TrustMRR** (`trustmrr.com`, a public directory of indie-startup MRR verified via payment-provider
   API keys) — suggested as an additional build-in-public source, **researched and ruled out
   2026-09-01**: has a real public API (its ToS has a dedicated "API Acceptable Use Policy"), but that
@@ -398,8 +408,10 @@ small missing detail.
   is conditional on "prior written permission," a real door to ask through, not a flat bar) — ruled
   out for direct access; a compliant substitute (GitHub `topic:hackathon`/`topic:lovable`/
   `topic:replit` search + targeted Show HN queries) is confirmed working and recovers a real, if
-  noisier, share of the same signal. Bolt.new and v0/Vercel are a genuine open gap (permissive
-  `robots.txt`, unconfirmed ToS). X is ruled out on cost. Indie Hackers has no benign alternative
+  noisier, share of the same signal. **Bolt.new and v0/Vercel — resolved 2026-09-04, also ruled
+  out**: Bolt.new's actual terms (via operator StackBlitz) explicitly ban automated tools/scraping;
+  v0/Vercel's Acceptable Use Policy explicitly bans scraping and AI-Service data extraction. Neither's
+  permissive `robots.txt` was equivalent to ToS clearance. X is ruled out on cost. Indie Hackers has no benign alternative
   either (confirmed: no RSS/feed exists). Bluesky's search endpoint is confirmed blocked from two
   independent networks — a real access barrier, not just this runner's network — while its firehose
   remains impractical for keyword search without a persistent stream consumer. GitHub's own API

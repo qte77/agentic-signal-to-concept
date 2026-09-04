@@ -15,11 +15,18 @@ independence-heuristic override.
 
 ## What to do
 
-1. Search GitHub's public REST/GraphQL API for recently-created, actively-worked repos matching the
-   scope's category or keywords. Works unauthenticated (60 req/hour); if the `GITHUB_TOKEN`
-   environment variable is set (see `.env.example`), use it to raise that to 5000 req/hour — optional,
-   not required. Stars/activity are corroboration only — never a ranking signal used to elevate one
-   specific project above the pattern-level finding.
+1. Search GitHub's search API (`search/repositories`) for recently-created, actively-worked repos
+   matching the scope's category or keywords. **Use the authenticated `gh` CLI, not an unauthenticated
+   fetch** — the search endpoint has its own, much tighter rate limit than GitHub's general/core API
+   (confirmed live via `gh api rate_limit`: 10 req/min unauthenticated, 30 req/min authenticated —
+   not the 5,000 req/hour core-API figure, which doesn't apply to this endpoint). `polyfetch`'s CLI
+   has no header-injection flag, so it can only make unauthenticated calls; `gh api` carries whatever
+   account is already logged in. Example: `gh api -X GET search/repositories -f
+   q='topic:pkm created:>2025-09-03' --jq '.items[] | {full_name, owner: .owner.login, owner_type:
+   .owner.type, created_at, stars: .stargazers_count, desc: .description}'` — `--jq` field selection
+   keeps the no-paraphrase discipline (raw API fields, not a summary) while trimming the
+   3,000+-line-per-page boilerplate. Stars/activity are corroboration only — never a ranking signal
+   used to elevate one specific project above the pattern-level finding.
 2. Search Show HN specifically, via HN's own Algolia API (the same API `complaint-miner` uses),
    filtered to `Show HN:` titles — a Show HN post is "I built this," a distinct signal type from a
    complaint, not a sub-case of one. **Algolia's `query` param is plain full-text, not a query
@@ -40,22 +47,26 @@ independence-heuristic override.
    attempt the raw AT Protocol firehose (`com.atproto.sync.subscribeRepos`) as a substitute — it's a
    continuous, unfiltered, network-wide stream requiring a persistent consumer to filter by keyword,
    a materially bigger lift than a search call, out of scope for v1.
-4. **Devpost, AI-builder-tool showcases (Lovable, Replit — confirmed banning scraping in their own
-   ToS), Indie Hackers/X (build-in-public), and TrustMRR are ruled out, not merely deferred**: each
-   was checked directly and either explicitly bans automated scraping in its ToS, has no viable
-   affordable API (X), or — TrustMRR specifically — bans "using API data to train, fine-tune,
-   ground, evaluate, or populate an AI model... without prior written permission" in its own API
-   Acceptable Use Policy, which is exactly this pipeline's use case. Tracked at
-   [issue #10](https://github.com/qte77/agentic-signal-to-concept/issues/10). **Bolt.new and
-   v0/Vercel remain a genuine open gap**: permissive `robots.txt` but unconfirmed scraping-specific
-   ToS — do not add either until that's resolved; a permissive `robots.txt` is not equivalent to ToS
-   clearance. See `docs/plans/0001-concept.md` §3 for the full per-platform citations.
-   **Compliant substitute, confirmed working 2026-09-01**: the same underlying signal (hackathon
-   builds, Lovable/Replit-ecosystem activity, "vibe coded" projects) is recoverable through GitHub
-   topic search (`topic:hackathon` — 13,544 hits, real but noisy, dominated by boilerplate/starter-kit
-   repos rather than individual submissions; `topic:lovable`/`topic:replit` — 584/998 hits, credible
-   ecosystem-adjacent signal, not a 1:1 substitute for the platforms' own user-project showcases) and
-   the Show HN queries in step 2 above. **Noise-reduction heuristic for `topic:hackathon` (v1 default,
+4. **Devpost, AI-builder-tool showcases (Lovable, Replit, Bolt.new, v0/Vercel — all four confirmed
+   banning scraping in their own ToS), Indie Hackers/X (build-in-public), and TrustMRR are ruled out,
+   not merely deferred**: each was checked directly and either explicitly bans automated scraping in
+   its ToS, has no viable affordable API (X), or — TrustMRR specifically — bans "using API data to
+   train, fine-tune, ground, evaluate, or populate an AI model... without prior written permission" in
+   its own API Acceptable Use Policy, which is exactly this pipeline's use case. Tracked at
+   [issue #10](https://github.com/qte77/agentic-signal-to-concept/issues/10). **Bolt.new (via
+   operator StackBlitz's terms) and v0/Vercel (via Vercel's Acceptable Use Policy) resolved
+   2026-09-04**: both explicitly ban automated tools/scraping/data-extraction — permissive
+   `robots.txt` on both was not equivalent to ToS clearance, confirming the original caution about
+   that distinction. See `docs/plans/0001-concept.md` §3 for the full per-platform citations.
+   **Compliant substitute, confirmed working 2026-09-01 for Devpost/Lovable/Replit, extend the same
+   pattern to Bolt.new/v0**: the same underlying signal (hackathon builds, Lovable/Replit/Bolt/v0
+   -ecosystem activity, "vibe coded" projects) is recoverable through GitHub topic search
+   (`topic:hackathon` — 13,544 hits, real but noisy, dominated by boilerplate/starter-kit repos rather
+   than individual submissions; `topic:lovable`/`topic:replit` — 584/998 hits, credible
+   ecosystem-adjacent signal, not a 1:1 substitute for the platforms' own user-project showcases;
+   `topic:bolt` and free-text `"v0.dev"`/`"bolt.new"` search are the equivalent substitute for the
+   newly-ruled-out pair, not yet run for real — treat their hit counts as unverified until a run
+   actually tries them) and the Show HN queries in step 2 above. **Noise-reduction heuristic for `topic:hackathon` (v1 default,
    explicitly coarse, revisitable via `config/scope.md`)**: exclude repos over ~500 stars (established
    tools/starter-kits, e.g. `sahat/hackathon-starter` at 35k stars, not individual weekend
    submissions) and prefer results within the run's date window over all-time search — state this

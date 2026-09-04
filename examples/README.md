@@ -38,3 +38,22 @@ reconfirmed blocked) are the real Phase 1 outputs, both verified clean with
 `scripts/verify_sourcing.py`. The synthesized candidate lives at
 [`candidates/2026-09-03T231104Z-pkm-tools-candidate.md`](../candidates/2026-09-03T231104Z-pkm-tools-candidate.md)
 ("Recallect").
+
+## `2026-09-04T043009Z-pkm-tools/`
+
+A second full-pipeline run against the same `pkm-tools` scope (2026-09-04), one day later — the
+first run where `PRODUCTHUNT_API_TOKEN` was actually configured and ProductHunt genuinely
+contributed evidence. `complaints-findings.md` (5 patterns, 13 sourced quotes across HN +
+ProductHunt) documents a real environment constraint worth knowing about before reusing PH as a
+source: this fetch environment redacts ProductHunt commenter usernames (`user.username` always
+returns `"[REDACTED]"`, confirmed content-based via a field-aliasing test) — PH quotes here are
+cited by comment-permalink URL and date instead of a handle. `builds-findings.md` (4 patterns, 21
+new independent instances / 24 total citations) shows that a day-later re-run barely changed the
+underlying build population (0 new GitHub PKM-topic repos) — what changed was query-term coverage,
+explicitly framed as an undercount correction to the prior run, not new build activity; also caught
+a GitHub topic-tag spam/farm cluster and excluded it. Both verified clean with
+`scripts/verify_sourcing.py`. The synthesized candidate,
+[`candidates/2026-09-04T043009Z-pkm-tools-candidate.md`](../candidates/2026-09-04T043009Z-pkm-tools-candidate.md),
+independently re-derived the same core concept ("Recallect") from this run's evidence rather than
+anchoring on the prior candidate, but with a materially different — and better-corroborated — trust
+pillar (data portability/lock-in, not plugin-execution risk).

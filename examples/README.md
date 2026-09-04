@@ -57,3 +57,14 @@ a GitHub topic-tag spam/farm cluster and excluded it. Both verified clean with
 independently re-derived the same core concept ("Recallect") from this run's evidence rather than
 anchoring on the prior candidate, but with a materially different — and better-corroborated — trust
 pillar (data portability/lock-in, not plugin-execution risk).
+
+## `2026-09-04T060617Z-discovery/`
+
+The first real `signal-discoverer` run (Phase 0, `docs/plans/0003-broad-discovery.md`) — a broad,
+unfiltered pull across Show HN (full 30-day window confirmed, 3,670 titles, bucketed around
+Algolia's 1,000-hit cap) and ProductHunt (narrower than intended, effectively one calendar day —
+PH's daily-launch-cohort timestamp convention meant an unbounded pull never advanced past
+2026-09-03; both the cause and the fix for next time are documented in the file and folded back into
+`signal-discoverer.md`). 8 candidate categories promoted, 2 explicitly rejected as grab-bags (Games,
+Browser Extensions) rather than silently dropped. No `scripts/verify_sourcing.py` run against this
+one — it's aggregate cluster data, not sourced quotes, per the spec's own Output section.

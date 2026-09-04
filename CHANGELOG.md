@@ -7,6 +7,17 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- Second real `signal-discoverer` run, the first to exercise GitHub as a source: 9 candidate
+  categories (up from 8), 5 rejected. Caught and correctly excluded a new kind of finding — a
+  33-repo GitHub topic cluster that looked independently-convergent but was entirely plugins for one
+  upstream project (`deepseek-ai/deepseek-harness`), not independent teams — folded into
+  `signal-discoverer.md`'s ethical-boundary section as a worked example. Two further corrections
+  folded back into the spec: ProductHunt's `first` parameter silently caps at 20/page regardless of
+  the value requested (real daily volume is 400-1,300+ posts, so PH sampling is ~2-3% of a window,
+  not exhaustive); and an explicit window-overlap check against the prior discovery run, since this
+  run's window turned out ~99% overlapping the first run's (~12h apart) — most category counts were
+  the same corpus re-measured, one category (job-search/interview-prep tooling) was genuinely new.
+  Archived at `examples/2026-09-04T081918Z-discovery/`.
 - `signal-discoverer` gained a third source, GitHub (broad `created:>X stars:>N sort:stars-desc`
   search, no `topic:` filter) — no new access/ToS work needed, reuses `build-pattern-scanner`'s
   existing authenticated `gh` CLI pattern exactly. Researched and ranked against three alternatives:

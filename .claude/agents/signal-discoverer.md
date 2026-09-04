@@ -41,13 +41,19 @@ one, use this spec's own default (30 days).
    grounded in PH's own taxonomy), then read taglines within a frequent topic to judge whether it's a
    real problem-space cluster or an unrelated grab-bag PH filed under the same topic. **PH's API has
    its own complexity-based rate limit** (`rate_limit_reached`, resets on the order of minutes) —
-   budget the pull across the window accordingly (e.g. day-by-day via `postedAfter`/`postedBefore`)
-   rather than one unbounded `first`-only pull that silently stalls on one day, as the first real run
-   did. If a rate limit is hit before the window is fully covered, state plainly how much of the
-   window was actually reached — a narrower-than-intended PH sample is fine to report, a silently
-   assumed full-window sample is not. If `PRODUCTHUNT_API_TOKEN` is unset or the call fails entirely,
-   record ProductHunt as blocked (owner-gated, same discipline as `complaint-miner`) and proceed on
-   Show HN alone — state this plainly, don't silently drop PH from the output.
+   budget the pull across the window accordingly: page day-by-day via `postedAfter`/`postedBefore`
+   (confirmed working, 2026-09-04 second run: 30 daily queries, paced ~3s apart, hit no rate limit),
+   not one unbounded `first`-only pull that silently stalls on one day, as the first real run did.
+   **Also confirmed 2026-09-04: `first` silently caps at 20 per page regardless of the value
+   requested** (50 was requested, 20 came back, every time) — real daily PH volume in this
+   environment runs 400-1,300+ posts/day, so a day-by-day pull at this cap is a small, evenly-spread
+   sample (~2-3% of the window), not a census. Report it as exactly that — a bounded sample, real
+   content, correctly scaled down — rather than implying exhaustive coverage. If a rate limit is hit
+   before the window is fully covered, state plainly how much of the window was actually reached — a
+   narrower-than-intended PH sample is fine to report, a silently assumed full-window sample is not.
+   If `PRODUCTHUNT_API_TOKEN` is unset or the call fails entirely, record ProductHunt as blocked
+   (owner-gated, same discipline as `complaint-miner`) and proceed on Show HN alone — state this
+   plainly, don't silently drop PH from the output.
 3. **GitHub, unfiltered by topic (added 2026-09-04).** No new access/ToS work needed — this uses the
    same authenticated `gh` CLI already established in `build-pattern-scanner.md` step 1
    (`env -u GH_TOKEN -u GITHUB_TOKEN gh api -X GET search/repositories -f q='...' --jq '...'`; see
@@ -81,7 +87,21 @@ one, use this spec's own default (30 days).
    named by its aggregate theme ("N Show HN posts + M PH launches + K GitHub repos cluster around
    local-first expense-tracking tools"), never by one specific project as the reason the category
    looks promising. If a cluster has only one or two contributing items, say so explicitly rather than
-   implying a category-level trend from a single data point.
+   implying a category-level trend from a single data point. **Worked example, confirmed 2026-09-04**:
+   a GitHub topic search surfaced 33 repos that looked like a plugin-ecosystem cluster (`dsh-plugin`/
+   `deepseek-harness` topics) — but every one existed *because* one specific upstream project
+   (`deepseek-ai/deepseek-harness`) has a plugin architecture, not because independent teams converged
+   on a shared problem from different angles. That aggregate *is* one project's userbase, a different
+   thing from the real clusters this spec looks for — excluded outright, not reframed as an
+   "ecosystem" category. Check any topic-tag or keyword cluster for this shape (many repos, one
+   upstream dependency) before promoting it.
+7. **Window overlap with a prior discovery run, if one exists**: state explicitly how much this run's
+   window overlaps the most recent prior run's (check the most recent `examples/*-discovery/`
+   entry's window dates). Confirmed 2026-09-04: two runs ~12 hours apart had a ~99% overlapping
+   30-day window — most category counts in the second run were the same underlying corpus
+   re-measured, not two days of fresh growth, and reporting them as if they were fresh would
+   overstate momentum. Per-category, state whether a count is a re-measurement of the same corpus or
+   genuinely new signal (e.g. a category not seen in the prior run at all is unambiguously new).
 
 ## Fetch tooling
 

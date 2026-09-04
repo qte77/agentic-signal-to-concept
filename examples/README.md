@@ -1,13 +1,40 @@
 # examples/
 
-Real, worked runs of this repo's pipeline — checked in permanently, unlike `findings/` (gitignored
-working evidence for live runs). Mirrors `agentic-grounded-persona-eval/examples/groundwork/`'s
-own convention.
+Real, worked runs of this repo's pipeline — checked in permanently, unlike `findings/` and
+`config/scope.md` (both gitignored working state for live runs). Mirrors
+`agentic-grounded-persona-eval/examples/groundwork/`'s own convention.
 
-## `pkm-tools-pilot/`
+## Convention
+
+`examples/<date-time-iso>-<slug>/` — one directory per archived run, named with the same
+orchestrator-generated ISO timestamp and slug used for that run's `findings/`/`candidates/` files.
+Each directory holds copies of that run's `scope.md` and findings file(s) — the inputs and raw
+sourced evidence that would otherwise only exist as gitignored working state. It does **not**
+duplicate a synthesized candidate: `candidates/<same-ts>-<slug>-candidate.md` already tracks that
+permanently as this repo's actual product output (see `candidates/README.md`); an example entry
+links to it instead of copying it. Not every run needs archiving here — only ones worth keeping as a
+permanent worked reference.
+
+The one entry from before this convention existed (`2026-09-01-pkm-tools-pilot/`) uses date-only
+precision because no exact run timestamp was recorded for it at the time — not fabricated to fit the
+pattern retroactively.
+
+## `2026-09-01-pkm-tools-pilot/`
 
 The first real `complaint-miner` run (2026-09-01): HN-only, no ProductHunt (no
 `PRODUCTHUNT_API_TOKEN` configured), no Reddit (excluded by design, see
 `docs/plans/0001-concept.md`). `scope.md` is the input; `findings.md` is the real output, verified
 clean with `scripts/verify_sourcing.py`. A smoke test of the pipeline mechanics — three patterns,
-not the full 4-8 range a production run would aim for.
+not the full 4-8 range a production run would aim for — and `build-pattern-scanner`/
+`concept-synthesizer` did not run yet at this point.
+
+## `2026-09-03T231104Z-pkm-tools/`
+
+The first real run of the **full** 3-phase pipeline (2026-09-03) — `complaint-miner`,
+`build-pattern-scanner`, and `concept-synthesizer` all executed for real against the same scope for
+the first time. `scope.md` is the input; `complaints-findings.md` (5 patterns, 14 sourced HN quotes)
+and `builds-findings.md` (4 patterns, 24 independent build instances, GitHub + Show HN; Bluesky
+reconfirmed blocked) are the real Phase 1 outputs, both verified clean with
+`scripts/verify_sourcing.py`. The synthesized candidate lives at
+[`candidates/2026-09-03T231104Z-pkm-tools-candidate.md`](../candidates/2026-09-03T231104Z-pkm-tools-candidate.md)
+("Recallect").

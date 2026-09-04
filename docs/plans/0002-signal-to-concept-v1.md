@@ -2,14 +2,18 @@
 
 ## Status
 
-**File-creation slice merged to main; HN-only pilot run complete (2026-09-01).** All files listed in
-the code/file/source map below exist and are committed via PR #4 (0001 corrections) and PR #5 (this
-arc's build), both squash-merged with `gh pr merge --squash --admin`, branches deleted. Supersedes
-0001's "no subagent specs, no `config/`" KISS boundary — see the note added to `0001-concept.md`'s
-Status section. `uv run pytest` (6/6 pass), a hand-written mixed-sourcing fixture, and a real
-`complaint-miner` pilot run (3 patterns, 6 sourced HN quotes, checked in at
-`examples/pkm-tools-pilot/`) are all genuinely verified, not just planned. See the remaining-work
-table below for what's still open, owner-gated, or deferred.
+**Full 3-phase pipeline has run for real (2026-09-03), producing this repo's first concept
+candidate.** All files listed in the code/file/source map below exist and are committed via PR #4
+(0001 corrections) and PR #5 (this arc's build), both squash-merged with `gh pr merge --squash
+--admin`, branches deleted. Supersedes 0001's "no subagent specs, no `config/`" KISS boundary — see
+the note added to `0001-concept.md`'s Status section. `uv run pytest` (6/6 pass), a hand-written
+mixed-sourcing fixture, the original HN-only `complaint-miner` pilot (3 patterns, 6 sourced HN
+quotes, archived at `examples/2026-09-01-pkm-tools-pilot/`), and — since — a real end-to-end run of
+all three agents against the `pkm-tools` scope (`complaint-miner`: 5 patterns/14 quotes;
+`build-pattern-scanner`'s first-ever real execution: 4 patterns/24 independent instances;
+`concept-synthesizer`'s first-ever real execution: candidate "Recallect", archived at
+`examples/2026-09-03T231104Z-pkm-tools/`) are all genuinely verified, not just planned. See the
+remaining-work table below for what's still open, owner-gated, or deferred.
 
 ## Convention note
 
@@ -151,7 +155,10 @@ Phase 2:  concept-synthesizer    → candidates/<ts>-<slug>-candidate.md
 | README.md / CHANGELOG.md status update | **shipped** (2026-09-01, PR #5) | Reflects "v1 agent specs drafted, pilot pending," not "concept-stage, zero specs." |
 | Run `uv run pytest` on ported tests | **shipped** (2026-09-01) | `pytest` exits 0 on the 6 ported tests — confirmed twice (`6 passed`), once pre-merge. |
 | Fixture check on `verify_sourcing.py` | **shipped** (2026-09-01) | Hand-written mixed fixture (1 sourced + 1 unsourced block) correctly exits 1, flags only the unsourced block at its line. |
-| HN-only pilot run (real `complaint-miner` execution) | **shipped** (2026-09-01) | Real run against a "PKM tool complaints" scope, via `polyfetch fetch --show-body` per the spec's fetch-tooling section. 3 patterns, 6 sourced quotes, 2 independent authors per pattern. `verify_sourcing.py` exits 0. Checked in permanently at `examples/pkm-tools-pilot/` (mirrors the sibling repo's `examples/groundwork/` convention). |
+| HN-only pilot run (real `complaint-miner` execution) | **shipped** (2026-09-01) | Real run against a "PKM tool complaints" scope, via `polyfetch fetch --show-body` per the spec's fetch-tooling section. 3 patterns, 6 sourced quotes, 2 independent authors per pattern. `verify_sourcing.py` exits 0. Checked in permanently at `examples/2026-09-01-pkm-tools-pilot/` (renamed 2026-09-03 to match the generalized `examples/<date-time-iso>-<slug>/` convention below; mirrors the sibling repo's `examples/groundwork/` convention). |
+| `build-pattern-scanner` first real execution | **shipped** (2026-09-03) | Real GitHub + Show HN run against the `pkm-tools` scope (Bluesky reconfirmed blocked). 4 patterns, 24 independent instances after active de-duplication. `verify_sourcing.py` exits 0. Flagged a real independence-heuristic gap (no "shared brief/curriculum" clause) via a hackathon-mandated-Obsidian-vault cluster it correctly excluded. Findings archived at `examples/2026-09-03T231104Z-pkm-tools/builds-findings.md`. |
+| `concept-synthesizer` first real execution | **shipped** (2026-09-03) | Dual-source synthesis from the same run's two findings files. Produced this repo's first concept candidate, "Recallect" (`candidates/2026-09-03T231104Z-pkm-tools-candidate.md`), with explicit thin-grounding/mechanism-vs-user-population hedges rather than overstated convergence. `verify_sourcing.py` exits 0. |
+| `examples/<date-time-iso>-<slug>/` archival convention | **shipped** (2026-09-03) | Generalized from the one-off `pkm-tools-pilot/` naming; documented in `examples/README.md`. Holds a run's `scope.md` + findings (otherwise gitignored working state) without duplicating the candidate, which `candidates/` already tracks permanently. |
 | Git branch + commit + PR for this arc's files | **shipped** (2026-09-01, PR #4 + PR #5) | Both squash-merged with `gh pr merge --squash --admin`; branches deleted, remote-tracking refs pruned. |
 | ProductHunt `developer_token` | owner | Token provisioned (self-serve, needs a PH account) and referenced from `.env` (see `.env.example`) — still the only credential gate blocking a PH-inclusive `complaint-miner` run. |
 | App-store review access path | **shipped/resolved** (2026-09-01, PR #8+#9) | Appbot recommended as default aggregator (confirmed pricing, competitor tracking on every tier); Apple/Trustpilot scraping ruled out (ToS); Trustpilot's own API pricing/coverage still open, not blocking. |

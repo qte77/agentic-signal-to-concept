@@ -44,14 +44,17 @@ project's license status or public visibility. The tool answers "does a real gap
 
 ## Status
 
-**v1 agent specs drafted, pilot run pending.** `.claude/agents/{complaint-miner,
+**v1 agent specs shipped; full 3-phase pipeline has run for real.** `.claude/agents/{complaint-miner,
 build-pattern-scanner,concept-synthesizer}.md`, an `AGENTS.md` orchestrator, and a ported
 `scripts/verify_sourcing.py` exist, scoped to v1's smallest workable slice (HN + ProductHunt
-complaint mining, GitHub + Show HN build-pattern scanning). Nothing has been executed yet — no
-pilot run, no tests run. See [`docs/plans/0002-signal-to-concept-v1.md`](docs/plans/0002-signal-to-concept-v1.md)
+complaint mining, GitHub + Show HN build-pattern scanning). All three agents have now executed for
+real against a shared scope (`pkm-tools`), producing this repo's first concept candidate — see
+[`examples/2026-09-03T231104Z-pkm-tools/`](examples/2026-09-03T231104Z-pkm-tools/) for the archived
+run and [`candidates/2026-09-03T231104Z-pkm-tools-candidate.md`](candidates/2026-09-03T231104Z-pkm-tools-candidate.md)
+for the candidate. See [`docs/plans/0002-signal-to-concept-v1.md`](docs/plans/0002-signal-to-concept-v1.md)
 for the build plan and remaining work, and [`docs/plans/0001-concept.md`](docs/plans/0001-concept.md)
-for the original concept and what's still genuinely open (app-store access, Reddit's OAuth API
-terms, deferred build-pattern sub-sources).
+for the original concept and what's still genuinely open (ProductHunt token provisioning, Reddit's
+OAuth API terms, deferred build-pattern sub-sources).
 
 ## Running or extending this
 

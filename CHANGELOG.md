@@ -7,6 +7,17 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- First real execution of the full 3-phase pipeline (`complaint-miner` + `build-pattern-scanner` +
+  `concept-synthesizer`) against the `pkm-tools` scope, producing this repo's first concept
+  candidate, **Recallect** (`candidates/2026-09-03T231104Z-pkm-tools-candidate.md`). Archived at
+  `examples/2026-09-03T231104Z-pkm-tools/`. `scripts/verify_sourcing.py` passes on all three output
+  files.
+- Generalized `examples/`'s naming from a single one-off (`pkm-tools-pilot/`) to a repeatable
+  `examples/<date-time-iso>-<slug>/` convention (documented in `examples/README.md`), so a run's
+  `scope.md` and findings survive being checked in even though `findings/` and `config/scope.md`
+  stay gitignored; the prior one-off entry was renamed to `2026-09-01-pkm-tools-pilot/` to match
+  (date-only precision, since no exact run timestamp was recorded for it originally).
+
 - Initial scaffold: README, Apache 2.0 license, and `docs/plans/0001-concept.md` laying out the
   pipeline design, the explicit aggregate-signal-only boundary, and open questions. No pipeline
   implementation yet — concept-stage.

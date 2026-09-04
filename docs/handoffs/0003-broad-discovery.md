@@ -24,17 +24,26 @@ single shared `config/scope.md`).
    6-bucket pull), ProductHunt narrower than intended (one calendar day, root-caused and folded back
    into the spec — see the 0003 plan's remaining-work table). 8 categories promoted, 2 rejected as
    grab-bags. Archived at `examples/2026-09-04T060617Z-discovery/`.
-5. **Owner gate, now open**: present the resulting candidate-category list to the user. **Don't
-   mechanically apply "top 3 by signal count"** — the discovery run itself flagged #2 (MCP servers)
-   and #8 (menu-bar utilities) as "shape of build" patterns needing a narrower angle before they're
-   scopeable, and #4 (local-first/self-hosted) as an ethos spanning many domains, same caveat.
-   Recommended default instead: **#1 (agent memory/persistent context), #3 (terminal/session UX for
-   coding agents), #5 (freelancer finance/expense tools)** — cross-source, narrow, immediately
-   scopeable without picking a sub-angle first. User can pick differently.
-6. For the chosen categories, set up one git worktree per category (`git worktree add`), write each
-   its own `config/scope.md`, and dispatch the full 3-agent pipeline into each — first real test of
-   parallel worktree execution. Merge results back via one PR per category (or batched), following
-   the same branch → commit → PR → squash-merge discipline every prior arc in this repo has used.
+5. ~~Owner gate~~ — done 2026-09-04: user confirmed the recommended default (#1 agent memory, #3
+   terminal/session UX, #5 freelancer finance), and separately asked for horizontal/vertical to be
+   named pipeline modes (done — see `AGENTS.md`'s "Two modes" section).
+6. ~~Parallel worktree runs~~ — done 2026-09-04: three worktrees
+   (`../asc-agent-memory`, `../asc-terminal-ux`, `../asc-freelancer-finance`), full 3-agent pipeline
+   in each, merged back via one PR per category. Produced 3 candidates: `Contextlint` (agent-memory),
+   `Vigil`/`Overflow` (terminal-ux), `Freehold Finance`/`Upfront Terms` (freelancer-finance). Real
+   gap hit and fixed: `.env` isn't carried by `git worktree add` (gitignored) — now an explicit
+   pre-dispatch step in `AGENTS.md`.
+7. ~~Calibration check~~ — done 2026-09-04, per explicit user request: compared discovery's rank to
+   actual vertical yield. Did not hold on raw volume (see the 0003 plan's remaining-work table for
+   the full comparison) — a genuinely useful negative result for interpreting future discovery ranks,
+   not a bug to fix.
+8. **Next real step, not yet started**: source breadth — what's addable beyond Show HN + ProductHunt
+   for *horizontal* discovery specifically (each candidate source needs its own access/ToS check,
+   same discipline `docs/plans/0001-concept.md` already applies to the vertical pipeline's sources).
+   This was explicitly prioritized over two other follow-on ideas (semantic clustering, trend-aware
+   recurring runs), which were deferred with tracking issues
+   ([#19](https://github.com/qte77/agentic-signal-to-concept/issues/19),
+   [#20](https://github.com/qte77/agentic-signal-to-concept/issues/20)) rather than built now.
 
 ## Watch-outs
 

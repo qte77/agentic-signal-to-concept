@@ -7,6 +7,12 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- `signal-discoverer` gained a third source, GitHub (broad `created:>X stars:>N sort:stars-desc`
+  search, no `topic:` filter) — no new access/ToS work needed, reuses `build-pattern-scanner`'s
+  existing authenticated `gh` CLI pattern exactly. Researched and ranked against three alternatives:
+  GitHub's own "trending" page (no official API, not pursued), BetaList (no ban but no public
+  API/feed either — a real outreach step, not scraping), and GH Archive (a real next-tier candidate,
+  needs BigQuery credentials or raw-JSON parsing — tracked, not built yet).
 - First real vertical-mode runs sourced directly from horizontal discovery: three categories
   (agent/coding-agent memory, terminal/session UX for coding agents, freelancer finance/expense
   tools) run in parallel via dedicated git worktrees — the first real exercise of this repo's

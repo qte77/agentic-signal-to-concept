@@ -1,6 +1,6 @@
 ---
 name: signal-discoverer
-description: Runs one broad, bounded, unfiltered pull across Show HN and ProductHunt to surface candidate problem-space categories for the pipeline to deep-dive, rather than requiring a category to be named up front. Never names a specific project as the reason a category looks promising.
+description: Runs one broad, bounded, unfiltered pull across Show HN, ProductHunt, and GitHub to surface candidate problem-space categories for the pipeline to deep-dive, rather than requiring a category to be named up front. Never names a specific project as the reason a category looks promising.
 ---
 
 Phase 0 of the pipeline, upstream of `complaint-miner`/`build-pattern-scanner`. Where those two read
@@ -48,19 +48,39 @@ one, use this spec's own default (30 days).
    assumed full-window sample is not. If `PRODUCTHUNT_API_TOKEN` is unset or the call fails entirely,
    record ProductHunt as blocked (owner-gated, same discipline as `complaint-miner`) and proceed on
    Show HN alone — state this plainly, don't silently drop PH from the output.
-3. **Merge the two sources' clusters** into one ranked candidate-category list. A category surfaced
-   independently by both sources ranks above one seen in only one — state which is which, don't
-   silently collapse the distinction.
-4. **Bounded scope, stated plainly (v1 default, not a limitation to work around):** this pass does
+3. **GitHub, unfiltered by topic (added 2026-09-04).** No new access/ToS work needed — this uses the
+   same authenticated `gh` CLI already established in `build-pattern-scanner.md` step 1
+   (`env -u GH_TOKEN -u GITHUB_TOKEN gh api -X GET search/repositories -f q='...' --jq '...'`; see
+   that spec for why the env-unset prefix is needed in this workspace and the real search-API rate
+   limits — 10/min unauth, 30/min auth). Query `created:>{cutoff} stars:>{threshold}
+   sort:stars-desc`, no `topic:` qualifier — a star threshold (not a topic filter) is what keeps this
+   bounded, the GitHub equivalent of Show HN's 1,000-hit Algolia cap. Pick the threshold so the result
+   count stays in the low hundreds, not thousands (check `total_count` first, same discipline as the
+   Show HN bucketing above — raise the threshold if it's too high rather than reading an unbounded
+   firehose); state whatever threshold was actually used. Read each repo's `topics` array (a standard
+   GitHub repo field) and use topic frequency across the pull as a first-pass clustering signal, same
+   method as PH's topic-tag frequency above, then read a sample of `description`/`full_name` within a
+   frequent topic to judge coherent cluster vs. grab-bag. If `topics` frequency doesn't cleanly
+   surface themes (many repos have empty/sparse topic arrays), fall back to the same word/bigram
+   frequency method used for Show HN titles, applied to `description` text.
+4. **Merge all sources' clusters** into one ranked candidate-category list. A category surfaced
+   independently by more than one source ranks above one seen in only one — state which sources
+   confirmed which category, don't collapse the distinction into an undifferentiated "cross-source"
+   label.
+5. **Bounded scope, stated plainly (v1 default, not a limitation to work around):** this pass does
    not attempt a broad HN *comment* firehose (unprompted complaint signal without a category term) —
    HN's Algolia API doesn't support the kind of query that would make that bounded and cheap in one
    pass; see `docs/plans/0003-broad-discovery.md`'s Scope section. Do not attempt Reddit, app-store,
    or GitHub-issue discovery either — each needs its own access/ToS check first, the same discipline
-   `docs/plans/0001-concept.md` §1–§3 already applied to the existing pipeline's sources.
-5. **Ethical boundary, re-stated at this earliest possible point in the pipeline**: a cluster is
-   named by its aggregate theme ("N Show HN posts + M PH launches cluster around local-first
-   expense-tracking tools"), never by one specific project as the reason the category looks
-   promising. If a cluster has only one or two contributing items, say so explicitly rather than
+   `docs/plans/0001-concept.md` §1–§3 already applied to the existing pipeline's sources. GH Archive
+   (the full public GitHub event firehose, `gharchive.org`) is a real candidate next source — free,
+   public, no usage restrictions found — but needs either BigQuery credentials (an owner-gated step)
+   or raw hourly-JSON parsing (a real engineering lift); not attempted in v1, tracked separately, not
+   silently dropped.
+6. **Ethical boundary, re-stated at this earliest possible point in the pipeline**: a cluster is
+   named by its aggregate theme ("N Show HN posts + M PH launches + K GitHub repos cluster around
+   local-first expense-tracking tools"), never by one specific project as the reason the category
+   looks promising. If a cluster has only one or two contributing items, say so explicitly rather than
    implying a category-level trend from a single data point.
 
 ## Fetch tooling
@@ -68,7 +88,9 @@ one, use this spec's own default (30 days).
 Same as `complaint-miner`/`build-pattern-scanner`: `polyfetch-scrape` for HN's plain-GET Algolia
 calls (`uv run --directory ../polyfetch-scrape polyfetch fetch <url> --show-body`); a direct
 authenticated HTTP client for ProductHunt's GraphQL POST (`polyfetch`'s CLI has no header/body
-flags). See `complaint-miner.md`'s "Fetch tooling" section for the fuller rationale.
+flags); the authenticated `gh` CLI for GitHub search (`env -u GH_TOKEN -u GITHUB_TOKEN gh api ...`).
+See `complaint-miner.md`'s "Fetch tooling" section and `build-pattern-scanner.md` step 1 for the
+fuller rationale on each.
 
 ## Output
 

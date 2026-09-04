@@ -15,6 +15,17 @@ Reddit and app-store review mining excluded by default — see `docs/plans/0001-
 
 -
 
+## Query terms used (optional, fill in after a run — for comparing re-runs of the same scope)
+
+A second run of the same scope/slug isn't automatically comparable to the first unless both record
+what they actually searched for — "more instances found" can mean the underlying population grew,
+or just that this run tried more/different query terms than the last one. List the actual queries
+run per source here (or point at the findings file's own Source-coverage section, which is where
+`complaint-miner`/`build-pattern-scanner` already log this) so a future run can tell "new query
+coverage" apart from "new real signal":
+
+-
+
 ## Independence heuristic override (optional)
 
 Default (`build-pattern-scanner.md`): distinct author/org handles, created within the date window

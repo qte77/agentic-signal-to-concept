@@ -67,14 +67,42 @@ sourcing fixture behaves correctly, and a real HN-only `complaint-miner` pilot r
    (`candidates/2026-09-03T231104Z-pkm-tools-candidate.md`). Both runs archived at
    `examples/2026-09-03T231104Z-pkm-tools/` under the newly-generalized
    `examples/<date-time-iso>-<slug>/` convention (see `examples/README.md`); the original pilot
-   entry was renamed to `examples/2026-09-01-pkm-tools-pilot/` to match. **Still open:** the
-   ProductHunt `developer_token` step (owner-gated, self-serve) to unlock a PH-inclusive
-   `complaint-miner` run — nothing has changed on that gate.
+   entry was renamed to `examples/2026-09-01-pkm-tools-pilot/` to match.
+   ~~ProductHunt `developer_token` step~~ — done 2026-09-04: user provisioned the token, a second
+   full-pipeline run against `pkm-tools` verified it live and got real PH evidence for the first
+   time (5 patterns, 13 quotes across HN+PH). Independently re-derived candidate "Recallect"
+   (`candidates/2026-09-04T043009Z-pkm-tools-candidate.md`) from fresh evidence — same core concept,
+   materially different/better-corroborated trust pillar. Archived at
+   `examples/2026-09-04T043009Z-pkm-tools/`.
+   ~~`build-pattern-scanner` GitHub calls authenticated via `gh` CLI~~ — done 2026-09-04: replaced
+   unauthenticated `polyfetch` GitHub search calls with `gh api` (already-logged-in), and corrected
+   `.env.example`'s rate-limit claim (search API is 10/min unauth · 30/min auth, not the core API's
+   5,000/hour — confirmed live via `gh api rate_limit`). **Workspace-specific, keep out of the
+   spec**: `gh`/`rtk proxy gh` calls need `env -u GH_TOKEN -u GITHUB_TOKEN` first in this workspace
+   (same invalid-`GH_TOKEN`-shadows-valid-login issue as item 1 above) — not portable, so it belongs
+   here, not in `build-pattern-scanner.md`.
+   ~~Bolt.new / v0-Vercel ToS resolution~~ — done 2026-09-04: both checked at primary source (Bolt.new
+   via operator StackBlitz's real terms, v0 via Vercel's Acceptable Use Policy), both explicitly ban
+   scraping — ruled out, `docs/plans/0001-concept.md` §3 and `build-pattern-scanner.md` step 4
+   updated with citations, compliant-substitute pattern extended to `topic:bolt`/`"v0.dev"` (not yet
+   run for real).
 5. Next real-data runs should cover categories beyond `pkm-tools` — per the user's explicit
    direction 2026-09-03 ("we dont only want to look for PKM"), `pkm-tools` was reused for this arc
    specifically to prove the full pipeline end-to-end, not meant as the only category going
    forward. `config/scope.md` is per-run and disposable; point it at a new category + generate a
-   fresh timestamp for the next run.
+   fresh timestamp for the next run. **2026-09-04 update**: the user has since asked for something
+   bigger than picking from a list — genuinely categoryless discovery ("broad scan for ideas without
+   pre-defined categories") plus parallel execution across git worktrees per this repo's own standing
+   worktree rule (not actually followed for any run so far — every run to date shared this repo's
+   single working tree, findings/builds files never collided because Phase 1 writes to two different
+   filenames, but `config/scope.md` is a single shared file, which blocks true parallel category runs
+   without worktrees). Per this session's own advisor consult: this is a new capability (a discovery
+   phase that does a broad, lightly-filtered pull and clusters it into emergent candidate categories,
+   which then feed the existing per-category pipeline — parallel worktrees run the *per-category*
+   phase, not the discovery phase itself), not a small tweak, and should be its own arc (0003) with a
+   plan+handoff pair rather than bolted onto 0002 mid-session. **If arc 0003 doesn't exist yet when
+   you read this, that's the next real piece of work** — check `docs/plans/` for a
+   `0003-*.md` before assuming it's still just an idea.
 6. **Environment note for future sessions in this repo**: this session's Bash permission settings
    intentionally deny shell-exploration commands (`ls`, `find`, version-probes like `rtk
    --version`) while allowing substantive commands (`pwd`, `date`, `git`, `uv run`, `polyfetch

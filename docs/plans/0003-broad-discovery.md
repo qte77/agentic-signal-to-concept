@@ -69,11 +69,19 @@ Phase 2 × N:     concept-synthesizer                        → one candidate p
   window, names + taglines read and clustered. Requires `PRODUCTHUNT_API_TOKEN` (now configured);
   falls back to Show-HN-only discovery if unset, same blocked/owner-gated discipline as
   `complaint-miner`.
+- **GitHub (added 2026-09-04, source-breadth follow-on)**: `created:>{cutoff} stars:>{threshold}
+  sort:stars-desc`, no `topic:` qualifier, via the already-authenticated `gh` CLI — no new
+  access/ToS work needed, reuses `build-pattern-scanner`'s existing GitHub auth pattern exactly. A
+  star threshold (not a topic filter) bounds the pull, the GitHub equivalent of Show HN's Algolia
+  cap.
 - **Explicitly deferred, not attempted in v1**: a broad HN *comment* firehose (complaint-signal
   search without a category term) — HN's Algolia API doesn't support the kind of broad boolean query
   that would make this bounded and cheap in one pass; a real design needs its own pass, not a
   same-arc bolt-on. Reddit/app-store/GitHub-issue discovery are out of scope for the same reason
-  categories were excluded from the v1 pipeline: each needs its own access/ToS check first.
+  categories were excluded from the v1 pipeline: each needs its own access/ToS check first. GH
+  Archive (`gharchive.org` — free, public, no usage restrictions found, the full GitHub public event
+  firehose) is a real candidate next source but needs either BigQuery credentials (owner-gated) or
+  raw hourly-JSON parsing (a real engineering lift) — tracked, not attempted in v1.
 - **Output cap**: 5–10 candidate categories per run, ranked by aggregate signal count (not a
   precision science — a coarse triage step, the same spirit as `build-pattern-scanner`'s "explicitly
   coarse v1 default" independence heuristic).
@@ -108,6 +116,9 @@ discovery/README.md                    (mirrors findings/README.md's shape)
 | Semantic (embeddings-based) clustering | deferred, tracked at [issue #19](https://github.com/qte77/agentic-signal-to-concept/issues/19) | Not built — keyword/bigram frequency hasn't yet demonstrably missed a real cluster; build once there's a concrete miss to point at. |
 | Trend-aware / recurring discovery runs | deferred, tracked at [issue #20](https://github.com/qte77/agentic-signal-to-concept/issues/20) | Not built — only one real discovery run exists; needs 2-3 more over real elapsed time before a velocity signal is calibratable. |
 | Worktree `.env` gap: gitignored files aren't carried by `git worktree add` | **shipped** (2026-09-04) | `AGENTS.md`'s "Running more than one category at once" section now states copying `.env` into each worktree as an explicit pre-dispatch step, before any subagent is launched into it — closes the timing race this run hit (all three categories' `complaint-miner` runs found ProductHunt blocked because `.env` was copied in mid-run, after each had already checked). |
+| Source breadth: GitHub added to `signal-discoverer` | **shipped in spec** (2026-09-04), not yet run for real | `signal-discoverer.md` step 3 added — broad `created:>X stars:>N sort:stars-desc` GitHub search, no new access/ToS work (reuses `build-pattern-scanner`'s existing `gh` CLI auth pattern exactly). Researched and ranked against 3 alternatives (GitHub's own unofficial "trending" page — no official API, not worth pursuing since this achieves the same signal legitimately; BetaList — no explicit ban but no public API/feed either, real next step is asking directly, not scraping; GH Archive — real candidate, but needs BigQuery credentials or raw-JSON parsing, bigger lift, tracked below). Next real discovery run should confirm it works as specified. |
+| Source breadth: BetaList outreach | deferred, owner | No explicit ToS ban found, but no public API/RSS either — a real email/outreach step, not an agent task, same shape as the still-open TrustMRR ask from `docs/plans/0001-concept.md`. |
+| Source breadth: GH Archive | deferred, genuine next tier | Free, public, no usage restrictions found — the full GitHub public event firehose, richer than search-indexed repos alone. Needs BigQuery credentials (owner-gated) or raw hourly-JSON parsing (engineering lift) before it's addable; not attempted in v1. |
 
 ## Handoff
 

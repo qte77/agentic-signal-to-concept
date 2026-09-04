@@ -1,18 +1,27 @@
 # agentic-signal-to-concept — orchestration
 
-## Pipeline
+## Two modes
+
+- **Horizontal mode** — "what should we look into?" `signal-discoverer` alone: one broad, unfiltered
+  pull across sources, no category named up front, output is a ranked candidate-category list. No
+  `config/scope.md` needed. See `docs/plans/0003-broad-discovery.md`.
+- **Vertical mode** — "here's the category, go deep." The original 3-agent pipeline
+  (`complaint-miner` + `build-pattern-scanner` → `concept-synthesizer`) against one named category in
+  `config/scope.md`. See `docs/plans/0002-signal-to-concept-v1.md`.
+
+A full run is typically horizontal once, then vertical once per category chosen from its output — but
+either mode runs standalone: skip horizontal when the category is already known; run horizontal
+without ever following up in vertical mode if the goal is just a category-landscape snapshot.
+Running vertical mode on more than one category at once is where **parallel git worktrees** apply
+(see below) — horizontal mode is always a single run, never parallelized across worktrees itself.
 
 ```
-Phase 0 (optional): signal-discoverer → discovery/<ts>-categories.md (no config/scope.md needed)
-                                          ↓ human picks a category from the list
-Phase 1a: complaint-miner        ─┐  parallel — single message, two Task tool calls
-Phase 1b: build-pattern-scanner  ─┘
-Phase 2:  concept-synthesizer    → candidates/<date-time-iso>-<scope-slug>-candidate.md
+Horizontal:  signal-discoverer     → discovery/<ts>-categories.md (no config/scope.md needed)
+                                       ↓ human picks N categories
+Vertical ×N: complaint-miner       ─┐  parallel — single message, two Task tool calls
+             build-pattern-scanner ─┘  (in worktree N, if N>1 — see "Running more than one category")
+             concept-synthesizer     → candidates/<date-time-iso>-<scope-slug>-candidate.md
 ```
-
-Phase 0 is optional and independent of Phases 1–2: run it when the category itself is undecided
-("what should we look into?"); skip straight to Phase 1 when the category is already known. See
-`docs/plans/0003-broad-discovery.md` for the full design.
 
 ## Before running
 
@@ -57,7 +66,13 @@ work runs in its own git worktree, always — never shared with a concurrent age
 
 ## What this deliberately doesn't do
 
-No validation-loop subagent, no dual execution modes, no phase-dependency table, no per-source-type
-citation-format rules, no standalone `SUBAGENTS.md` — all excluded as premature machinery for a
-3-spec pipeline. See `docs/plans/0002-signal-to-concept-v1.md` for the full rationale. Reconsider
-only if this pipeline's spec count or stakes actually grow.
+No validation-loop subagent, no phase-dependency table, no per-source-type citation-format rules, no
+standalone `SUBAGENTS.md` — all excluded as premature machinery for a 3-spec pipeline. See
+`docs/plans/0002-signal-to-concept-v1.md` for the full rationale. **Superseded in one respect**: 0002
+also excluded "dual execution modes" as premature at 3 specs — the spec count grew to 4
+(`signal-discoverer`, `docs/plans/0003-broad-discovery.md`) and the user explicitly asked for
+horizontal/vertical to be named modes, which is exactly the reconsideration trigger 0002 itself named
+("only if this pipeline's spec count or stakes actually grow"). The two modes above are that
+reconsideration — still no *dual execution* modes in 0002's original sense (concise/detailed ×
+conservative/ambitious output framing, borrowed from `agentic-market-research-to-gtm`'s heavier
+pattern); this is a horizontal/vertical *scope* distinction, a different axis entirely.

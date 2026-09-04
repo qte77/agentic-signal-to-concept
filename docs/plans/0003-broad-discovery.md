@@ -2,13 +2,20 @@
 
 ## Status
 
-**Plan drafted 2026-09-04; spec, wiring, and first real run all shipped same session.**
-`signal-discoverer.md` exists and has run for real — Show HN fully covered (3,670 titles across a
-6-bucket pull), ProductHunt narrower than intended (one calendar day, not the full 30 — root-caused
-and folded back into the spec as a correction, see remaining-work table). 8 candidate categories
-promoted, 2 rejected as grab-bags. Archived at `examples/2026-09-04T060617Z-discovery/categories.md`.
-**Owner gate now open**: which categories to run through the full pipeline next is the user's call —
-see the remaining-work table's row for the stated default and how to override it.
+**Full arc complete same session (2026-09-04): discovery ran, categories were picked, all three
+verticals ran end-to-end, and a calibration check compared prediction to outcome.**
+`signal-discoverer.md` exists and has run for real (8 categories promoted, 2 rejected as grab-bags,
+archived at `examples/2026-09-04T060617Z-discovery/`). The user confirmed the recommended default
+(#1 agent memory, #3 terminal/session UX, #5 freelancer finance) and asked for horizontal/vertical to
+be named modes (done, see `AGENTS.md`). All three ran as parallel git worktrees — the first real
+exercise of this repo's standing worktree rule — producing 3 new concept candidates (`Contextlint`,
+`Vigil`/`Overflow`, `Freehold Finance`/`Upfront Terms`) and a genuinely useful negative result: raw
+discovery-stage signal count did not reliably predict vertical-mode yield (see the calibration row
+below). Two follow-on ideas from mid-arc discussion were deferred with tracking issues rather than
+built ([#19](https://github.com/qte77/agentic-signal-to-concept/issues/19) semantic clustering,
+[#20](https://github.com/qte77/agentic-signal-to-concept/issues/20) trend-aware recurring runs).
+**Next real step**: source breadth (what's addable beyond Show HN + ProductHunt) — research, not yet
+started.
 
 ## Why this arc exists
 
@@ -94,9 +101,13 @@ discovery/README.md                    (mirrors findings/README.md's shape)
 | `discovery/README.md` + `.gitignore` update | **shipped** (2026-09-04) | File exists; `discovery/*-categories.md` gitignored, matching `findings/`'s treatment. |
 | `AGENTS.md` Phase 0 + worktree-requirement update | **shipped** (2026-09-04) | Diagram updated; worktree requirement stated as load-bearing for N>1 parallel category runs, not just inherited boilerplate. |
 | First real `signal-discoverer` run | **shipped** (2026-09-04) | Real Show HN + PH pull, clustered into 8 candidate categories (2 rejected as grab-bags), `discovery/2026-09-04T060617Z-categories.md` written, archived at `examples/2026-09-04T060617Z-discovery/`. Two real corrections folded back into the spec: HN's actual volume (3,000-4,000+ titles/30d, not "a few hundred") and PH's daily-cohort timestamp behavior + working `postedAfter`/`postedBefore` filter (the spec had wrongly said PH has no date-range filter — corrected). |
-| Pick N categories from the first real discovery run | owner | User reviews the candidate-category list and either confirms the recommended default (#1 agent memory, #3 terminal/session UX, #5 freelancer finance — cross-source, narrow, immediately scopeable; #2/#4/#8 are "shape of build"/ethos clusters the discoverer itself flagged as needing a narrower angle first, not blindly counted as top-3) or overrides. |
-| N parallel category runs via git worktrees | agent, gated on the row above | One worktree per chosen category, full 3-agent pipeline run in each, findings/candidates merged back via one PR per category (or batched) — first real exercise of the standing worktree rule. |
+| Pick N categories from the first real discovery run | **shipped** (2026-09-04) | User confirmed the recommended default: #1 agent memory, #3 terminal/session UX, #5 freelancer finance. |
+| N parallel category runs via git worktrees | **shipped** (2026-09-04) | Three worktrees (`../asc-agent-memory`, `../asc-terminal-ux`, `../asc-freelancer-finance`), full 3-agent pipeline run in each — first real exercise of the standing worktree rule. Real gap found and fixed: `git worktree add` doesn't carry gitignored files, so a fresh worktree has no `.env` — all three categories' `complaint-miner` runs hit ProductHunt blocked as a result (timing: `.env` was copied in mid-run, after each had already checked). Consistent across all three, so no cross-category inconsistency, but worth fixing properly before the next multi-worktree run (see watch-outs in the handoff). Findings/candidates archived at `examples/2026-09-04T070136Z-agent-memory/`, `examples/2026-09-04T070138Z-terminal-ux/`, `examples/2026-09-04T070139Z-freelancer-finance/`; candidates at matching `candidates/*.md` paths. Merged back via one PR per category. |
+| Calibration check: does discovery's rank predict vertical yield? | **shipped** (2026-09-04) | Compared discovery's qualitative rank (#1 > #3 > #5) against actual Phase 1 output volume. Result did **not** hold on raw volume: #3 terminal-ux (11 patterns, 72 sourced items, 50 build instances) outproduced #1 agent-memory (10 patterns, 71 items, 37 instances); #5 freelancer-finance had the lowest volume (10 patterns, 53 items, 28 instances) but produced the single most acute finding of any category — a PE-rollup pricing-shock complaint with 100+ comments and direct switching intent. **Read (n=3, suggestive not conclusive):** discovery's rank is a reasonable coarse breadth filter but doesn't predict richness *or* acuteness reliably — it measures convergence breadth, not the intensity of any single complaint thread, a distinct dimension it isn't designed to catch. Not a build item; noted here as calibration context for interpreting future discovery ranks. |
 | Broad HN comment-firehose discovery | deferred, genuine open gap | Not attempted in v1 — needs its own bounded-query design before it's cheap enough to run; don't add until that design exists. |
+| Semantic (embeddings-based) clustering | deferred, tracked at [issue #19](https://github.com/qte77/agentic-signal-to-concept/issues/19) | Not built — keyword/bigram frequency hasn't yet demonstrably missed a real cluster; build once there's a concrete miss to point at. |
+| Trend-aware / recurring discovery runs | deferred, tracked at [issue #20](https://github.com/qte77/agentic-signal-to-concept/issues/20) | Not built — only one real discovery run exists; needs 2-3 more over real elapsed time before a velocity signal is calibratable. |
+| Worktree `.env` gap: gitignored files aren't carried by `git worktree add` | **shipped** (2026-09-04) | `AGENTS.md`'s "Running more than one category at once" section now states copying `.env` into each worktree as an explicit pre-dispatch step, before any subagent is launched into it — closes the timing race this run hit (all three categories' `complaint-miner` runs found ProductHunt blocked because `.env` was copied in mid-run, after each had already checked). |
 
 ## Handoff
 

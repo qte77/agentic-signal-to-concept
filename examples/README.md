@@ -68,3 +68,20 @@ PH's daily-launch-cohort timestamp convention meant an unbounded pull never adva
 `signal-discoverer.md`). 8 candidate categories promoted, 2 explicitly rejected as grab-bags (Games,
 Browser Extensions) rather than silently dropped. No `scripts/verify_sourcing.py` run against this
 one — it's aggregate cluster data, not sourced quotes, per the spec's own Output section.
+
+## `2026-09-04T070136Z-agent-memory/`, `2026-09-04T070138Z-terminal-ux/`, `2026-09-04T070139Z-freelancer-finance/`
+
+The first real **vertical-mode** runs on categories sourced from horizontal discovery, all three run
+in parallel via dedicated git worktrees (`docs/plans/0003-broad-discovery.md`) — the first real
+exercise of this repo's standing worktree rule. Each holds `scope.md` + `complaints-findings.md` +
+`builds-findings.md` for its category; ProductHunt was blocked in all three (a worktree-setup timing
+gap, since fixed — see `AGENTS.md`) so all three sit on a consistent HN-only complaint baseline, no
+cross-category inconsistency. Synthesized candidates:
+[`candidates/2026-09-04T070136Z-agent-memory-candidate.md`](../candidates/2026-09-04T070136Z-agent-memory-candidate.md)
+("Contextlint"),
+[`candidates/2026-09-04T070138Z-terminal-ux-candidate.md`](../candidates/2026-09-04T070138Z-terminal-ux-candidate.md)
+("Vigil" and "Overflow"),
+[`candidates/2026-09-04T070139Z-freelancer-finance-candidate.md`](../candidates/2026-09-04T070139Z-freelancer-finance-candidate.md)
+("Freehold Finance" and "Upfront Terms"). A calibration check comparing discovery's predicted rank
+against actual yield across these three is recorded in `docs/plans/0003-broad-discovery.md`'s
+remaining-work table.

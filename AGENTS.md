@@ -42,6 +42,13 @@ category its own git worktree** (`git worktree add <path> -b <branch>`), each wi
 This is this repo's standing worktree rule (present since 0001's own handoff) — running a single
 category at a time never made it load-bearing before; running several at once does.
 
+**Before dispatching any subagent into a new worktree, copy `.env` into it too** —
+`git worktree add` only carries tracked files; `.env` is gitignored, so a fresh worktree has none of
+it by default and `complaint-miner`'s ProductHunt pass will read as blocked for a reason that has
+nothing to do with the token itself. Confirmed the hard way (2026-09-04): copying `.env` in *after*
+dispatching left a timing race that blocked ProductHunt in all three worktrees of that run anyway.
+Copy it as part of worktree setup, before Phase 1 launches, every time.
+
 ## Running it
 
 Launch `complaint-miner` and `build-pattern-scanner` in a **single message with two Task tool

@@ -7,6 +7,16 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- First real vertical-mode runs sourced directly from horizontal discovery: three categories
+  (agent/coding-agent memory, terminal/session UX for coding agents, freelancer finance/expense
+  tools) run in parallel via dedicated git worktrees — the first real exercise of this repo's
+  standing worktree rule. Three new concept candidates: `Contextlint`, `Vigil`/`Overflow`, `Freehold
+  Finance`/`Upfront Terms`. `AGENTS.md` now names horizontal (discovery) and vertical (per-category
+  deep-dive) as explicit pipeline modes. A calibration check compared discovery's predicted category
+  rank against actual vertical-mode yield — the ranking did not hold on raw volume, a useful negative
+  result recorded in `docs/plans/0003-broad-discovery.md` rather than treated as a bug. Two follow-on
+  ideas from that check (semantic clustering, trend-aware recurring discovery runs) were deferred
+  with tracking issues (#19, #20) rather than built immediately.
 - New Phase 0, `signal-discoverer` (`docs/plans/0003-broad-discovery.md`): a broad, unfiltered pull
   across Show HN and ProductHunt that surfaces candidate problem-space categories, rather than
   requiring a category named up front. First real run found 8 candidate categories (2 additional

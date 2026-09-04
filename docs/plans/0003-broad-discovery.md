@@ -1,0 +1,104 @@
+# 0003 — agentic-signal-to-concept: categoryless discovery + parallel category runs
+
+## Status
+
+**Plan drafted 2026-09-04; spec, wiring, and first real run all shipped same session.**
+`signal-discoverer.md` exists and has run for real — Show HN fully covered (3,670 titles across a
+6-bucket pull), ProductHunt narrower than intended (one calendar day, not the full 30 — root-caused
+and folded back into the spec as a correction, see remaining-work table). 8 candidate categories
+promoted, 2 rejected as grab-bags. Archived at `examples/2026-09-04T060617Z-discovery/categories.md`.
+**Owner gate now open**: which categories to run through the full pipeline next is the user's call —
+see the remaining-work table's row for the stated default and how to override it.
+
+## Why this arc exists
+
+Every real run so far (`docs/plans/0002-signal-to-concept-v1.md`) required a human — or the
+orchestrating session — to name a category (`pkm-tools`) before `complaint-miner`/
+`build-pattern-scanner` could run at all; the method finds convergence *within* a named category, it
+doesn't discover which categories are worth looking at in the first place. The user asked twice in
+one session (2026-09-04) for something broader: "why not do a broad scan for ideas without
+pre-defined categories" — not a batch of hand-picked categories, genuine bottom-up discovery. They
+separately asked for parallel execution across categories once discovered.
+
+This arc adds exactly that as a new upstream phase, without changing what already works:
+**discovery finds candidate categories; the existing 3-agent pipeline still runs per-category,
+unchanged.** Parallel execution (git worktrees) is where the per-category phase gets faster once
+there's more than one category to run — it doesn't apply to discovery itself, which is one broad
+pass, not N narrow ones.
+
+## Architecture
+
+```
+Phase 0: signal-discoverer      → discovery/<ts>-categories.md (ranked candidate categories)
+                                   ↓ human picks N categories (decide-by-default: top 3 by signal count)
+Phase 1a+1b × N: complaint-miner + build-pattern-scanner   → N parallel git worktrees, one per category
+Phase 2 × N:     concept-synthesizer                        → one candidate per category
+```
+
+- **`signal-discoverer`** (new agent) — a single broad, lightly-filtered pull across HN Show HN
+  (unfiltered by topic, recent window) and ProductHunt (leaderboard/recent posts, unfiltered by
+  topic), clustered bottom-up into emergent candidate categories. Deliberately bounded in v1, not
+  exhaustive (see Scope below) — KISS/YAGNI: enough to surface real candidates, not a research
+  crawler. Ethical boundary applies here too, re-stated at this earliest possible point: output is
+  category-level ("N posts cluster around local-first data tools"), never a specific project.
+- **Existing pipeline, unchanged**: `complaint-miner` → `build-pattern-scanner` → `concept-synthesizer`
+  still run exactly as `docs/plans/0002-signal-to-concept-v1.md` specifies, once per chosen category.
+- **Parallel execution via git worktrees**: this repo's own standing rule (`AGENTS.md`, and 0001's
+  original handoff) has said "any subagent dispatched against this repo's work runs in its own git
+  worktree, always" since the very first arc — genuinely not followed by any real run to date,
+  because a single category's two Phase-1 agents write to two different filenames and never
+  collided. **N parallel categories collide for real**: `config/scope.md` is one shared, gitignored
+  file every category's agents read — two categories running concurrently against the same working
+  tree would clobber each other's scope. Each parallel category run therefore needs its own worktree
+  (own checkout, own `config/scope.md`), matching the standing rule for the first time it's actually
+  load-bearing rather than precautionary.
+
+## Scope for v1's discovery pass — deliberately bounded
+
+- **Show HN**: `tags=show_hn`, a recent window (default 30 days — wide enough for real signal, narrow
+  enough to stay a few hundred titles, not thousands), all titles read, clustered by theme. No
+  category keyword filter — this is the actual "broad" part.
+- **ProductHunt**: recent posts (leaderboard or `postsV2` without a `topic` filter) over the same
+  window, names + taglines read and clustered. Requires `PRODUCTHUNT_API_TOKEN` (now configured);
+  falls back to Show-HN-only discovery if unset, same blocked/owner-gated discipline as
+  `complaint-miner`.
+- **Explicitly deferred, not attempted in v1**: a broad HN *comment* firehose (complaint-signal
+  search without a category term) — HN's Algolia API doesn't support the kind of broad boolean query
+  that would make this bounded and cheap in one pass; a real design needs its own pass, not a
+  same-arc bolt-on. Reddit/app-store/GitHub-issue discovery are out of scope for the same reason
+  categories were excluded from the v1 pipeline: each needs its own access/ToS check first.
+- **Output cap**: 5–10 candidate categories per run, ranked by aggregate signal count (not a
+  precision science — a coarse triage step, the same spirit as `build-pattern-scanner`'s "explicitly
+  coarse v1 default" independence heuristic).
+
+## Code / file / source map
+
+**New files this arc creates:**
+```
+.claude/agents/signal-discoverer.md   (new agent spec)
+discovery/README.md                    (mirrors findings/README.md's shape)
+```
+**Modified:**
+- `AGENTS.md` — add Phase 0 (discovery) ahead of Phase 1a/1b; document the worktree requirement for
+  N-parallel-category runs now that it's load-bearing, not just standing-rule boilerplate.
+- `.gitignore` — add `discovery/*-categories.md` (gitignored working evidence, same treatment as
+  `findings/*-findings.md` — a discovery run worth keeping permanently gets archived under
+  `examples/`, same convention as every other run type).
+- `CONTRIBUTING.md` / `README.md` — status pointers once the new phase is real, not just planned.
+
+## Remaining work (single table)
+
+| Item | Gate | Done-when |
+|---|---|---|
+| `signal-discoverer.md` spec | **shipped** (2026-09-04) | File exists: Input/What-to-do/If-blocked/Output sections, ethical boundary re-stated, bounded-scope discipline from this plan's "Scope" section carried in verbatim-in-spirit. |
+| `discovery/README.md` + `.gitignore` update | **shipped** (2026-09-04) | File exists; `discovery/*-categories.md` gitignored, matching `findings/`'s treatment. |
+| `AGENTS.md` Phase 0 + worktree-requirement update | **shipped** (2026-09-04) | Diagram updated; worktree requirement stated as load-bearing for N>1 parallel category runs, not just inherited boilerplate. |
+| First real `signal-discoverer` run | **shipped** (2026-09-04) | Real Show HN + PH pull, clustered into 8 candidate categories (2 rejected as grab-bags), `discovery/2026-09-04T060617Z-categories.md` written, archived at `examples/2026-09-04T060617Z-discovery/`. Two real corrections folded back into the spec: HN's actual volume (3,000-4,000+ titles/30d, not "a few hundred") and PH's daily-cohort timestamp behavior + working `postedAfter`/`postedBefore` filter (the spec had wrongly said PH has no date-range filter — corrected). |
+| Pick N categories from the first real discovery run | owner | User reviews the candidate-category list and either confirms the recommended default (#1 agent memory, #3 terminal/session UX, #5 freelancer finance — cross-source, narrow, immediately scopeable; #2/#4/#8 are "shape of build"/ethos clusters the discoverer itself flagged as needing a narrower angle first, not blindly counted as top-3) or overrides. |
+| N parallel category runs via git worktrees | agent, gated on the row above | One worktree per chosen category, full 3-agent pipeline run in each, findings/candidates merged back via one PR per category (or batched) — first real exercise of the standing worktree rule. |
+| Broad HN comment-firehose discovery | deferred, genuine open gap | Not attempted in v1 — needs its own bounded-query design before it's cheap enough to run; don't add until that design exists. |
+
+## Handoff
+
+See `docs/handoffs/0003-broad-discovery.md` for the onboarding-shaped version of this table and
+what's next in order.

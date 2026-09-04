@@ -7,6 +7,16 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- New Phase 0, `signal-discoverer` (`docs/plans/0003-broad-discovery.md`): a broad, unfiltered pull
+  across Show HN and ProductHunt that surfaces candidate problem-space categories, rather than
+  requiring a category named up front. First real run found 8 candidate categories (2 additional
+  clusters explicitly rejected as grab-bags), archived at
+  `examples/2026-09-04T060617Z-discovery/`. Two real corrections from that run folded back into the
+  spec: HN's actual 30-day volume (3,000-4,000+ titles, not "a few hundred") and ProductHunt's
+  daily-launch-cohort timestamp behavior plus its working `postedAfter`/`postedBefore` date filter
+  (the spec had wrongly said no date-range filter exists). `AGENTS.md` updated with the new Phase 0
+  step and the worktree requirement for running multiple categories in parallel.
+
 - Second full-pipeline run against the `pkm-tools` scope (2026-09-04), the first with
   `PRODUCTHUNT_API_TOKEN` configured — ProductHunt genuinely contributed evidence for the first
   time. Independently re-derived candidate `candidates/2026-09-04T043009Z-pkm-tools-candidate.md`

@@ -44,17 +44,18 @@ project's license status or public visibility. The tool answers "does a real gap
 
 ## Status
 
-**v1 agent specs shipped; full 3-phase pipeline has run for real.** `.claude/agents/{complaint-miner,
-build-pattern-scanner,concept-synthesizer}.md`, an `AGENTS.md` orchestrator, and a ported
-`scripts/verify_sourcing.py` exist, scoped to v1's smallest workable slice (HN + ProductHunt
-complaint mining, GitHub + Show HN build-pattern scanning). All three agents have now executed for
-real against a shared scope (`pkm-tools`), producing this repo's first concept candidate — see
-[`examples/2026-09-03T231104Z-pkm-tools/`](examples/2026-09-03T231104Z-pkm-tools/) for the archived
-run and [`candidates/2026-09-03T231104Z-pkm-tools-candidate.md`](candidates/2026-09-03T231104Z-pkm-tools-candidate.md)
-for the candidate. See [`docs/plans/0002-signal-to-concept-v1.md`](docs/plans/0002-signal-to-concept-v1.md)
-for the build plan and remaining work, and [`docs/plans/0001-concept.md`](docs/plans/0001-concept.md)
-for the original concept and what's still genuinely open (ProductHunt token provisioning, Reddit's
-OAuth API terms, deferred build-pattern sub-sources).
+**v1 agent specs shipped and running for real; a Phase 0 discovery pass now finds candidate
+categories instead of requiring one named up front.** `.claude/agents/{complaint-miner,
+build-pattern-scanner,concept-synthesizer}.md` plus a new `signal-discoverer.md` (Phase 0), an
+`AGENTS.md` orchestrator, and a ported `scripts/verify_sourcing.py` exist. The full 3-phase pipeline
+has run twice against a shared scope (`pkm-tools`), producing this repo's first concept candidates —
+see [`examples/`](examples/) for the archived runs and [`candidates/`](candidates/) for the
+candidates. `signal-discoverer` has also run for real, surfacing 8 candidate categories from a broad,
+unfiltered pull — see [`docs/plans/0003-broad-discovery.md`](docs/plans/0003-broad-discovery.md).
+See [`docs/plans/0002-signal-to-concept-v1.md`](docs/plans/0002-signal-to-concept-v1.md) for the
+original pipeline's build plan, and [`docs/plans/0001-concept.md`](docs/plans/0001-concept.md) for
+the original concept and what's still genuinely open (Reddit's OAuth API terms, deferred
+build-pattern sub-sources).
 
 ## Running or extending this
 

@@ -7,6 +7,25 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- `cv.inc`/`cerebralvalley.ai` hackathon listings added as a fourth source to both
+  `signal-discoverer.md` (Phase 0: event/theme clustering, sponsor "what we're looking for" language
+  as demand signal) and `build-pattern-scanner.md` (Phase 1: public hackathon galleries as
+  compressed-convergence build evidence, scoped to `config/scope.md`'s category) — the only one of
+  three hackathon-listing platforms checked (Devpost, cv.inc, AGI House) that clears ToS; Devpost and
+  AGI House are both confirmed, unambiguous blocks (exact clauses cited in the new spec sections).
+  Verified three independent ways (raw fetch, independent re-fetch, patchright/networkidle render
+  cross-check) before landing. Also checked and excluded GitLab (its separate API Terms of Use, not
+  just its main ToS, bans "bulk collection or scraping... systematic bulk exporting" of API data) and
+  Codeberg (robots.txt explicitly names `anthropic-ai`/`ClaudeBot`/`Claude-Web` in its disallow list)
+  as substitutes for the already-ruled-out Bolt.new/v0/Lovable ecosystem-mention search — GitHub's
+  existing `topic:hackathon`/`topic:bolt`/`topic:lovable` queries (already documented in
+  `build-pattern-scanner.md` step 4) remain the only compliant path for that signal. Two research
+  passes archived: `examples/2026-09-05T204416Z-startup-registries/` (startup/indie-project
+  registries as an ROI/idea source — 4 sources checked, all cleared, 6 niches ranked) and
+  `examples/2026-09-05T213930Z-hackathon-signal-research/` (the hackathon-content research itself).
+  `.gitignore` broadened from `discovery/*-categories.md` to `discovery/*.md` so all
+  `signal-discoverer`-adjacent research output (not just `-categories.md` runs) gets consistent
+  gitignore-then-archive-if-worthwhile treatment.
 - Alpha/beta reframing of the discovery→vertical pipeline (2026-09-05): root-caused why discovery's
   rank never predicted vertical yield (the earlier calibration check's open question) — all three
   `signal-discoverer` sources are supply-side/build signal, so its rank measures build volume, never

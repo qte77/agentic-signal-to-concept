@@ -105,3 +105,29 @@ Also confirmed live: ProductHunt's `first` parameter silently caps at 20 regardl
 requested (real daily volume is 431–1,331 posts, so this run's PH sample is ~2.7% of the window,
 correctly reported as a sample); GitHub's `stars:>500` threshold (216 repos, after `stars:>250`
 returned too many at 510) kept the pull in the low-hundreds range the spec asks for.
+
+## `2026-09-05T204416Z-startup-registries/`
+
+A one-off research pass (not a `signal-discoverer` run) testing whether public startup/indie-project
+registries — `startups.gallery`, `betalist.com`, `uneed.best`, `wip.co` — could serve as an idea/ROI
+source. All four cleared ToS (a different outcome than the Devpost/Lovable/Replit/Indie Hackers
+precedent in issue #10), though `uneed.best`'s ToS itself would have barred a direct scrape — what
+actually clears it is a sanctioned public read-only MCP server/API disclosed in its privacy policy,
+not used this pass. `startups.gallery` turned out to be VC-funded companies, not indie projects,
+despite its name. 6 niches ranked by a stated ROI/feasibility proxy (no real financial data exists
+per listing); top pick: agentic/coding-agent infrastructure tooling (3 independent indie builders
+converging on trust/data/backlink infra). One AI-detection-evasion listing was flagged and excluded
+on ethics grounds, not scored. All load-bearing ToS claims were independently raw-verified (not left
+as WebFetch summaries) before this file was finalized.
+
+## `2026-09-05T213930Z-hackathon-signal-research/`
+
+A one-off research pass testing whether hackathon content (sponsor challenge statements, problem
+taxonomies, judging criteria) offers signal distinct from HN/PH/GitHub. Of three platforms checked,
+only `cv.inc`/`cerebralvalley.ai` cleared the ToS gate — Devpost and AGI House are both confirmed,
+unambiguous blocks (exact clauses quoted in the file). The hypothesis held up on real content: a
+completed hackathon's public gallery showed 102 independent teams in one ~31-hour window, several
+citing the sponsor's own problem-statement codes directly — denser convergence than GitHub/HN's
+30-day/12-month windows. Verified three ways (the original raw fetch, an independent raw re-fetch,
+and a `--tier patchright --wait-until networkidle` render cross-check) before being folded into
+`signal-discoverer.md` and `build-pattern-scanner.md` as a narrowly-scoped fourth source.

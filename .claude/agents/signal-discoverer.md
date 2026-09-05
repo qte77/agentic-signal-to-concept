@@ -82,7 +82,17 @@ one, use this spec's own default (30 days).
    (the full public GitHub event firehose, `gharchive.org`) is a real candidate next source — free,
    public, no usage restrictions found — but needs either BigQuery credentials (an owner-gated step)
    or raw hourly-JSON parsing (a real engineering lift); not attempted in v1, tracked separately, not
-   silently dropped.
+   silently dropped. **Also tried and rejected, 2026-09-05: a per-category HN comment-count
+   (`nbHits`) as a cheap demand-side proxy to pair against this spec's supply-side counts.** HN's
+   Algolia `query` parameter does relevance-ranked OR-matching over individual words, not phrase or
+   boolean-AND matching — quoting a phrase does not change this. `query=memory` returned 4,104 hits
+   dominated by unrelated senses (RAM, human memory); `query=agent memory` (368 hits) and the quoted
+   `query="agent memory"` both still top-hit an "Ask HN: Who is hiring?" comment listing "agents" and
+   "memory" as unrelated resume keywords, not a phrase match. `nbHits` from this endpoint cannot
+   distinguish category-relevant complaint signal from incidental word co-occurrence without reading
+   each hit, which erodes the cost savings the approach was chasing — do not re-attempt this as a
+   count-only addition to this spec. See `docs/plans/0003-broad-discovery.md`'s remaining-work table
+   for the full experiment.
 6. **Ethical boundary, re-stated at this earliest possible point in the pipeline**: a cluster is
    named by its aggregate theme ("N Show HN posts + M PH launches + K GitHub repos cluster around
    local-first expense-tracking tools"), never by one specific project as the reason the category

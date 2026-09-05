@@ -22,9 +22,22 @@ ethical-boundary case caught and correctly excluded (a single project's plugin e
 independent convergence), and two real corrections folded back into the spec (PH's `first`-capped-
 at-20 behavior; explicit window-overlap reporting against the prior run, since the two runs turned
 out ~99% overlapping). Archived at `examples/2026-09-04T081918Z-discovery/`.
-**Next real step**: not yet decided — awaiting user direction on whether to pick more categories
-from either discovery run, wait longer before a third discovery run (to get real window separation
-per the overlap lesson above), or something else.
+**Alpha/beta reframing (2026-09-05)**: user pushed back that discovery's top-ranked categories are
+"already crowded" and asked for decision-ready alpha/beta picks instead of more categories. Root
+cause identified: `signal-discoverer`'s three sources (Show HN titles, PH launches, GitHub repos) are
+all supply-side/build signal — discovery's rank is a build-volume ranking, which is why the
+calibration check above never correlated with vertical yield (yield is driven by complaint intensity,
+a variable discovery never measured). A same-session experiment to close that gap cheaply (HN
+Algolia comment-count as a demand proxy) was tested and falsified — see the new remaining-work row
+below. **Working conclusion**: alpha detection stays a two-stage process, not a one-shot automation —
+horizontal flags low-count/single-source-leaning categories as cheap tentative alpha candidates (no
+new implementation needed, just reading the existing ranked list differently); vertical mode's real
+sourced quotes remain the only reliable demand confirmation. Beta (a differentiated angle inside an
+already-crowded category) is vertical-only by nature — it requires reading what existing builds
+actually do, which no aggregate count can reveal.
+**Next real step**: pick a category using the low-count/single-source lens above (see remaining-work
+table) rather than the raw top-of-list rank, or wait longer before a third discovery run (to get real
+window separation per the overlap lesson above).
 
 ## Why this arc exists
 
@@ -129,6 +142,7 @@ discovery/README.md                    (mirrors findings/README.md's shape)
 | Source breadth: BetaList outreach | deferred, owner | No explicit ToS ban found, but no public API/RSS either — a real email/outreach step, not an agent task, same shape as the still-open TrustMRR ask from `docs/plans/0001-concept.md`. |
 | Source breadth: GH Archive | deferred, genuine next tier | Free, public, no usage restrictions found — the full GitHub public event firehose, richer than search-indexed repos alone. Needs BigQuery credentials (owner-gated) or raw hourly-JSON parsing (engineering lift) before it's addable; not attempted in v1. |
 | Second real `signal-discoverer` run (first with GitHub) | **shipped** (2026-09-04) | 9 categories promoted (up from 8), 5 rejected. New ethical-boundary case caught and correctly excluded (33 GitHub repos all plugins for one upstream project, `deepseek-ai/deepseek-harness` — not independent convergence) — worked example folded into the spec's ethical-boundary section. Two real corrections folded back into the spec: PH's `first` param silently caps at 20/page regardless of requested value (real daily volume 400-1,300+, so PH sampling is ~2-3% of the window, not exhaustive); explicit window-overlap reporting against the prior run added as a new step, since this run's window turned out ~99% overlapping with the first run's (~12h apart) — most category counts were the same corpus re-measured, one category (job-search/interview-prep tooling) was genuinely new. Archived at `examples/2026-09-04T081918Z-discovery/`. |
+| Demand-side count proxy for horizontal ranking (alpha/beta reframing) | **investigated, rejected** (2026-09-05) | Tested whether a cheap per-category HN Algolia comment-count (`nbHits`, no quote reading) could serve as a demand signal to pair against discovery's existing supply counts, producing a demand:supply ratio at the horizontal stage instead of only post-hoc at vertical stage. Falsified after 3 of 9 planned queries: HN's Algolia `query` param does relevance-ranked OR-matching over individual words, not phrase or boolean-AND matching — `query=memory` returned 4,104 hits dominated by unrelated senses (RAM, human memory); `query=agent memory` (368 hits) and the quoted `query="agent memory"` (same non-adjacent match) both still top-hit an "Ask HN: Who is hiring?" comment listing "agents" and "memory" as unrelated resume keywords. `nbHits` cannot distinguish category-relevant complaint signal from incidental word co-occurrence without per-hit reading, which erodes the cost savings the approach was chasing. **No spec change made** — folded into `signal-discoverer.md`'s Scope section as a rejected approach so it isn't re-attempted. Resolution: alpha detection stays two-stage (horizontal flags low-count/single-source-leaning categories cheaply; vertical confirms demand via real sourced quotes), not a one-shot horizontal automation. |
 
 ## Handoff
 

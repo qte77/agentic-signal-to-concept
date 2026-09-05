@@ -48,12 +48,28 @@ single shared `config/scope.md`).
    window-overlap reporting (this run's window turned out ~99% overlapping the first run's, ~12h
    apart — most counts were the same corpus re-measured, one category was genuinely new). Archived
    at `examples/2026-09-04T081918Z-discovery/`.
-10. **Next real step, not yet decided**: two discovery runs now exist, giving real material toward
+10. ~~Alpha/beta reframing~~ — done 2026-09-05, per explicit user pushback that discovery's top
+    categories are "already crowded." Root cause: discovery's three sources are all supply-side/build
+    signal, so its rank measures build volume, not demand — which is also why the calibration check
+    (item 7) never correlated with vertical yield. A cheap-automation fix (HN Algolia comment-count as
+    a demand proxy) was tested and falsified — see the 0003 plan's remaining-work table for the exact
+    queries and result. Resolution: alpha detection stays two-stage — horizontal flags low-count/
+    single-source-leaning categories as cheap tentative alpha candidates (no new implementation
+    needed), vertical mode's sourced quotes remain the only real demand confirmation. Beta (a
+    differentiated angle inside an already-crowded category, e.g. terminal-ux's unaddressed "bookmark
+    before crash" ask among 6 saturated `claude --resume` wrappers) is vertical-only by nature — no
+    aggregate count can reveal it.
+11. **Next real step, not yet decided**: two discovery runs now exist, giving real material toward
     issue #20 (trend-aware recurring runs) once there's genuine time separation between runs — this
     run's own note says spacing future runs further apart (or diffing `objectID`s against the prior
-    run) is needed before a velocity signal means anything. Otherwise: pick more categories from
-    either discovery run's list to run vertically, or wait for real elapsed time before a third
-    discovery run. Awaiting user direction.
+    run) is needed before a velocity signal means anything. Otherwise: pick a category using the
+    low-count/single-source lens from item 10 — but filter out categories run 2's own text already
+    flags as heterogeneous form-factors rather than single problems (#3 MCP tooling, #5 local-first,
+    #9 macOS menu-bar all carry that explicit caveat, so their low counts don't mean low supply on a
+    real single problem). Run 2's #4 (job-search/interview-prep tooling — 21 HN + 12 PH, cross-source,
+    single-problem-shaped, and genuinely new this run, not a re-measurement of run 1) or #8
+    (habit-tracking/journaling — 21 HN + 8 PH, same shape) are the cleaner candidates by this lens. Or
+    wait for real elapsed time before a third discovery run. Awaiting user direction.
 
 ## Watch-outs
 

@@ -7,6 +7,19 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- Alpha/beta reframing of the discovery→vertical pipeline (2026-09-05): root-caused why discovery's
+  rank never predicted vertical yield (the earlier calibration check's open question) — all three
+  `signal-discoverer` sources are supply-side/build signal, so its rank measures build volume, never
+  demand. Tested and rejected a cheap fix (HN Algolia comment-count as a demand proxy): HN's Algolia
+  `query` parameter does relevance-ranked OR-matching over individual words, not phrase/boolean-AND
+  matching, so `nbHits` can't separate category-relevant complaint signal from incidental word
+  co-occurrence (`query=agent memory` top-hit an unrelated "Who is hiring?" comment). Folded into
+  `signal-discoverer.md`'s Scope section so it isn't re-attempted. Resolution: alpha detection stays
+  two-stage — horizontal cheaply flags low-count/single-source-leaning categories (filtering out ones
+  already flagged as heterogeneous form-factors, not single problems); vertical mode's sourced quotes
+  remain the only real demand confirmation. Beta (a differentiated angle inside an already-crowded
+  category) is vertical-only by nature. Documented in `docs/plans/0003-broad-discovery.md`'s
+  remaining-work table and `docs/handoffs/0003-broad-discovery.md`.
 - Second real `signal-discoverer` run, the first to exercise GitHub as a source: 9 candidate
   categories (up from 8), 5 rejected. Caught and correctly excluded a new kind of finding — a
   33-repo GitHub topic cluster that looked independently-convergent but was entirely plugins for one

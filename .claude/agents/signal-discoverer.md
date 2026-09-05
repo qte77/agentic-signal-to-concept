@@ -1,6 +1,6 @@
 ---
 name: signal-discoverer
-description: Runs one broad, bounded, unfiltered pull across Show HN, ProductHunt, and GitHub to surface candidate problem-space categories for the pipeline to deep-dive, rather than requiring a category to be named up front. Never names a specific project as the reason a category looks promising.
+description: Runs one broad, bounded, unfiltered pull across Show HN, ProductHunt, GitHub, and cv.inc hackathon listings to surface candidate problem-space categories for the pipeline to deep-dive, rather than requiring a category to be named up front. Never names a specific project as the reason a category looks promising.
 ---
 
 Phase 0 of the pipeline, upstream of `complaint-miner`/`build-pattern-scanner`. Where those two read
@@ -69,11 +69,40 @@ one, use this spec's own default (30 days).
    frequent topic to judge coherent cluster vs. grab-bag. If `topics` frequency doesn't cleanly
    surface themes (many repos have empty/sparse topic arrays), fall back to the same word/bigram
    frequency method used for Show HN titles, applied to `description` text.
-4. **Merge all sources' clusters** into one ranked candidate-category list. A category surfaced
+4. **cv.inc / cerebralvalley.ai hackathon listings, unfiltered by topic (added 2026-09-05).**
+   Confirmed 2026-09-05: no ToS or robots.txt restriction on automated/programmatic access — unlike
+   Devpost and AGI House, both confirmed blocked the same day (Devpost's ToS bans "scrape," "crawl,"
+   or "spider" of "the Site... or any related data or information"; AGI House's ToS Section 7 bans
+   scraping and explicitly defines "Platform" to include `app.agihouse.org`). cv.inc's own
+   `llms.txt`/`llms-full.txt` and `.md`-suffix convention (`/e/{slug}.md`,
+   `/e/{slug}/hackathon/gallery.md`) exist specifically for this kind of machine access — prefer
+   those over parsing rendered HTML. Pull recent/upcoming event listings and cluster by stated
+   theme/sponsor, same topic-frequency method as PH/GitHub above. A sponsor's "what we're looking
+   for" language and problem-statement taxonomy is itself signal — a company's own stated demand,
+   categorically different from an inferred complaint. Where a hackathon's public gallery falls
+   within the pull window, its aggregate team count is a compressed convergence signal in its own
+   right (confirmed: one gallery showed 102 independent teams in a single ~31-hour window) — cite the
+   gallery's aggregate count and named problem-statement categories, never one specific team's
+   project. Do not attempt Devpost or AGI House — both confirmed blocked; re-check only if either
+   platform's terms change, not as a standing todo. Full citations and the ToS verification
+   methodology: `examples/2026-09-05T213930Z-hackathon-signal-research/hackathon-signal-research.md`.
+   **Complementary GitHub signal, already compliant (added 2026-09-05):** GitHub's own
+   `topic:hackathon` (13,544 hits, noisy/dominated by boilerplate — see
+   `build-pattern-scanner.md` step 4 for the noise-reduction heuristic) and free-text
+   `"v0.dev"`/`"bolt.new"`/`topic:bolt`/`topic:lovable` searches are the compliant substitute for
+   Devpost/AGI House/Bolt.new/v0/Lovable's own showcases — already authenticated via the same `gh`
+   CLI as step 3 above, no new access work needed. **GitLab and Codeberg were checked 2026-09-05 for
+   the same kind of topic/label/mention search and are both excluded**: Codeberg's robots.txt
+   explicitly names `anthropic-ai`/`ClaudeBot`/`Claude-Web` in its disallow list (`Disallow: /`);
+   GitLab's separate API Terms of Use (`handbook.gitlab.com/handbook/legal/api-terms/`, Section
+   1.3.9) explicitly bans "bulk collection or scraping of information, including for repeated or
+   systematic bulk exporting GitLab API Data" — a topic/mention search across many repos is exactly
+   that. Do not attempt either; re-check only if their terms change.
+5. **Merge all sources' clusters** into one ranked candidate-category list. A category surfaced
    independently by more than one source ranks above one seen in only one — state which sources
    confirmed which category, don't collapse the distinction into an undifferentiated "cross-source"
    label.
-5. **Bounded scope, stated plainly (v1 default, not a limitation to work around):** this pass does
+6. **Bounded scope, stated plainly (v1 default, not a limitation to work around):** this pass does
    not attempt a broad HN *comment* firehose (unprompted complaint signal without a category term) —
    HN's Algolia API doesn't support the kind of query that would make that bounded and cheap in one
    pass; see `docs/plans/0003-broad-discovery.md`'s Scope section. Do not attempt Reddit, app-store,
@@ -93,7 +122,7 @@ one, use this spec's own default (30 days).
    each hit, which erodes the cost savings the approach was chasing — do not re-attempt this as a
    count-only addition to this spec. See `docs/plans/0003-broad-discovery.md`'s remaining-work table
    for the full experiment.
-6. **Ethical boundary, re-stated at this earliest possible point in the pipeline**: a cluster is
+7. **Ethical boundary, re-stated at this earliest possible point in the pipeline**: a cluster is
    named by its aggregate theme ("N Show HN posts + M PH launches + K GitHub repos cluster around
    local-first expense-tracking tools"), never by one specific project as the reason the category
    looks promising. If a cluster has only one or two contributing items, say so explicitly rather than
@@ -105,7 +134,7 @@ one, use this spec's own default (30 days).
    thing from the real clusters this spec looks for — excluded outright, not reframed as an
    "ecosystem" category. Check any topic-tag or keyword cluster for this shape (many repos, one
    upstream dependency) before promoting it.
-7. **Window overlap with a prior discovery run, if one exists**: state explicitly how much this run's
+8. **Window overlap with a prior discovery run, if one exists**: state explicitly how much this run's
    window overlaps the most recent prior run's (check the most recent `examples/*-discovery/`
    entry's window dates). Confirmed 2026-09-04: two runs ~12 hours apart had a ~99% overlapping
    30-day window — most category counts in the second run were the same underlying corpus

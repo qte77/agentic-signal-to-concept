@@ -1,6 +1,6 @@
 ---
 name: build-pattern-scanner
-description: Scans GitHub, Show HN, and Bluesky for independent small-build activity converging on the same problem — aggregate signal only. Never identifies one active builder's unscaled project as a build-and-launch template.
+description: Scans GitHub, Show HN, Bluesky, and cv.inc hackathon galleries for independent small-build activity converging on the same problem — aggregate signal only. Never identifies one active builder's unscaled project as a build-and-launch template.
 ---
 
 Gathers sourced evidence of independent small-build activity (AI-assisted "vibe coded" or
@@ -73,13 +73,27 @@ independence-heuristic override.
    filter plainly in the output, and still inspect each remaining repo's README to confirm which
    hackathon, when, and by whom before citing it as evidence. Indie Hackers has no RSS/Atom feed
    (confirmed absent: `/rss` and `/feed` both 404, no feed `<link>` tag, nothing on `/about`) — there
-   is no benign alternative access path for that one; it stays fully out of scope.
-5. **Independence heuristic (v1 default — explicitly coarse, revisitable via `config/scope.md`)**:
+   is no benign alternative access path for that one; it stays fully out of scope. **GitLab and
+   Codeberg checked 2026-09-05 for the same GitHub-style topic/mention search and are both
+   excluded**: Codeberg's robots.txt names `anthropic-ai`/`ClaudeBot`/`Claude-Web` explicitly
+   (`Disallow: /`); GitLab's separate API Terms of Use (Section 1.3.9) bans "bulk collection or
+   scraping of information, including for repeated or systematic bulk exporting GitLab API Data" —
+   exactly what a topic/mention search across many repos would be. Do not attempt either.
+5. **cv.inc / cerebralvalley.ai hackathon galleries, scoped to `config/scope.md`'s category (added
+   2026-09-05).** Confirmed 2026-09-05: no ToS or robots.txt restriction (the one hackathon-listing
+   platform found so far that clears this bar — Devpost and AGI House are both confirmed blocked, see
+   `signal-discoverer.md` step 4). Pull `cerebralvalley.ai/events.md` (or the relevant feed) for
+   events matching the scope's category or date window, and where an event has a public gallery
+   (`.../hackathon/gallery.md`) in-window, treat each gallery entry as one build instance under the
+   independence heuristic below (distinct team/author, no shared upstream). Not every event publishes
+   a public gallery — treat one that doesn't as excluded-by-scope for this purpose, not blocked. Full
+   ToS citations: `examples/2026-09-05T213930Z-hackathon-signal-research/hackathon-signal-research.md`.
+6. **Independence heuristic (v1 default — explicitly coarse, revisitable via `config/scope.md`)**:
    count two builds as independent only if ALL of: distinct author/org handles; both created within
    the run's date window (default 12 months if unset); no direct fork/clone relationship to each
    other; no shared canonical upstream repo. State this default plainly in the output as a heuristic,
    not a validated methodology.
-6. Evidence is the repo/post URL, author handle, and creation date per instance. A pattern names the
+7. Evidence is the repo/post URL, author handle, and creation date per instance. A pattern names the
    count and the specific instances of independent attempts — never collapses them into an unsourced
    "many people are building this."
 

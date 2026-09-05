@@ -70,6 +70,19 @@ single shared `config/scope.md`).
     single-problem-shaped, and genuinely new this run, not a re-measurement of run 1) or #8
     (habit-tracking/journaling — 21 HN + 8 PH, same shape) are the cleaner candidates by this lens. Or
     wait for real elapsed time before a third discovery run. Awaiting user direction.
+12. ~~Source breadth round 2~~ — done 2026-09-05: cv.inc/cerebralvalley.ai added as a fourth source
+    to both `signal-discoverer.md` and `build-pattern-scanner.md` (only one of three hackathon
+    platforms checked — Devpost, cv.inc, AGI House — that clears ToS; verified three independent
+    ways). GitLab and Codeberg checked as Bolt/v0/Lovable mention-search substitutes and excluded
+    (GitLab's separate API Terms of Use bans bulk/systematic scraping; Codeberg's robots.txt names
+    `anthropic-ai`/`ClaudeBot`/`Claude-Web` explicitly) — GitHub's existing `topic:hackathon`/
+    `topic:bolt`/`topic:lovable` queries remain the only compliant path. Startup/indie-project
+    registries (`startups.gallery`/`betalist.com`/`uneed.best`/`wip.co`) researched and ranked but not
+    wired into any spec — thinner per-listing content than HN/GitHub. `.gitignore` broadened from
+    `discovery/*-categories.md` to `discovery/*.md`. Both research passes archived under `examples/`.
+13. **In progress, not yet landed**: a further source-breadth pass surveying SourceHut, MLH, Kaggle,
+    Hugging Face, the YC company directory, and others. Update item 12 (or add a new item) once it
+    reports back — don't leave it stranded as its own untracked thread.
 
 ## Watch-outs
 

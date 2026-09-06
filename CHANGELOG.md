@@ -7,6 +7,17 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- Hugging Face Spaces added as a fifth source to `signal-discoverer.md` and `build-pattern-scanner.md`
+  — a public, unauthenticated `/api/spaces` JSON endpoint with zero scrape/crawl/AI-training language
+  anywhere in its ToS (independently raw-verified). One sampled hackathon org (603 independently-
+  submitted Spaces, 22 collections, one theme/sponsor list/judging rubric) is a richer convergence
+  corpus than cv.inc's own 102-team example. Also checked and excluded: SourceHut (robots.txt names
+  `ClaudeBot` explicitly), Kaggle (website and its official API both — no separate API terms exist),
+  the Y Combinator company directory, and Stack Overflow/Stack Exchange (website and API, via a
+  separately-incorporated Acceptable Use Policy) — all confirmed blocked at primary source. Major
+  League Hacking clears ToS but wasn't added: a directory/certification layer only, with real content
+  living on each member hackathon's separate, unchecked external domain. Archived at
+  `examples/2026-09-05T233231Z-additional-sources-research/`.
 - `cv.inc`/`cerebralvalley.ai` hackathon listings added as a fourth source to both
   `signal-discoverer.md` (Phase 0: event/theme clustering, sponsor "what we're looking for" language
   as demand signal) and `build-pattern-scanner.md` (Phase 1: public hackathon galleries as

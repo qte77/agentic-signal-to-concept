@@ -80,9 +80,14 @@ single shared `config/scope.md`).
     registries (`startups.gallery`/`betalist.com`/`uneed.best`/`wip.co`) researched and ranked but not
     wired into any spec — thinner per-listing content than HN/GitHub. `.gitignore` broadened from
     `discovery/*-categories.md` to `discovery/*.md`. Both research passes archived under `examples/`.
-13. **In progress, not yet landed**: a further source-breadth pass surveying SourceHut, MLH, Kaggle,
-    Hugging Face, the YC company directory, and others. Update item 12 (or add a new item) once it
-    reports back — don't leave it stranded as its own untracked thread.
+13. ~~Further source-breadth pass~~ — done 2026-09-05: Hugging Face Spaces added as a fifth source to
+    both spec files (public `/api/spaces` endpoint, zero scrape/AI-training language, independently
+    verified; one sampled hackathon org's 603 Spaces beat cv.inc's own 102-team example). SourceHut,
+    Kaggle (website + API), the YC company directory, and Stack Overflow/Stack Exchange (website +
+    API) are all confirmed blocked — Kaggle and Stack Exchange each needed a second pass to catch an
+    incorporated Acceptable Use Policy the first pass missed. Major League Hacking clears ToS but
+    wasn't added (directory layer only, real content on unchecked external per-event domains).
+    Archived at `examples/2026-09-05T233231Z-additional-sources-research/`.
 
 ## Watch-outs
 

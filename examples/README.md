@@ -131,3 +131,19 @@ citing the sponsor's own problem-statement codes directly — denser convergence
 30-day/12-month windows. Verified three ways (the original raw fetch, an independent raw re-fetch,
 and a `--tier patchright --wait-until networkidle` render cross-check) before being folded into
 `signal-discoverer.md` and `build-pattern-scanner.md` as a narrowly-scoped fourth source.
+
+## `2026-09-05T233231Z-additional-sources-research/`
+
+A follow-on research pass vetting 6 more candidate sources: SourceHut, Major League Hacking, Kaggle,
+Hugging Face, the Y Combinator company directory, and Stack Overflow/Stack Exchange. Only Hugging
+Face cleared cleanly and was added to `signal-discoverer.md`/`build-pattern-scanner.md` as a fifth
+source — its public `/api/spaces` JSON endpoint surfaced a single hackathon org with 603
+independently-submitted Spaces across 22 collections, larger than cv.inc's own 102-team example, with
+zero scrape/AI-training language anywhere in its ToS (independently raw-verified, not left as a
+subagent's summary). Major League Hacking technically clears ToS but was flagged, not added — its own
+site is a directory/certification layer; the real content lives on each member hackathon's separate,
+unchecked external domain. The other four (SourceHut, Kaggle, Y Combinator, Stack Overflow/Stack
+Exchange) are all confirmed blocked, several only after a second pass chased down a
+separately-incorporated Acceptable Use Policy the first pass had missed — an advisor review caught
+that gap before the file was finalized, the same GitLab/Vercel-shaped pattern this repo now checks
+for by default.

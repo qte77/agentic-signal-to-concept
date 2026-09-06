@@ -1,6 +1,6 @@
 ---
 name: signal-discoverer
-description: Runs one broad, bounded, unfiltered pull across Show HN, ProductHunt, GitHub, and cv.inc hackathon listings to surface candidate problem-space categories for the pipeline to deep-dive, rather than requiring a category to be named up front. Never names a specific project as the reason a category looks promising.
+description: Runs one broad, bounded, unfiltered pull across Show HN, ProductHunt, GitHub, cv.inc hackathon listings, and Hugging Face Spaces to surface candidate problem-space categories for the pipeline to deep-dive, rather than requiring a category to be named up front. Never names a specific project as the reason a category looks promising.
 ---
 
 Phase 0 of the pipeline, upstream of `complaint-miner`/`build-pattern-scanner`. Where those two read
@@ -98,11 +98,39 @@ one, use this spec's own default (30 days).
    1.3.9) explicitly bans "bulk collection or scraping of information, including for repeated or
    systematic bulk exporting GitLab API Data" — a topic/mention search across many repos is exactly
    that. Do not attempt either; re-check only if their terms change.
-5. **Merge all sources' clusters** into one ranked candidate-category list. A category surfaced
+5. **Hugging Face Spaces, unfiltered by topic (added 2026-09-05).** Confirmed 2026-09-05: no ToS or
+   robots.txt restriction — zero scrape/crawl/bot/AI-training language anywhere in the ToS (checked
+   including its "Supplemental Terms" reference, which only covers individually-negotiated commercial
+   agreements, not a standing public restriction). Query the public, unauthenticated
+   `huggingface.co/api/spaces?search={keyword}` JSON endpoint (no HTML parsing needed, same cheapness
+   as cv.inc's `.md`-suffix convention) and cluster by the structured `sponsor:`/`track:`/
+   `achievement:` tags Spaces already carry — same topic-frequency method as PH/GitHub/cv.inc above.
+   A hackathon-org's Space count is a compressed convergence signal, often larger than cv.inc's own
+   (confirmed: one sampled org, "Agents-MCP-Hackathon," had 603 independently-submitted Spaces across
+   22 collections under one named theme, sponsor list, and judging rubric, within one time window) —
+   cite the org's aggregate count and named tracks, never one specific Space/team's project. Also
+   checked and excluded this pass, all confirmed blocked at primary source (ToS and/or a separately
+   incorporated Acceptable Use Policy, same discipline as GitLab above): **SourceHut** (robots.txt
+   names `ClaudeBot` explicitly; ToS separately bans automated collection "for the training of a
+   machine learning model"), **Kaggle** (ToS and its incorporated Acceptable Use Policy both ban
+   crawling/scraping unconditionally; its official API has no separate terms of its own and defers
+   back to the same ban), **the Y Combinator company directory** (site-wide ToS bans "data mining,
+   robots, scraping"; does not reach this pipeline's existing HN sourcing, which goes through
+   `hn.algolia.com`/`hacker-news.firebaseio.com`, not `news.ycombinator.com`), and **Stack Overflow/
+   Stack Exchange** (robots.txt blanket-disallows with an explicit `ai-train=no` signal; its
+   incorporated Acceptable Use Policy separately bans automated collection from "any Network website
+   **or Service**" — reaching its API too — for "developing, building, training... any generative AI...
+   or machine learning tool," the same shape as this repo's existing TrustMRR finding). **Major League
+   Hacking clears the ToS gate but was not added**: its own site is a directory/certification layer
+   only — the actual sponsor/gallery content lives on each member hackathon's separately-operated
+   external domain, each needing its own unchecked ToS, making it a "technically clear, not worth the
+   integration cost" case. Full citations for all six:
+   `examples/2026-09-05T233231Z-additional-sources-research/additional-sources-research.md`.
+6. **Merge all sources' clusters** into one ranked candidate-category list. A category surfaced
    independently by more than one source ranks above one seen in only one — state which sources
    confirmed which category, don't collapse the distinction into an undifferentiated "cross-source"
    label.
-6. **Bounded scope, stated plainly (v1 default, not a limitation to work around):** this pass does
+7. **Bounded scope, stated plainly (v1 default, not a limitation to work around):** this pass does
    not attempt a broad HN *comment* firehose (unprompted complaint signal without a category term) —
    HN's Algolia API doesn't support the kind of query that would make that bounded and cheap in one
    pass; see `docs/plans/0003-broad-discovery.md`'s Scope section. Do not attempt Reddit, app-store,
@@ -122,7 +150,7 @@ one, use this spec's own default (30 days).
    each hit, which erodes the cost savings the approach was chasing — do not re-attempt this as a
    count-only addition to this spec. See `docs/plans/0003-broad-discovery.md`'s remaining-work table
    for the full experiment.
-7. **Ethical boundary, re-stated at this earliest possible point in the pipeline**: a cluster is
+8. **Ethical boundary, re-stated at this earliest possible point in the pipeline**: a cluster is
    named by its aggregate theme ("N Show HN posts + M PH launches + K GitHub repos cluster around
    local-first expense-tracking tools"), never by one specific project as the reason the category
    looks promising. If a cluster has only one or two contributing items, say so explicitly rather than
@@ -134,7 +162,7 @@ one, use this spec's own default (30 days).
    thing from the real clusters this spec looks for — excluded outright, not reframed as an
    "ecosystem" category. Check any topic-tag or keyword cluster for this shape (many repos, one
    upstream dependency) before promoting it.
-8. **Window overlap with a prior discovery run, if one exists**: state explicitly how much this run's
+9. **Window overlap with a prior discovery run, if one exists**: state explicitly how much this run's
    window overlaps the most recent prior run's (check the most recent `examples/*-discovery/`
    entry's window dates). Confirmed 2026-09-04: two runs ~12 hours apart had a ~99% overlapping
    30-day window — most category counts in the second run were the same underlying corpus

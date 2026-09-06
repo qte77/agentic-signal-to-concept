@@ -1,6 +1,6 @@
 ---
 name: build-pattern-scanner
-description: Scans GitHub, Show HN, Bluesky, and cv.inc hackathon galleries for independent small-build activity converging on the same problem — aggregate signal only. Never identifies one active builder's unscaled project as a build-and-launch template.
+description: Scans GitHub, Show HN, Bluesky, cv.inc hackathon galleries, and Hugging Face Spaces for independent small-build activity converging on the same problem — aggregate signal only. Never identifies one active builder's unscaled project as a build-and-launch template.
 ---
 
 Gathers sourced evidence of independent small-build activity (AI-assisted "vibe coded" or
@@ -88,12 +88,27 @@ independence-heuristic override.
    independence heuristic below (distinct team/author, no shared upstream). Not every event publishes
    a public gallery — treat one that doesn't as excluded-by-scope for this purpose, not blocked. Full
    ToS citations: `examples/2026-09-05T213930Z-hackathon-signal-research/hackathon-signal-research.md`.
-6. **Independence heuristic (v1 default — explicitly coarse, revisitable via `config/scope.md`)**:
+6. **Hugging Face Spaces, scoped to `config/scope.md`'s category (added 2026-09-05).** Confirmed
+   2026-09-05: no ToS or robots.txt restriction — zero scrape/crawl/bot/AI-training language, checked
+   including its "Supplemental Terms" reference (individually-negotiated commercial agreements only,
+   not a standing public restriction). Query the public, unauthenticated
+   `huggingface.co/api/spaces?search={scope keyword}` JSON endpoint and treat each returned Space as
+   one build instance under the independence heuristic below (distinct author/org, no shared
+   upstream). Where Spaces carry a shared `sponsor:`/`track:`/`achievement:` tag cluster within the
+   scope's date window, cite the aggregate count and named track, never one specific Space as the
+   build target — same discipline as a GitHub topic cluster. Also checked and excluded this pass:
+   SourceHut, Kaggle (website and its official API), the Y Combinator company directory, and Stack
+   Overflow/Stack Exchange (website and API) — all confirmed blocked at primary source, several via a
+   separately-incorporated Acceptable Use Policy (same GitLab/Vercel-shaped pattern). Major League
+   Hacking clears ToS but wasn't added: its own site is a directory layer only, real content lives on
+   each member hackathon's separately-operated, unchecked external domain. Full citations:
+   `examples/2026-09-05T233231Z-additional-sources-research/additional-sources-research.md`.
+7. **Independence heuristic (v1 default — explicitly coarse, revisitable via `config/scope.md`)**:
    count two builds as independent only if ALL of: distinct author/org handles; both created within
    the run's date window (default 12 months if unset); no direct fork/clone relationship to each
    other; no shared canonical upstream repo. State this default plainly in the output as a heuristic,
    not a validated methodology.
-7. Evidence is the repo/post URL, author handle, and creation date per instance. A pattern names the
+8. Evidence is the repo/post URL, author handle, and creation date per instance. A pattern names the
    count and the specific instances of independent attempts — never collapses them into an unsourced
    "many people are building this."
 

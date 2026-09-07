@@ -5,6 +5,19 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ## [Unreleased]
 
+### Added
+
+- Patent databases (old/current/expired) researched as a potential idea source and **not wired into
+  any spec**. Both hypotheses (expired patents as public-domain ideas; active filings as demand
+  signal) confirmed real against sampled content, but not compliantly automatable as a discovery
+  step — the only credential-free paths (individual Google Patents pages, EPO's Publication Server)
+  allow known-patent-number lookups only, since robots.txt disallows Google Patents' search surface.
+  Every searchable path is owner-gated, and USPTO's Open Data Portal now requires ID.me identity
+  verification for an API key (confirmed 2026-06–08) — a materially higher-friction gate than any
+  credential this pipeline has used; EPO OPS (free, self-service OAuth2) is the lower-friction
+  alternative, flagged as a real decision point for the repo owner rather than defaulted. Archived at
+  `examples/2026-09-07T043304Z-patent-signal-research/`.
+
 ### Changed
 
 - `docs/plans/0002-signal-to-concept-v1.md` and `docs/plans/0003-broad-discovery.md` each merged

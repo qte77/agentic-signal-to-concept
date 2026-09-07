@@ -106,6 +106,21 @@ requested (real daily volume is 431–1,331 posts, so this run's PH sample is ~2
 correctly reported as a sample); GitHub's `stars:>500` threshold (216 repos, after `stars:>250`
 returned too many at 510) kept the pull in the low-hundreds range the spec asks for.
 
+## `2026-09-07T043304Z-patent-signal-research/`
+
+A research pass testing whether patent databases (old/current/expired) could serve as a new idea
+source. Both hypotheses tested — expired patents as public-domain ideas, active filings as
+demand/investment signal — held up against real sampled content (Apple's US8046721B2, expired;
+US11556230B2, active to 2035; a 2024 Salesforce EPO filing), and CPC classification codes proved a
+stronger clustering primitive than GitHub/PH topics. **Not wired into any spec**: the only
+credential-free paths (individual Google Patents pages, EPO's Publication Server) allow known-number
+lookups only — robots.txt explicitly disallows Google Patents' search surface, so neither can
+*discover* candidates by category. Every path that can search is owner-gated, and USPTO's gate is now
+unusually steep (ID.me identity verification, confirmed 2026-06–08) compared to this pipeline's
+existing credentials — flagged as a real decision point for the repo owner, not defaulted. The file
+demonstrates the patent-family risk with a real sourced example: the sampled expired patent's own
+family list shows a related patent still marked Active.
+
 ## `2026-09-05T204416Z-startup-registries/`
 
 A one-off research pass (not a `signal-discoverer` run) testing whether public startup/indie-project

@@ -44,18 +44,19 @@ project's license status or public visibility. The tool answers "does a real gap
 
 ## Status
 
-**v1 agent specs shipped and running for real; a Phase 0 discovery pass now finds candidate
-categories instead of requiring one named up front.** `.claude/agents/{complaint-miner,
-build-pattern-scanner,concept-synthesizer}.md` plus a new `signal-discoverer.md` (Phase 0), an
-`AGENTS.md` orchestrator, and a ported `scripts/verify_sourcing.py` exist. The full 3-phase pipeline
-has run twice against a shared scope (`pkm-tools`), producing this repo's first concept candidates —
-see [`examples/`](examples/) for the archived runs and [`candidates/`](candidates/) for the
-candidates. `signal-discoverer` has also run for real, surfacing 8 candidate categories from a broad,
-unfiltered pull — see [`docs/plans/0003-broad-discovery.md`](docs/plans/0003-broad-discovery.md).
-See [`docs/plans/0002-signal-to-concept-v1.md`](docs/plans/0002-signal-to-concept-v1.md) for the
-original pipeline's build plan, and [`docs/plans/0001-concept.md`](docs/plans/0001-concept.md) for
-the original concept and what's still genuinely open (Reddit's OAuth API terms, deferred
-build-pattern sub-sources).
+**Both pipeline modes shipped and running for real** (see `AGENTS.md`'s "Two modes"):
+**horizontal** (`signal-discoverer`, Phase 0) finds candidate categories from a broad, unfiltered
+pull — now across five sources (Show HN, ProductHunt, GitHub, cv.inc hackathon listings, Hugging
+Face Spaces) — without one being named up front; **vertical** (`complaint-miner` +
+`build-pattern-scanner` → `concept-synthesizer`) deep-dives one named category. Five concept
+candidates exist so far — see [`candidates/`](candidates/) and [`examples/`](examples/) for the
+archived runs behind them. `signal-discoverer` has run twice for real (9 candidate categories in its
+most recent run); three categories from its first run were deep-dived in parallel via git worktrees.
+See [`docs/plans/0003-broad-discovery.md`](docs/plans/0003-broad-discovery.md) for the current arc
+(source breadth, calibration findings, what's next), [`docs/plans/0002-signal-to-concept-v1.md`](docs/plans/0002-signal-to-concept-v1.md)
+for the original pipeline's build plan, and [`docs/plans/0001-concept.md`](docs/plans/0001-concept.md)
+for the original concept and what's still genuinely open (Reddit's OAuth API terms, TrustMRR
+outreach).
 
 ## Running or extending this
 

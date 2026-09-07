@@ -1,60 +1,112 @@
 # 0003 — agentic-signal-to-concept: categoryless discovery + parallel category runs
 
-## Status
+## Current status and what's next, in order
 
-**Full arc complete same session (2026-09-04): discovery ran, categories were picked, all three
-verticals ran end-to-end, and a calibration check compared prediction to outcome.**
-`signal-discoverer.md` exists and has run for real (8 categories promoted, 2 rejected as grab-bags,
-archived at `examples/2026-09-04T060617Z-discovery/`). The user confirmed the recommended default
-(#1 agent memory, #3 terminal/session UX, #5 freelancer finance) and asked for horizontal/vertical to
-be named modes (done, see `AGENTS.md`). All three ran as parallel git worktrees — the first real
-exercise of this repo's standing worktree rule — producing 3 new concept candidates (`Contextlint`,
-`Vigil`/`Overflow`, `Freehold Finance`/`Upfront Terms`) and a genuinely useful negative result: raw
-discovery-stage signal count did not reliably predict vertical-mode yield (see the calibration row
-below). Two follow-on ideas from mid-arc discussion were deferred with tracking issues rather than
-built ([#19](https://github.com/qte77/agentic-signal-to-concept/issues/19) semantic clustering,
-[#20](https://github.com/qte77/agentic-signal-to-concept/issues/20) trend-aware recurring runs).
-**Source breadth done**: GitHub added as a third discovery source (no new access/ToS cost, reuses
-`build-pattern-scanner`'s existing `gh` CLI auth), researched and ranked against BetaList (no ban,
-no API — outreach candidate) and GH Archive (real next tier, needs BigQuery or raw-JSON parsing).
-**Second discovery run done**, first to exercise GitHub for real: 9 categories (up from 8), a new
-ethical-boundary case caught and correctly excluded (a single project's plugin ecosystem, not
-independent convergence), and two real corrections folded back into the spec (PH's `first`-capped-
-at-20 behavior; explicit window-overlap reporting against the prior run, since the two runs turned
-out ~99% overlapping). Archived at `examples/2026-09-04T081918Z-discovery/`.
-**Alpha/beta reframing (2026-09-05)**: user pushed back that discovery's top-ranked categories are
-"already crowded" and asked for decision-ready alpha/beta picks instead of more categories. Root
-cause identified: `signal-discoverer`'s three sources (Show HN titles, PH launches, GitHub repos) are
-all supply-side/build signal — discovery's rank is a build-volume ranking, which is why the
-calibration check above never correlated with vertical yield (yield is driven by complaint intensity,
-a variable discovery never measured). A same-session experiment to close that gap cheaply (HN
-Algolia comment-count as a demand proxy) was tested and falsified — see the new remaining-work row
-below. **Working conclusion**: alpha detection stays a two-stage process, not a one-shot automation —
-horizontal flags low-count/single-source-leaning categories as cheap tentative alpha candidates (no
-new implementation needed, just reading the existing ranked list differently); vertical mode's real
-sourced quotes remain the only reliable demand confirmation. Beta (a differentiated angle inside an
-already-crowded category) is vertical-only by nature — it requires reading what existing builds
-actually do, which no aggregate count can reveal.
-**Next real step**: pick a category using the low-count/single-source lens above (see remaining-work
-table) rather than the raw top-of-list rank, or wait longer before a third discovery run (to get real
-window separation per the overlap lesson above).
-**Source breadth, round 2 (2026-09-05)**: three research passes tested whether additional public
-registries/platforms offer signal this pipeline doesn't already have. Startup/indie-project
-registries (`startups.gallery`/`betalist.com`/`uneed.best`/`wip.co`) were researched and ranked for
-ROI/feasibility but not wired into any spec (see remaining-work table). Hackathon content was tested
-against Devpost/cv.inc/AGI House — only `cv.inc` cleared ToS and was added as a fourth source to
-`signal-discoverer.md` and `build-pattern-scanner.md`; GitLab and Codeberg were also checked as
-substitutes for the already-blocked Bolt.new/v0/Lovable ecosystem-mention search and are both
-excluded (GitLab's separate API Terms of Use bans bulk/systematic scraping; Codeberg's robots.txt
-explicitly disallows `anthropic-ai`/`ClaudeBot`/`Claude-Web`) — GitHub's existing `topic:hackathon`/
-`topic:bolt`/`topic:lovable` queries remain the only compliant path for that signal. A further pass
-surveying more candidate sources (SourceHut, MLH, Kaggle, Hugging Face, YC directory, Stack
-Overflow/Stack Exchange) landed: **Hugging Face Spaces added as a fifth source** (public
-`/api/spaces` endpoint, zero scrape/AI-training language, independently verified — richer sampled
-content than cv.inc's own example). SourceHut, Kaggle, YC directory, and Stack Overflow/Stack
-Exchange are all confirmed blocked (Kaggle and Stack Exchange each needed a second pass to catch a
-separately-incorporated Acceptable Use Policy the first pass missed). MLH clears ToS but wasn't added
-— directory layer only, real content lives on each event's separate, unchecked external domain.
+The user asked twice in one session (2026-09-04) for genuinely categoryless discovery, not a
+hand-picked list of categories to choose from. This arc adds a new Phase 0 (`signal-discoverer`)
+that does one broad, bounded pull (now five sources: Show HN, ProductHunt, GitHub, cv.inc hackathon
+listings, Hugging Face Spaces — no topic filter) and clusters it into candidate categories — the
+existing 3-agent pipeline (`docs/plans/0002-signal-to-concept-v1.md`) still runs per-category
+afterward, unchanged. Parallel execution across chosen categories uses git worktrees, this repo's
+own standing rule that was never actually load-bearing until this arc (every prior run used the
+shared working tree with no real collision, since a single category's two Phase-1 agents write to
+two different filenames — N *categories* running concurrently would collide on the single shared
+`config/scope.md`).
+
+1. ~~Write `.claude/agents/signal-discoverer.md`~~ — done 2026-09-04.
+2. ~~Add `discovery/README.md` + `.gitignore` entry~~ — done 2026-09-04.
+3. ~~Update `AGENTS.md`: Phase 0 + worktree-requirement~~ — done 2026-09-04.
+4. ~~Run `signal-discoverer` for real once~~ — done 2026-09-04: Show HN fully covered (3,670 titles,
+   6-bucket pull), ProductHunt narrower than intended (one calendar day, root-caused and folded back
+   into the spec — see the remaining-work table). 8 categories promoted, 2 rejected as grab-bags.
+   Archived at `examples/2026-09-04T060617Z-discovery/`.
+5. ~~Owner gate~~ — done 2026-09-04: user confirmed the recommended default (#1 agent memory, #3
+   terminal/session UX, #5 freelancer finance), and separately asked for horizontal/vertical to be
+   named pipeline modes (done — see `AGENTS.md`'s "Two modes" section).
+6. ~~Parallel worktree runs~~ — done 2026-09-04: three worktrees
+   (`../asc-agent-memory`, `../asc-terminal-ux`, `../asc-freelancer-finance`), full 3-agent pipeline
+   in each, merged back via one PR per category. Produced 3 candidates: `Contextlint` (agent-memory),
+   `Vigil`/`Overflow` (terminal-ux), `Freehold Finance`/`Upfront Terms` (freelancer-finance). Real
+   gap hit and fixed: `.env` isn't carried by `git worktree add` (gitignored) — now an explicit
+   pre-dispatch step in `AGENTS.md`.
+7. ~~Calibration check~~ — done 2026-09-04, per explicit user request: compared discovery's rank to
+   actual vertical yield. Did not hold on raw volume (see the remaining-work table for the full
+   comparison) — a genuinely useful negative result for interpreting future discovery ranks, not a
+   bug to fix.
+8. ~~Source breadth~~ — done 2026-09-04: GitHub added as a third discovery source (no new access/ToS
+   cost, reuses `build-pattern-scanner`'s `gh` CLI auth exactly). BetaList and GH Archive researched
+   and tracked as next-tier/owner-gated rather than built (see the remaining-work table).
+9. ~~Second real `signal-discoverer` run (first with GitHub)~~ — done 2026-09-04: 9 categories (up
+   from 8), 5 rejected. Caught and correctly excluded a new kind of finding — a single project's
+   plugin ecosystem (33 repos, all for `deepseek-ai/deepseek-harness`) that looked cluster-shaped but
+   wasn't independent convergence; folded into the spec's ethical-boundary section as a worked
+   example. Two more corrections folded back: PH's `first`-capped-at-20 behavior, and explicit
+   window-overlap reporting (this run's window turned out ~99% overlapping the first run's, ~12h
+   apart — most counts were the same corpus re-measured, one category was genuinely new). Archived
+   at `examples/2026-09-04T081918Z-discovery/`.
+10. ~~Alpha/beta reframing~~ — done 2026-09-05, per explicit user pushback that discovery's top
+    categories are "already crowded." Root cause: discovery's three sources (at the time) were all
+    supply-side/build signal, so its rank measures build volume, not demand — which is also why the
+    calibration check (item 7) never correlated with vertical yield. A cheap-automation fix (HN
+    Algolia comment-count as a demand proxy) was tested and falsified — see the remaining-work table
+    for the exact queries and result. Resolution: alpha detection stays two-stage — horizontal flags
+    low-count/single-source-leaning categories as cheap tentative alpha candidates (no new
+    implementation needed), vertical mode's sourced quotes remain the only real demand confirmation.
+    Beta (a differentiated angle inside an already-crowded category, e.g. terminal-ux's unaddressed
+    "bookmark before crash" ask among 6 saturated `claude --resume` wrappers) is vertical-only by
+    nature — no aggregate count can reveal it.
+11. **Next real step, not yet decided**: two discovery runs now exist, giving real material toward
+    issue #20 (trend-aware recurring runs) once there's genuine time separation between runs — this
+    run's own note says spacing future runs further apart (or diffing `objectID`s against the prior
+    run) is needed before a velocity signal means anything. Otherwise: pick a category using the
+    low-count/single-source lens from item 10 — but filter out categories run 2's own text already
+    flags as heterogeneous form-factors rather than single problems (#3 MCP tooling, #5 local-first,
+    #9 macOS menu-bar all carry that explicit caveat, so their low counts don't mean low supply on a
+    real single problem). Run 2's #4 (job-search/interview-prep tooling — 21 HN + 12 PH, cross-source,
+    single-problem-shaped, and genuinely new this run, not a re-measurement of run 1) or #8
+    (habit-tracking/journaling — 21 HN + 8 PH, same shape) are the cleaner candidates by this lens. Or
+    wait for real elapsed time before a third discovery run. Awaiting user direction.
+12. ~~Source breadth round 2~~ — done 2026-09-05: cv.inc/cerebralvalley.ai added as a fourth source
+    to both `signal-discoverer.md` and `build-pattern-scanner.md` (only one of three hackathon
+    platforms checked — Devpost, cv.inc, AGI House — that clears ToS; verified three independent
+    ways). GitLab and Codeberg checked as Bolt/v0/Lovable mention-search substitutes and excluded
+    (GitLab's separate API Terms of Use bans bulk/systematic scraping; Codeberg's robots.txt names
+    `anthropic-ai`/`ClaudeBot`/`Claude-Web` explicitly) — GitHub's existing `topic:hackathon`/
+    `topic:bolt`/`topic:lovable` queries remain the only compliant path. Startup/indie-project
+    registries (`startups.gallery`/`betalist.com`/`uneed.best`/`wip.co`) researched and ranked but not
+    wired into any spec — thinner per-listing content than HN/GitHub. `.gitignore` broadened from
+    `discovery/*-categories.md` to `discovery/*.md`. Both research passes archived under `examples/`.
+13. ~~Further source-breadth pass~~ — done 2026-09-05: Hugging Face Spaces added as a fifth source to
+    both spec files (public `/api/spaces` endpoint, zero scrape/AI-training language, independently
+    verified; one sampled hackathon org's 603 Spaces beat cv.inc's own 102-team example). SourceHut,
+    Kaggle (website + API), the YC company directory, and Stack Overflow/Stack Exchange (website +
+    API) are all confirmed blocked — Kaggle and Stack Exchange each needed a second pass to catch an
+    incorporated Acceptable Use Policy the first pass missed. Major League Hacking clears ToS but
+    wasn't added (directory layer only, real content on unchecked external per-event domains).
+    Archived at `examples/2026-09-05T233231Z-additional-sources-research/`.
+
+## Watch-outs
+
+- **Discovery output is not sourced-quote evidence** — it's aggregate counts/clusters, a triage step.
+  Don't run `scripts/verify_sourcing.py` against it and don't expect it to pass the same bar as a
+  `findings/*.md` file; state this distinction in the spec so nobody mistakes a missing citation for
+  a bug.
+- **Ethical boundary applies at discovery too** — even at the "just clustering titles" stage, never
+  let a cluster collapse into naming one specific project as the reason a category looks promising.
+- **The worktree rule is finally load-bearing, not decorative** — get the per-worktree
+  `config/scope.md` write right (each worktree needs its own, since `config/scope.md` is gitignored
+  and won't exist in a fresh worktree checkout by default).
+- **This repo's Bash environment intentionally denies `ls`/`find`/version-probes** while allowing
+  substantive commands (`gh api`, `polyfetch fetch`, `uv run`) — dispatched agents need to be told
+  this explicitly and to use Read/Write tools for file checks instead. See
+  `docs/plans/0002-signal-to-concept-v1.md` item 6 for the fuller note — don't duplicate it there,
+  just don't forget it when briefing new subagents for this arc either.
+- **Raw `curl` for external network calls is also denied by this sandbox's classifier** (confirmed
+  2026-09-05) — use `polyfetch-scrape` for a raw fetch instead. A saved tool-output file also can't
+  be searched with `grep` in this sandbox — use a Python one-liner (`open(path).read()` +
+  `str.find`/keyword search) instead.
+- **This plan file used to pair with a separate `docs/handoffs/0003-broad-discovery.md`** — merged
+  into this single file 2026-09-07 per `unattended-execution.md`'s updated one-file-per-arc rule.
 
 ## Why this arc exists
 
@@ -81,9 +133,9 @@ Phase 1a+1b × N: complaint-miner + build-pattern-scanner   → N parallel git w
 Phase 2 × N:     concept-synthesizer                        → one candidate per category
 ```
 
-- **`signal-discoverer`** (new agent) — a single broad, lightly-filtered pull across HN Show HN
-  (unfiltered by topic, recent window) and ProductHunt (leaderboard/recent posts, unfiltered by
-  topic), clustered bottom-up into emergent candidate categories. Deliberately bounded in v1, not
+- **`signal-discoverer`** (new agent) — a single broad, lightly-filtered pull across five sources
+  (Show HN, ProductHunt, GitHub, cv.inc, Hugging Face Spaces — all unfiltered by topic, recent
+  window), clustered bottom-up into emergent candidate categories. Deliberately bounded in v1, not
   exhaustive (see Scope below) — KISS/YAGNI: enough to surface real candidates, not a research
   crawler. Ethical boundary applies here too, re-stated at this earliest possible point: output is
   category-level ("N posts cluster around local-first data tools"), never a specific project.
@@ -113,14 +165,22 @@ Phase 2 × N:     concept-synthesizer                        → one candidate p
   access/ToS work needed, reuses `build-pattern-scanner`'s existing GitHub auth pattern exactly. A
   star threshold (not a topic filter) bounds the pull, the GitHub equivalent of Show HN's Algolia
   cap.
+- **cv.inc / cerebralvalley.ai (added 2026-09-05)**: hackathon event/gallery listings, no ToS or
+  robots.txt restriction — the only one of three hackathon platforms checked (Devpost, cv.inc, AGI
+  House) that clears. See `signal-discoverer.md` step 4 for full detail.
+- **Hugging Face Spaces (added 2026-09-05)**: public `/api/spaces` JSON endpoint, no ToS or
+  robots.txt restriction. See `signal-discoverer.md` step 5 for full detail.
 - **Explicitly deferred, not attempted in v1**: a broad HN *comment* firehose (complaint-signal
-  search without a category term) — HN's Algolia API doesn't support the kind of broad boolean query
-  that would make this bounded and cheap in one pass; a real design needs its own pass, not a
-  same-arc bolt-on. Reddit/app-store/GitHub-issue discovery are out of scope for the same reason
-  categories were excluded from the v1 pipeline: each needs its own access/ToS check first. GH
-  Archive (`gharchive.org` — free, public, no usage restrictions found, the full GitHub public event
-  firehose) is a real candidate next source but needs either BigQuery credentials (owner-gated) or
-  raw hourly-JSON parsing (a real engineering lift) — tracked, not attempted in v1.
+  search without a category term) — HN's Algolia API doesn't support the kind of query that would
+  make that bounded and cheap in one pass; see this plan's Scope section above. Do not attempt
+  Reddit, app-store, or GitHub-issue discovery either — each needs its own access/ToS check first,
+  the same discipline `docs/plans/0001-concept.md` §1–§3 already applied to the existing pipeline's
+  sources. GH Archive (`gharchive.org` — free, public, no usage restrictions found, the full GitHub
+  public event firehose) is a real candidate next source but needs either BigQuery credentials
+  (owner-gated) or raw hourly-JSON parsing (a real engineering lift) — tracked, not attempted in v1.
+  GitLab, Codeberg, SourceHut, Kaggle, the YC company directory, and Stack Overflow/Stack Exchange
+  were all checked and excluded (see the remaining-work table); Major League Hacking clears ToS but
+  wasn't added (thin content, see the same table).
 - **Output cap**: 5–10 candidate categories per run, ranked by aggregate signal count (not a
   precision science — a coarse triage step, the same spirit as `build-pattern-scanner`'s "explicitly
   coarse v1 default" independence heuristic).
@@ -135,7 +195,7 @@ discovery/README.md                    (mirrors findings/README.md's shape)
 **Modified:**
 - `AGENTS.md` — add Phase 0 (discovery) ahead of Phase 1a/1b; document the worktree requirement for
   N-parallel-category runs now that it's load-bearing, not just standing-rule boilerplate.
-- `.gitignore` — add `discovery/*-categories.md` (gitignored working evidence, same treatment as
+- `.gitignore` — add `discovery/*.md` (gitignored working evidence, same treatment as
   `findings/*-findings.md` — a discovery run worth keeping permanently gets archived under
   `examples/`, same convention as every other run type).
 - `CONTRIBUTING.md` / `README.md` — status pointers once the new phase is real, not just planned.
@@ -149,11 +209,11 @@ discovery/README.md                    (mirrors findings/README.md's shape)
 | `AGENTS.md` Phase 0 + worktree-requirement update | **shipped** (2026-09-04) | Diagram updated; worktree requirement stated as load-bearing for N>1 parallel category runs, not just inherited boilerplate. |
 | First real `signal-discoverer` run | **shipped** (2026-09-04) | Real Show HN + PH pull, clustered into 8 candidate categories (2 rejected as grab-bags), `discovery/2026-09-04T060617Z-categories.md` written, archived at `examples/2026-09-04T060617Z-discovery/`. Two real corrections folded back into the spec: HN's actual volume (3,000-4,000+ titles/30d, not "a few hundred") and PH's daily-cohort timestamp behavior + working `postedAfter`/`postedBefore` filter (the spec had wrongly said PH has no date-range filter — corrected). |
 | Pick N categories from the first real discovery run | **shipped** (2026-09-04) | User confirmed the recommended default: #1 agent memory, #3 terminal/session UX, #5 freelancer finance. |
-| N parallel category runs via git worktrees | **shipped** (2026-09-04) | Three worktrees (`../asc-agent-memory`, `../asc-terminal-ux`, `../asc-freelancer-finance`), full 3-agent pipeline run in each — first real exercise of the standing worktree rule. Real gap found and fixed: `git worktree add` doesn't carry gitignored files, so a fresh worktree has no `.env` — all three categories' `complaint-miner` runs hit ProductHunt blocked as a result (timing: `.env` was copied in mid-run, after each had already checked). Consistent across all three, so no cross-category inconsistency, but worth fixing properly before the next multi-worktree run (see watch-outs in the handoff). Findings/candidates archived at `examples/2026-09-04T070136Z-agent-memory/`, `examples/2026-09-04T070138Z-terminal-ux/`, `examples/2026-09-04T070139Z-freelancer-finance/`; candidates at matching `candidates/*.md` paths. Merged back via one PR per category. |
+| N parallel category runs via git worktrees | **shipped** (2026-09-04) | Three worktrees (`../asc-agent-memory`, `../asc-terminal-ux`, `../asc-freelancer-finance`), full 3-agent pipeline run in each — first real exercise of the standing worktree rule. Real gap found and fixed: `git worktree add` doesn't carry gitignored files, so a fresh worktree has no `.env` — all three categories' `complaint-miner` runs hit ProductHunt blocked as a result (timing: `.env` was copied in mid-run, after each had already checked). Consistent across all three, so no cross-category inconsistency, but worth fixing properly before the next multi-worktree run (see watch-outs above). Findings/candidates archived at `examples/2026-09-04T070136Z-agent-memory/`, `examples/2026-09-04T070138Z-terminal-ux/`, `examples/2026-09-04T070139Z-freelancer-finance/`; candidates at matching `candidates/*.md` paths. Merged back via one PR per category. |
 | Calibration check: does discovery's rank predict vertical yield? | **shipped** (2026-09-04) | Compared discovery's qualitative rank (#1 > #3 > #5) against actual Phase 1 output volume. Result did **not** hold on raw volume: #3 terminal-ux (11 patterns, 72 sourced items, 50 build instances) outproduced #1 agent-memory (10 patterns, 71 items, 37 instances); #5 freelancer-finance had the lowest volume (10 patterns, 53 items, 28 instances) but produced the single most acute finding of any category — a PE-rollup pricing-shock complaint with 100+ comments and direct switching intent. **Read (n=3, suggestive not conclusive):** discovery's rank is a reasonable coarse breadth filter but doesn't predict richness *or* acuteness reliably — it measures convergence breadth, not the intensity of any single complaint thread, a distinct dimension it isn't designed to catch. Not a build item; noted here as calibration context for interpreting future discovery ranks. |
 | Broad HN comment-firehose discovery | deferred, genuine open gap | Not attempted in v1 — needs its own bounded-query design before it's cheap enough to run; don't add until that design exists. |
 | Semantic (embeddings-based) clustering | deferred, tracked at [issue #19](https://github.com/qte77/agentic-signal-to-concept/issues/19) | Not built — keyword/bigram frequency hasn't yet demonstrably missed a real cluster; build once there's a concrete miss to point at. |
-| Trend-aware / recurring discovery runs | deferred, tracked at [issue #20](https://github.com/qte77/agentic-signal-to-concept/issues/20) | Not built — only one real discovery run exists; needs 2-3 more over real elapsed time before a velocity signal is calibratable. |
+| Trend-aware / recurring discovery runs | deferred, tracked at [issue #20](https://github.com/qte77/agentic-signal-to-concept/issues/20) | Not built — only two real discovery runs exist, ~12h apart (~99% window overlap) — needs real elapsed time before a velocity signal is calibratable. |
 | Worktree `.env` gap: gitignored files aren't carried by `git worktree add` | **shipped** (2026-09-04) | `AGENTS.md`'s "Running more than one category at once" section now states copying `.env` into each worktree as an explicit pre-dispatch step, before any subagent is launched into it — closes the timing race this run hit (all three categories' `complaint-miner` runs found ProductHunt blocked because `.env` was copied in mid-run, after each had already checked). |
 | Source breadth: GitHub added to `signal-discoverer` | **shipped** (2026-09-04) | `signal-discoverer.md` step 3 added — broad `created:>X stars:>N sort:stars-desc` GitHub search, no new access/ToS work (reuses `build-pattern-scanner`'s existing `gh` CLI auth pattern exactly). Researched and ranked against 3 alternatives (GitHub's own unofficial "trending" page — no official API, not worth pursuing since this achieves the same signal legitimately; BetaList — no explicit ban but no public API/feed either, real next step is asking directly, not scraping; GH Archive — real candidate, but needs BigQuery credentials or raw-JSON parsing, bigger lift, tracked below). Confirmed working in the second real discovery run: `stars:>500` (216 repos) after `stars:>250` returned too many (510). |
 | Source breadth: BetaList outreach | deferred, owner | No explicit ToS ban found, but no public API/RSS either — a real email/outreach step, not an agent task, same shape as the still-open TrustMRR ask from `docs/plans/0001-concept.md`. |
@@ -166,8 +226,4 @@ discovery/README.md                    (mirrors findings/README.md's shape)
 | Hugging Face Spaces added as a fifth source | **shipped** (2026-09-05) | `signal-discoverer.md` step 5 and `build-pattern-scanner.md` step 6 both added — public `/api/spaces` JSON endpoint, zero scrape/crawl/bot/AI-training language in ToS (independently raw-verified, not left as a subagent summary). One sampled hackathon org (603 Spaces, 22 collections) is richer than cv.inc's own 102-team example. Archived at `examples/2026-09-05T233231Z-additional-sources-research/`. |
 | SourceHut / Kaggle / YC directory / Stack Overflow-Stack Exchange as additional sources | **checked, excluded** (2026-09-05) | All confirmed blocked at primary source: SourceHut (robots.txt names `ClaudeBot` explicitly; ToS separately bans ML-training use); Kaggle (ToS + incorporated Acceptable Use Policy ban crawling unconditionally; official API has no separate terms, defers to the same ban); YC company directory (site-wide ToS bans "data mining, robots, scraping"; doesn't reach this pipeline's existing HN sourcing via `hn.algolia.com`); Stack Overflow/Stack Exchange (robots.txt blanket-disallows with `ai-train=no`; incorporated Acceptable Use Policy bans automated collection "for developing, building, training... any generative AI... tool" from "any Network website or Service" — reaching its API too). Kaggle and Stack Exchange each needed a second pass to catch the incorporated AUP the first pass missed (caught by an internal advisor review before finalizing). Folded into both spec files so none are re-attempted. |
 | Major League Hacking as a source | **checked, not worth building against** (2026-09-05) | Clears ToS/robots.txt cleanly, but its own site (`mlh.com`) is a directory/certification layer only — sponsor challenge text, judging criteria, and project galleries all live on each member hackathon's separately-operated external domain (e.g. `hackrice.com`), each needing its own unchecked ToS. Flagged in both spec files as researched-and-declined, not silently dropped. |
-
-## Handoff
-
-See `docs/handoffs/0003-broad-discovery.md` for the onboarding-shaped version of this table and
-what's next in order.
+| Patent databases (old/new/expired) as an idea source | **in progress** | Dispatched as a research pass 2026-09-06 (`patent-signal-research`); not yet landed. Update this row, don't add a duplicate, once it reports back. |

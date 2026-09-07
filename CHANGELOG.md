@@ -5,6 +5,18 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ## [Unreleased]
 
+### Changed
+
+- `docs/plans/0002-signal-to-concept-v1.md` and `docs/plans/0003-broad-discovery.md` each merged
+  with their separate `docs/handoffs/*.md` file into a single plan file, per
+  `unattended-execution.md`'s updated one-file-per-arc rule (no more separate handoff ritual). Fixed
+  a real inconsistency found while merging: 0002's remaining-work table had two contradictory rows
+  for Bolt.new/v0-Vercel (one "shipped/resolved," one still "deferred, genuine open gap") — collapsed
+  into one accurate row. Also fixed two stale docs found in the same pass: `CONTRIBUTING.md` said
+  "the three subagent .md files" (there are four, since `signal-discoverer` shipped in arc 0003);
+  `README.md`'s Status section still said "8 candidate categories" and didn't mention cv.inc/Hugging
+  Face or the five shipped candidates.
+
 ### Added
 
 - Hugging Face Spaces added as a fifth source to `signal-discoverer.md` and `build-pattern-scanner.md`

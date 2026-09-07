@@ -76,8 +76,13 @@ one, use this spec's own default (30 days).
    scraping and explicitly defines "Platform" to include `app.agihouse.org`). cv.inc's own
    `llms.txt`/`llms-full.txt` and `.md`-suffix convention (`/e/{slug}.md`,
    `/e/{slug}/hackathon/gallery.md`) exist specifically for this kind of machine access — prefer
-   those over parsing rendered HTML. Pull recent/upcoming event listings and cluster by stated
-   theme/sponsor, same topic-frequency method as PH/GitHub above. A sponsor's "what we're looking
+   those over parsing rendered HTML. **Entry point, confirmed working 2026-09-07: start from
+   `cerebralvalley.ai/llms.txt`, which points at `llms-full.txt` (site overview + a curated
+   "Showcase" list) and `sitemap-md.xml` (every `/e/{slug}.md` event page with its own `lastmod`
+   timestamp) — filter `sitemap-md.xml` to events with `lastmod` inside the pull window, rather than
+   guessing at an events-listing path.** Skip obvious test/placeholder pages (e.g. a slug like
+   `sample-hackathon`) and pure-logistics meetups with no stated theme. Pull recent/upcoming event
+   listings and cluster by stated theme/sponsor, same topic-frequency method as PH/GitHub above. A sponsor's "what we're looking
    for" language and problem-statement taxonomy is itself signal — a company's own stated demand,
    categorically different from an inferred complaint. Where a hackathon's public gallery falls
    within the pull window, its aggregate team count is a compressed convergence signal in its own
@@ -108,8 +113,14 @@ one, use this spec's own default (30 days).
    A hackathon-org's Space count is a compressed convergence signal, often larger than cv.inc's own
    (confirmed: one sampled org, "Agents-MCP-Hackathon," had 603 independently-submitted Spaces across
    22 collections under one named theme, sponsor list, and judging rubric, within one time window) —
-   cite the org's aggregate count and named tracks, never one specific Space/team's project. Also
-   checked and excluded this pass, all confirmed blocked at primary source (ToS and/or a separately
+   cite the org's aggregate count and named tracks, never one specific Space/team's project. **Signal
+   richness is window-dependent, confirmed 2026-09-07: a later pull found only 7 in-window matches
+   out of 1,000 free-text "hackathon" hits and 0 out of 174 exact-tag matches (checked nine ways
+   total, including seven further keyword variants) — a real, multiply-verified finding about that
+   specific 30-day window, not a tooling failure or a reason to drop the source.** Report a thin
+   result plainly, the same four-state discipline as a blocked source, rather than implying the rich
+   603-Space corpus found in an earlier window generalizes to every pull. Also checked and excluded
+   this pass, all confirmed blocked at primary source (ToS and/or a separately
    incorporated Acceptable Use Policy, same discipline as GitLab above): **SourceHut** (robots.txt
    names `ClaudeBot` explicitly; ToS separately bans automated collection "for the training of a
    machine learning model"), **Kaggle** (ToS and its incorporated Acceptable Use Policy both ban
@@ -191,6 +202,14 @@ counterpart to share a timestamp with. Structure:
   source, cross-source vs. single-source flag, a one-paragraph rationale for why it looks like a real
   cluster rather than noise, and a plain-language pointer at what a `config/scope.md` for this
   category might say.
+
+**Also save each run's raw per-source ID lists** (GitHub `full_name`s, HN `objectID`s at minimum) to
+a file alongside the categories output — e.g. `discovery/<date-time-iso>-raw-ids.json` — not just the
+narrative summary. **Gap confirmed 2026-09-07**: without this, a later run can only compare aggregate
+shape (count, threshold, topic distribution) against a prior run, not a precise new-vs-re-measured
+per-item diff — the third real run hit this exact limitation trying to compare against the second,
+whose raw GitHub list was never saved anywhere in this repo. This raw-IDs file follows the same
+gitignore-then-archive-if-worthwhile treatment as the categories file itself.
 
 **No `scripts/verify_sourcing.py` requirement** — this file's content is aggregate counts and
 cluster rationale, not sourced quotes; that checker is scoped to blockquoted evidence, which this

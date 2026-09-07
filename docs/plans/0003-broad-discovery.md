@@ -92,9 +92,25 @@ two different filenames — N *categories* running concurrently would collide on
     (materially higher friction than any credential this pipeline has used); EPO OPS is free/
     self-service if this is ever pursued. See the remaining-work table for full detail. Archived at
     `examples/2026-09-07T043304Z-patent-signal-research/`.
-15. **Next real step**: run a third real `signal-discoverer` sweep — the source set has grown from
-    3 to 5 since the second run (2026-09-04), and there's now genuine time separation (~3 days) from
-    that run, addressing the window-overlap issue items 9/11 both flagged. In progress.
+15. ~~Third real `signal-discoverer` sweep~~ — done 2026-09-07, first to exercise all five sources.
+    90.4% window overlap with run 2 (vs. ~99% between runs 1/2) — enough separation to isolate a
+    genuine ~2.87-day fresh tail. 9 categories promoted (same count as run 2, all of run 2's
+    categories still present). **Standout finding**: cv.inc surfaced two independent MongoDB-sponsored
+    hackathons explicitly themed "agent memory/persistent context" (one completed in-window with a
+    94-team public gallery, independently verified — direct sponsor-stated-demand confirmation of the
+    #1 category HN/GitHub/PH have now surfaced three runs straight). Hugging Face Spaces came back
+    genuinely thin for this window (verified nine ways, not a tooling failure) — a real finding about
+    window-dependence, folded into the spec. Two methodology corrections folded back into
+    `signal-discoverer.md`: cv.inc's reliable entry point (`llms.txt` → `sitemap-md.xml`, not a
+    guessed events path) and a new Output requirement to save raw per-source ID lists (closes the
+    gap that blocked a precise repo-level diff against run 2 this time). Archived at
+    `examples/2026-09-07T050600Z-discovery/`.
+16. **Next real step, not yet decided**: category #1 (agent memory/persistent context) is now
+    confirmed across four sources over three runs, arguably past needing further discovery-stage
+    validation — a strong candidate for its own vertical-mode run if not already superseded by the
+    existing `Contextlint` candidate from the first vertical batch. Otherwise: keep watching for
+    genuinely new categories (this run had none) or wait longer before a fourth discovery run.
+    Awaiting user direction.
 
 ## Watch-outs
 
@@ -118,6 +134,15 @@ two different filenames — N *categories* running concurrently would collide on
   `str.find`/keyword search) instead.
 - **This plan file used to pair with a separate `docs/handoffs/0003-broad-discovery.md`** — merged
   into this single file 2026-09-07 per `unattended-execution.md`'s updated one-file-per-arc rule.
+- **A backgrounded shell process (`nohup ... &`) does not survive to the next Bash call in this
+  sandbox** — confirmed 2026-09-07: the third discovery run lost a full 30-query ProductHunt pull
+  cycle discovering this the hard way (the shell that launched it was torn down before it could
+  finish). Run long external-API pulls synchronously with a generous `timeout` instead of
+  backgrounding them.
+- **Archive each run's raw per-source ID lists, not just the narrative categories file** — the
+  third run couldn't do a precise repo-level diff against the second because the second's raw
+  GitHub list was never saved anywhere in this repo. `signal-discoverer.md`'s Output section now
+  asks for a `<date-time-iso>-raw-ids.json` alongside the categories file going forward.
 
 ## Why this arc exists
 
@@ -237,4 +262,5 @@ discovery/README.md                    (mirrors findings/README.md's shape)
 | Hugging Face Spaces added as a fifth source | **shipped** (2026-09-05) | `signal-discoverer.md` step 5 and `build-pattern-scanner.md` step 6 both added — public `/api/spaces` JSON endpoint, zero scrape/crawl/bot/AI-training language in ToS (independently raw-verified, not left as a subagent summary). One sampled hackathon org (603 Spaces, 22 collections) is richer than cv.inc's own 102-team example. Archived at `examples/2026-09-05T233231Z-additional-sources-research/`. |
 | SourceHut / Kaggle / YC directory / Stack Overflow-Stack Exchange as additional sources | **checked, excluded** (2026-09-05) | All confirmed blocked at primary source: SourceHut (robots.txt names `ClaudeBot` explicitly; ToS separately bans ML-training use); Kaggle (ToS + incorporated Acceptable Use Policy ban crawling unconditionally; official API has no separate terms, defers to the same ban); YC company directory (site-wide ToS bans "data mining, robots, scraping"; doesn't reach this pipeline's existing HN sourcing via `hn.algolia.com`); Stack Overflow/Stack Exchange (robots.txt blanket-disallows with `ai-train=no`; incorporated Acceptable Use Policy bans automated collection "for developing, building, training... any generative AI... tool" from "any Network website or Service" — reaching its API too). Kaggle and Stack Exchange each needed a second pass to catch the incorporated AUP the first pass missed (caught by an internal advisor review before finalizing). Folded into both spec files so none are re-attempted. |
 | Major League Hacking as a source | **checked, not worth building against** (2026-09-05) | Clears ToS/robots.txt cleanly, but its own site (`mlh.com`) is a directory/certification layer only — sponsor challenge text, judging criteria, and project galleries all live on each member hackathon's separately-operated external domain (e.g. `hackrice.com`), each needing its own unchecked ToS. Flagged in both spec files as researched-and-declined, not silently dropped. |
+| Third real `signal-discoverer` run (first with all 5 sources) | **shipped** (2026-09-07) | 9 categories promoted (same as run 2, all present again). cv.inc surfaced two MongoDB-sponsored "agent memory" hackathons (one with a 94-team public gallery, independently verified) — strongest cross-source confirmation of category #1 across three runs. Hugging Face came back thin for this window (verified nine ways). Two corrections folded back into `signal-discoverer.md`: cv.inc's `llms.txt`→`sitemap-md.xml` entry path, and a new Output requirement to archive raw per-source IDs (closes a diffing gap this run hit against run 2). Archived at `examples/2026-09-07T050600Z-discovery/`. |
 | Patent databases (old/new/expired) as an idea source | **researched, not wired in** (2026-09-07) | Both hypotheses (expired patents as public-domain ideas; active filings as demand/investment signal) confirmed real and distinct from this pipeline's existing sources against real sampled content (Apple's US8046721B2, expired; US11556230B2, active to 2035; a 2024 Salesforce EPO filing) — CPC codes are a stronger clustering primitive than GitHub/PH topics. **Not built as a discovery step**: the only credential-free paths (`patents.google.com` individual pages, EPO's Publication Server) allow known-patent-number lookups only — robots.txt explicitly disallows Google Patents' search surface, so neither can *discover* candidates by category, only enrich a number already in hand. Every path that *can* search (USPTO ODP, EPO OPS, Google Patents BigQuery) is owner-gated. **Real decision point for the repo owner, not a routine `.env` addition**: USPTO's Open Data Portal now requires a personal USPTO.gov account with MFA plus ID.me identity verification for an API key (confirmed, effective 2026-06 to 2026-08) — a materially higher-friction gate than any credential this pipeline has asked for. EPO OPS (free, self-service OAuth2, ~4M req/month, non-commercial/eval use) is the lower-friction alternative if this is ever pursued. Recommendation: direct API access over any MCP server (several exist, none official, none remove the underlying gate). Archived at `examples/2026-09-07T043304Z-patent-signal-research/`. |

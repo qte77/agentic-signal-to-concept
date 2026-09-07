@@ -162,3 +162,20 @@ Exchange) are all confirmed blocked, several only after a second pass chased dow
 separately-incorporated Acceptable Use Policy the first pass had missed — an advisor review caught
 that gap before the file was finalized, the same GitLab/Vercel-shaped pattern this repo now checks
 for by default.
+
+## `2026-09-07T050600Z-discovery/`
+
+The third real `signal-discoverer` run, the first to exercise all five sources (Show HN, ProductHunt,
+GitHub, cv.inc, Hugging Face Spaces) in one pass. 9 categories promoted — same count as run 2, every
+one of run 2's categories still present. 90.4% window overlap with run 2 (vs. ~99% between runs 1/2)
+gave a genuine ~2.87-day fresh tail to isolate real growth from re-measurement. Standout finding:
+cv.inc surfaced two independent MongoDB-sponsored hackathons explicitly themed "agent memory/
+persistent context" — one completed in-window with a 94-team public gallery (independently verified
+by fetching the gallery directly: "Projects: 94 (3 placed)") — direct sponsor-stated demand
+confirming the #1 category across three straight runs and four sources. Hugging Face Spaces came back
+genuinely thin for this specific window (7 of 1,000 free-text matches, 0 of 174 exact-tag matches,
+checked nine ways total) — a real, multiply-verified finding about window-dependence, not a tooling
+failure. Two methodology corrections folded back into `signal-discoverer.md`: cv.inc's reliable entry
+point (`llms.txt` → `sitemap-md.xml`, not a guessed events path) and a new Output requirement to
+archive raw per-source ID lists, closing a gap that blocked a precise repo-level diff against run 2
+this time (run 2's raw GitHub list was never saved).

@@ -7,8 +7,8 @@ See `README.md` for the concept and `AGENTS.md` for the orchestration commands. 
 
 ## Changing the method itself
 
-The three subagent `.md` files in `.claude/agents/` **are** the method — edit them directly rather
-than maintaining a separate spec. Keep them scope-agnostic: if a change only makes sense for one
+The subagent `.md` files in `.claude/agents/` **are** the method — edit them directly rather than
+maintaining a separate spec. Keep them scope-agnostic: if a change only makes sense for one
 specific run, it belongs in that run's `config/scope.md`, not here. The ethical boundary in
 `build-pattern-scanner.md` is load-bearing — any edit to that spec must preserve it, not just avoid
 contradicting it.

@@ -7,6 +7,19 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- Third real `signal-discoverer` run, the first to exercise all five sources in one pass. 9
+  categories promoted (same as run 2, all present again). Standout finding: cv.inc surfaced two
+  independent MongoDB-sponsored hackathons explicitly themed "agent memory/persistent context" (one
+  completed in-window with a 94-team public gallery, independently verified) — direct sponsor-stated
+  demand confirming the #1 category across three straight runs and four sources. Hugging Face Spaces
+  came back genuinely thin for this window, verified nine ways (a real finding about
+  window-dependence, not a tooling failure). Two corrections folded back into `signal-discoverer.md`:
+  cv.inc's reliable entry point (`llms.txt` → `sitemap-md.xml`, not a guessed events path) and a new
+  Output requirement to archive raw per-source ID lists (closes a diffing gap this run hit trying to
+  compare against run 2, whose raw GitHub list was never saved). `docs/plans/0003-broad-discovery.md`
+  also gained two new watch-outs: backgrounded shell processes (`nohup ... &`) don't survive to the
+  next Bash call in this sandbox, and per-run raw IDs should be archived going forward. Archived at
+  `examples/2026-09-07T050600Z-discovery/`.
 - Patent databases (old/current/expired) researched as a potential idea source and **not wired into
   any spec**. Both hypotheses (expired patents as public-domain ideas; active filings as demand
   signal) confirmed real against sampled content, but not compliantly automatable as a discovery

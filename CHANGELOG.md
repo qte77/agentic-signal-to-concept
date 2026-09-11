@@ -7,6 +7,23 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- New standalone naming phase, `name-brand-vetter` (`docs/plans/0004-name-brand-vetting.md`): generates
+  candidate product names from a concept (this repo's own `candidates/*.md` or an external one) and
+  vets them through the user's own taxonomy — Build/Say/Picture/Travel/Market-easy judgment, then a
+  two-tier clearance pass (cheap RDAP `.com` + GitHub check on every candidate; an expensive PR-launch
+  sweep — web search, USPTO trademark search, RDAP TLD spread, GitHub, EUIPO-if-credentialed, and a
+  manual social-handle checklist — on 2-3 finalists only). A dedicated research pass
+  (`examples/2026-09-11T200013Z-naming-sources-research/`) answered the load-bearing access question
+  first: USPTO's *trademark* search UI is confirmed **not** gated by the ID.me identity verification
+  the earlier patent research found on USPTO's *patent* Open Data Portal — only the separate TSDR bulk
+  API (not used by this spec) has an uncertain, unresolved gate. EUIPO's website is blocked but its API
+  is free/low-friction; WIPO's Global Brand Database is blocked (technical + ToS) and excluded
+  entirely; RDAP is free with a confirmed `.io`/`.co`/`.me` coverage gap (DNS fallback documented);
+  social-handle availability is confirmed blocked on X and Instagram, so it's a manual/owner checklist
+  item, never automated. New `config/name.example.md`, `names/README.md`, `.gitignore` entries, and an
+  `AGENTS.md` "Naming a concept" section (runnable standalone, not gated on the rest of the pipeline).
+  Carries a not-legal-advice disclaimer throughout, mirroring the patent-research precedent. First real
+  test run against an existing candidate is still pending.
 - Third real `signal-discoverer` run, the first to exercise all five sources in one pass. 9
   categories promoted (same as run 2, all present again). Standout finding: cv.inc surfaced two
   independent MongoDB-sponsored hackathons explicitly themed "agent memory/persistent context" (one

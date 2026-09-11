@@ -1,6 +1,6 @@
 # agentic-signal-to-concept — orchestration
 
-## Two modes
+## Two modes, plus a standalone naming phase
 
 - **Horizontal mode** — "what should we look into?" `signal-discoverer` alone: one broad, unfiltered
   pull across sources, no category named up front, output is a ranked candidate-category list. No
@@ -8,6 +8,9 @@
 - **Vertical mode** — "here's the category, go deep." The original 3-agent pipeline
   (`complaint-miner` + `build-pattern-scanner` → `concept-synthesizer`) against one named category in
   `config/scope.md`. See `docs/plans/0002-signal-to-concept-v1.md`.
+- **Naming phase** — "what do we call it?" `name-brand-vetter` alone, run any time after a concept
+  exists (this repo's own or external). Not gated on horizontal/vertical mode having just run — it
+  reads `config/name.md`, not `config/scope.md`. See `docs/plans/0004-name-brand-vetting.md`.
 
 A full run is typically horizontal once, then vertical once per category chosen from its output — but
 either mode runs standalone: skip horizontal when the category is already known; run horizontal
@@ -65,6 +68,17 @@ Run `scripts/verify_sourcing.py` against both findings files and the candidate f
 candidate downstream, copy its Name / Assumed ICPs into
 `agentic-grounded-persona-eval`'s `config/target.md` — its Live URL stays "Not yet built," so the
 candidate feeds that repo's Phases 1–2 only, not its live-evaluation Phase 3.
+
+## Naming a concept
+
+Once a concept exists (`candidates/*-candidate.md` from this repo, or an external one), run
+`name-brand-vetter` standalone: copy `config/name.example.md` to `config/name.md`, point it at the
+concept (Option A: this repo's candidate path; Option B: a standalone description — never this
+repo's own concept and an external one in the same run), and set the **Output ownership** field.
+**External concepts (e.g. sfclarity/sfsanity) must never have their naming-run output committed to
+this repo's tracked `names/`/`examples/`** — see the standing sfclarity/sfsanity boundary; the run
+itself is fine, only the output placement differs. See `.claude/agents/name-brand-vetter.md` for the
+full two-tier (cheap filter / PR-launch sweep) design.
 
 ## Worktree rule
 

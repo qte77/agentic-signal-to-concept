@@ -22,8 +22,21 @@ All notable changes to agentic-signal-to-concept. Format follows
   social-handle availability is confirmed blocked on X and Instagram, so it's a manual/owner checklist
   item, never automated. New `config/name.example.md`, `names/README.md`, `.gitignore` entries, and an
   `AGENTS.md` "Naming a concept" section (runnable standalone, not gated on the rest of the pipeline).
-  Carries a not-legal-advice disclaimer throughout, mirroring the patent-research precedent. First real
-  test run against an existing candidate is still pending.
+  Carries a not-legal-advice disclaimer throughout, mirroring the patent-research precedent.
+- First real `name-brand-vetter` run, against the `Contextlint`/agent-memory candidate: 24 candidates
+  generated, 19 through Tier 1, 6 shortlisted, 3 finalists swept. Finalist **Memolint** — follows the
+  recognizable `-lint` dev-tool convention and matches the concept's actual positioning; "Contextlint"
+  itself was cut at Tier 1 for a heavy GitHub collision, showing the taxonomy converges independently
+  rather than rubber-stamping the input candidate's working title. **Most consequential finding**: the
+  run's first pass reported USPTO Trademark Search as "no results found" for all three finalists via a
+  guessed deep-link URL, caught as a false positive only by a positive-control check against a term
+  certain to have live marks (the query parameter was silently ignored, rendering the same empty-results
+  shell regardless of input) — every finalist's USPTO status is correctly recorded as unverified, not
+  cleared. Nine real tooling corrections folded back into `.claude/agents/name-brand-vetter.md`, most
+  importantly demoting USPTO Trademark Search from an automated check to a manual/owner checklist item
+  (its failure mode was silent and actively misleading, not merely blocked) — plus GitHub API method/
+  rate-limit/flag fixes, RDAP 404 handling, and previously-undocumented TLD-lookup mechanisms. Archived
+  at `examples/2026-09-11T203709Z-contextlint-names/`.
 - Third real `signal-discoverer` run, the first to exercise all five sources in one pass. 9
   categories promoted (same as run 2, all present again). Standout finding: cv.inc surfaced two
   independent MongoDB-sponsored hackathons explicitly themed "agent memory/persistent context" (one

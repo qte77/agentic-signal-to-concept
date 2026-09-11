@@ -25,10 +25,20 @@ unattended pass reasonably can clear it.
    excluded from both), not-legal-advice section.
 4. ~~`config/name.example.md`, `names/README.md`, `.gitignore` entries, `AGENTS.md` update~~ — done
    2026-09-11.
-5. **Next**: first real test run against the strongest existing candidate (agent-memory /
-   `Contextlint` — confirmed across all 4 relevant sources over three discovery runs, see
-   `docs/plans/0003-broad-discovery.md` item 16).
-6. **Owner gate throughout**: any run whose concept input is sfclarity/sfsanity-owned must not have its
+5. ~~First real test run against `Contextlint`/agent-memory~~ — done 2026-09-11:
+   `examples/2026-09-11T203709Z-contextlint-names/`. Finalist **Memolint** (follows the recognizable
+   `-lint` dev-tool convention; "Contextlint" itself was cut at Tier 1 for a heavy GitHub collision,
+   proving the taxonomy converges independently rather than rubber-stamping the input candidate's
+   working title). Real tooling gaps hit and folded back into `.claude/agents/name-brand-vetter.md`:
+   most importantly, **USPTO Trademark Search is now a manual/owner checklist item, not automated** —
+   the run's first pass reported false "no results" for all three finalists (a guessed deep-link URL
+   silently ignores its own query parameter), caught only by a positive-control check against a term
+   certain to have live marks. Eight smaller corrections (GitHub API method/rate-limit/flags, RDAP
+   404 handling, undocumented TLD-lookup mechanisms) also folded in. Every finalist's USPTO status is
+   correctly recorded as unverified, not cleared, in the archived output.
+6. **Next**: docs audit close-out (CHANGELOG/README, already mostly done inline as this arc shipped —
+   confirm nothing's stale) and mark this arc closed once confirmed.
+7. **Owner gate throughout**: any run whose concept input is sfclarity/sfsanity-owned must not have its
    output committed to this repo's tracked `names/`/`examples/` — see the `sfc-sfs-boundary` memory
    and the Output section below. This repo's own naming runs (against its own `candidates/`) follow the
    normal gitignore-then-archive-to-`examples/` path.
@@ -139,5 +149,5 @@ discovery/<ts>-naming-sources-research.md   (research pass, not yet run — see 
 | `config/name.example.md` | **shipped** (2026-09-11) | Copy-and-fill template exists, mirrors `config/scope.example.md`'s shape, includes required Output ownership field. |
 | `names/README.md` + `.gitignore` entry | **shipped** (2026-09-11) | File exists; `names/*.md` and `config/name.md` gitignored, matching `findings/`/`discovery/` treatment. |
 | `AGENTS.md` update | **shipped** (2026-09-11) | New phase documented in "Two modes, plus a standalone naming phase" + a new "Naming a concept" section, explicitly runnable standalone, external-output-ownership rule stated. |
-| First real test run (against `Contextlint`/agent-memory candidate) | agent | Real tier-1 + tier-2 pass run end-to-end, output written and reviewed, spec corrections (if any) folded back in, same discipline as every prior first-real-run in this repo's history. |
-| Docs audit (CHANGELOG/README/CONTRIBUTING/issues) | agent | Updated once the above ships, per this repo's per-milestone discipline. |
+| First real test run (against `Contextlint`/agent-memory candidate) | **shipped** (2026-09-11) | Real Tier-1 + Tier-2 pass run end-to-end (24 candidates → 19 through Tier 1 → 6 shortlisted → 3 finalists swept). Finalist **Memolint**. Output archived at `examples/2026-09-11T203709Z-contextlint-names/`. Nine real spec corrections folded back into `.claude/agents/name-brand-vetter.md`, most importantly demoting USPTO Trademark Search from an automated Tier-2 check to a manual/owner checklist item after a positive-control test proved its automated render silently fabricated "no results" regardless of query. |
+| Docs audit (CHANGELOG/README/CONTRIBUTING/issues) | **shipped** (2026-09-11) | `CHANGELOG.md`, `examples/README.md`, and this plan file all updated in the same PR as the spec corrections; `README.md`/`CONTRIBUTING.md` already current from the prior PR, no further change needed. No new GitHub issue opened — the USPTO gap is fully resolved in-spec (manual step), not a tracked open item. |

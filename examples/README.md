@@ -181,6 +181,28 @@ checking is confirmed blocked on X (raw-verified) and Instagram (WebSearch-corro
 such rather than treated as equally verified) — both become a manual/owner checklist item, not an
 automated step, in the new spec.
 
+## `2026-09-11T203709Z-contextlint-names/`
+
+The first real end-to-end run of `name-brand-vetter` (arc 0004), against the `Contextlint`/agent-memory
+candidate. 24 candidates generated (compound/suffix/metaphor), 5 cut at Say/Picture, 19 through Tier 1,
+6 shortlisted, 3 finalists (Memolint, Memoprune, Instructwatch) got the full Tier-2 sweep. Finalist:
+**Memolint** — follows the recognizable `-lint` dev-tool convention (ESLint, Pylint, markdownlint) and
+matches the concept's actual "flag/audit, don't auto-delete" positioning, unlike runner-up Memoprune's
+"prune" (implies autonomous deletion, overstates the concept). "Contextlint" itself (the candidate's
+working title) was cut at Tier 1 for a heavy GitHub collision — the taxonomy independently converged on
+the same `-lint` naming pattern but landed on a cleaner, unclaimed name.
+
+**Most consequential finding, caught by an advisor review, not the run's own first pass**: the run
+initially reported USPTO Trademark Search as "no results found" for all three finalists via a guessed
+deep-link URL — a positive control against `query=nike` (a term certain to have live marks) returned
+the byte-identical page, proving the `?query=` parameter was silently ignored and every render was the
+same empty-results shell, not an executed search. USPTO trademark status for all three finalists is
+correctly recorded as **unverified, not cleared**. This and eight other real tooling gaps hit during
+execution (a wrong-HTTP-method GitHub API call, an unstated GitHub rate limit, RDAP 404 handling,
+undocumented TLD-lookup mechanisms) are folded back into `.claude/agents/name-brand-vetter.md` — most
+importantly, USPTO Trademark Search is now a manual/owner checklist item, not an automated check,
+since its failure mode was silent and actively misleading rather than merely blocked.
+
 ## `2026-09-07T050600Z-discovery/`
 
 The third real `signal-discoverer` run, the first to exercise all five sources (Show HN, ProductHunt,

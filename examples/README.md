@@ -163,6 +163,24 @@ separately-incorporated Acceptable Use Policy the first pass had missed — an a
 that gap before the file was finalized, the same GitLab/Vercel-shaped pattern this repo now checks
 for by default.
 
+## `2026-09-11T200013Z-naming-sources-research/`
+
+A research pass for arc 0004 (`docs/plans/0004-name-brand-vetting.md`) testing access to every source
+the new `name-brand-vetter` spec's Clear/PR-launch-sweep sections need. The load-bearing question:
+does USPTO's **trademark** search share the ID.me identity-verification gate
+`2026-09-07T043304Z-patent-signal-research/` found on USPTO's *patent* Open Data Portal? **No** — the
+Trademark Search/TSDR public UI is confirmed open for individual lookups, no login required; only the
+separate TSDR bulk API needs a key, and whether that key's current issuance needs ID.me is genuinely
+unresolved (not guessed either way). EUIPO's own website is blocked (robots.txt + a blanket TDM
+copyright opt-out) but its official API is free/self-service/low-friction; WIPO's Global Brand
+Database is blocked by both an active technical captcha and a PATENTSCOPE-shaped ToS clause — excluded
+from the new spec entirely. RDAP is free/unauthenticated for domain existence and age, with a
+confirmed coverage gap on `.io`/`.co`/`.me` (DNS-delegation fallback documented, with its weaker
+"registered" vs. "available" asymmetry stated explicitly). GitHub is already clear. Social-handle
+checking is confirmed blocked on X (raw-verified) and Instagram (WebSearch-corroborated, flagged as
+such rather than treated as equally verified) — both become a manual/owner checklist item, not an
+automated step, in the new spec.
+
 ## `2026-09-07T050600Z-discovery/`
 
 The third real `signal-discoverer` run, the first to exercise all five sources (Show HN, ProductHunt,

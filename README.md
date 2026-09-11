@@ -55,7 +55,11 @@ in its most recent run, holding steady since run 2); three categories from its f
 deep-dived in parallel via git worktrees. The most recent run's standout finding: a sponsor
 (MongoDB) funding two hackathons explicitly themed around agent/coding-agent memory — direct
 stated-demand confirmation of the category that's topped all three discovery runs.
-See [`docs/plans/0003-broad-discovery.md`](docs/plans/0003-broad-discovery.md) for the current arc
+A new standalone phase, `name-brand-vetter`, vets candidate product names against a two-tier
+clearance pass (cheap filter on every generated name; an expensive USPTO/EUIPO/RDAP/GitHub "PR-launch
+sweep" on 2-3 finalists only) — runnable any time a concept exists, this repo's own or an external
+one. See [`docs/plans/0004-name-brand-vetting.md`](docs/plans/0004-name-brand-vetting.md) for the
+current arc, [`docs/plans/0003-broad-discovery.md`](docs/plans/0003-broad-discovery.md) for discovery
 (source breadth, calibration findings, what's next), [`docs/plans/0002-signal-to-concept-v1.md`](docs/plans/0002-signal-to-concept-v1.md)
 for the original pipeline's build plan, and [`docs/plans/0001-concept.md`](docs/plans/0001-concept.md)
 for the original concept and what's still genuinely open (Reddit's OAuth API terms, TrustMRR

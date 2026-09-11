@@ -9,8 +9,10 @@ Thumbs.db
 
 # Run-specific config and working evidence — see config/scope.example.md, findings/README.md
 config/scope.md
+config/name.md
 findings/*-findings.md
 discovery/*.md
+names/*.md
 
 # Secrets — see .env.example
 .env

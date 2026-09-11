@@ -12,21 +12,20 @@ in one finalist name that is memorable, ownable, and cleared (category/trademark
 unattended pass reasonably can clear it.
 
 1. ~~Plan file 0004~~ — this file, done 2026-09-11.
-2. **Next**: dispatch a research pass (same rigor/format as
-   `examples/2026-09-07T043304Z-patent-signal-research/`) answering the one fact that changes this
-   spec's shape most: does USPTO's **trademark** search (Trademark Search / TSDR / Trademark Center)
-   share the same ID.me identity-verification gate the patent-signal-research pass found on USPTO's
-   *patent* Open Data Portal (ODP)? Also check EUIPO eSearch, WIPO Global Brand Database, RDAP (domain
-   existence + creation-date "age" lookup), TLD-spread checking, GitHub (expected already-clear, reuses
-   `build-pattern-scanner`'s existing `gh` CLI auth), and social-handle-availability checking (expected
-   ToS-blocked on most platforms — confirm, don't assume).
-3. **Then**: write `.claude/agents/name-brand-vetter.md` per the two-tier design below, structured
-   around the user's own taxonomy headers verbatim (not reinvented), with a not-legal-advice disclaimer
-   mirroring the patent-research precedent.
-4. **Then**: `config/name.example.md` (standalone input template), `names/README.md` +
-   `.gitignore` entry (working-output convention, same shape as `discovery/`/`findings/`), `AGENTS.md`
-   update (new phase, runnable standalone).
-5. **Then**: first real test run against the strongest existing candidate (agent-memory /
+2. ~~Naming-sources research pass~~ — done 2026-09-11: `discovery/2026-09-11T200013Z-naming-sources-research.md`.
+   **Answer to the load-bearing question**: USPTO trademark search's public UI (`tmsearch.uspto.gov`/
+   `tsdr.uspto.gov`) is confirmed **not** gated by ID.me/login for individual lookups — a materially
+   different (and better) access state than USPTO's patent ODP. The separate TSDR *bulk API* does
+   require a key, and whether current key issuance needs ID.me is genuinely uncertain (not resolved) —
+   the new spec avoids that API entirely, using the UI only, so this doesn't block anything today. Full
+   per-source verdicts (EUIPO, WIPO, RDAP, TLD spread, GitHub, social handles) in the file itself.
+3. ~~`.claude/agents/name-brand-vetter.md` spec~~ — done 2026-09-11, structured around the user's own
+   taxonomy headers verbatim, two-tier design (RDAP `.com` + GitHub in Tier 1; web search + USPTO UI +
+   RDAP TLD spread + GitHub + EUIPO-if-credentialed + social-handles-as-owner-checklist in Tier 2; WIPO
+   excluded from both), not-legal-advice section.
+4. ~~`config/name.example.md`, `names/README.md`, `.gitignore` entries, `AGENTS.md` update~~ — done
+   2026-09-11.
+5. **Next**: first real test run against the strongest existing candidate (agent-memory /
    `Contextlint` — confirmed across all 4 relevant sources over three discovery runs, see
    `docs/plans/0003-broad-discovery.md` item 16).
 6. **Owner gate throughout**: any run whose concept input is sfclarity/sfsanity-owned must not have its
@@ -135,10 +134,10 @@ discovery/<ts>-naming-sources-research.md   (research pass, not yet run — see 
 | Item | Gate | Done-when |
 |---|---|---|
 | Plan file 0004 | **shipped** (2026-09-11) | This file exists with status, design, source map, remaining-work table. |
-| Naming-sources research pass (USPTO Trademark/TSDR ID.me question, EUIPO, WIPO Global Brand Database, RDAP, TLD spread, GitHub, social handles) | agent | `discovery/<ts>-naming-sources-research.md` written and archived, same found/blocked/owner-gated rigor as the patent-research precedent; the USPTO trademark-vs-patent ID.me question explicitly answered, not assumed either way. |
-| `.claude/agents/name-brand-vetter.md` spec | agent | File exists: Input (repo candidate OR standalone config), taxonomy-mapped sections (Build/Say/Picture/Travel/Market-easy/Clear/PR-launch sweep/Finalist), two-tier design encoded, not-legal-advice disclaimer, ethical boundary re-stated. |
-| `config/name.example.md` | agent | Copy-and-fill template exists, mirrors `config/scope.example.md`'s shape. |
-| `names/README.md` + `.gitignore` entry | agent | File exists; `names/*.md` gitignored, matching `findings/`/`discovery/` treatment. |
-| `AGENTS.md` update | agent | New phase documented, positioned after `concept-synthesizer`, explicitly runnable standalone. |
+| Naming-sources research pass (USPTO Trademark/TSDR ID.me question, EUIPO, WIPO Global Brand Database, RDAP, TLD spread, GitHub, social handles) | **shipped** (2026-09-11) | `discovery/2026-09-11T200013Z-naming-sources-research.md` written, same found/blocked/owner-gated rigor as the patent-research precedent. USPTO trademark UI confirmed not ID.me-gated (the load-bearing question); TSDR bulk API's current gate strength left explicitly uncertain, not guessed. EUIPO website blocked/API owner-gated-free; WIPO GBD blocked (technical + ToS); RDAP found free (with a confirmed `.io`/`.co`/`.me` coverage gap, DNS fallback documented); GitHub already clear; X blocked (raw-verified), Instagram blocked (WebSearch-corroborated only, flagged as such). Archived below. |
+| `.claude/agents/name-brand-vetter.md` spec | **shipped** (2026-09-11) | File exists: Input (repo candidate OR standalone config), taxonomy-mapped sections (Build/Say/Picture/Travel/Market-easy/Clear/PR-launch sweep/Finalist), two-tier design encoded per the research pass's recommendation, not-legal-advice section, ethical boundary re-stated. |
+| `config/name.example.md` | **shipped** (2026-09-11) | Copy-and-fill template exists, mirrors `config/scope.example.md`'s shape, includes required Output ownership field. |
+| `names/README.md` + `.gitignore` entry | **shipped** (2026-09-11) | File exists; `names/*.md` and `config/name.md` gitignored, matching `findings/`/`discovery/` treatment. |
+| `AGENTS.md` update | **shipped** (2026-09-11) | New phase documented in "Two modes, plus a standalone naming phase" + a new "Naming a concept" section, explicitly runnable standalone, external-output-ownership rule stated. |
 | First real test run (against `Contextlint`/agent-memory candidate) | agent | Real tier-1 + tier-2 pass run end-to-end, output written and reviewed, spec corrections (if any) folded back in, same discipline as every prior first-real-run in this repo's history. |
 | Docs audit (CHANGELOG/README/CONTRIBUTING/issues) | agent | Updated once the above ships, per this repo's per-milestone discipline. |

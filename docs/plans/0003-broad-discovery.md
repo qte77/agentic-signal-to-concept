@@ -105,12 +105,26 @@ two different filenames — N *categories* running concurrently would collide on
     guessed events path) and a new Output requirement to save raw per-source ID lists (closes the
     gap that blocked a precise repo-level diff against run 2 this time). Archived at
     `examples/2026-09-07T050600Z-discovery/`.
-16. **Next real step, not yet decided**: category #1 (agent memory/persistent context) is now
+16. ~~Vertical run on discovery category #4 (job search/application tooling)~~ — done 2026-09-11: the
+    user picked category #4 from run 2/3's ranked list (cross-source, confirmed genuinely new in run 2,
+    unchanged ranking through run 3 — not yet vertically explored, unlike category #1). Full 3-agent
+    pipeline run for real: `complaints-findings.md` (HN only, 7 patterns, 24 quotes — ProductHunt
+    blocked by a new subagent-env-isolation gap, distinct from the worktree `.env`-copying issue, now
+    documented in `AGENTS.md`) and `builds-findings.md` (GitHub + Show HN + HF Spaces corroboration, 5
+    patterns, 35 cited instances — the densest convergence this pipeline has found to date, including
+    two GitHub repos independently verified at 71,287 and 41,844 stars). Synthesized candidate
+    **Signoff** (`candidates/2026-09-11T220526Z-job-search-tooling-candidate.md`) draws exactly one
+    candidate from five distinct build shapes the evidence surfaced — three heavily-saturated shapes
+    (resume tailoring, tracking dashboards, interview prep, 23 combined instances with zero matching
+    complaints-side pull) were read as a saturation warning and explicitly excluded rather than
+    inflated into extra candidates. Archived at `examples/2026-09-11T220526Z-job-search-tooling/`.
+17. **Next real step, not yet decided**: category #1 (agent memory/persistent context) is now
     confirmed across four sources over three runs, arguably past needing further discovery-stage
     validation — a strong candidate for its own vertical-mode run if not already superseded by the
-    existing `Contextlint` candidate from the first vertical batch. Otherwise: keep watching for
-    genuinely new categories (this run had none) or wait longer before a fourth discovery run.
-    Awaiting user direction.
+    existing `Contextlint`/`Memolint` candidate from the first vertical batch. Category #8
+    (habit-tracking/journaling) is the next clean single-problem-shaped candidate by the low-count/
+    single-source lens, not yet explored. Otherwise: keep watching for genuinely new categories or wait
+    longer before a fourth discovery run. Awaiting user direction.
 
 ## Watch-outs
 

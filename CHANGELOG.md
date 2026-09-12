@@ -7,6 +7,19 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- Fourth vertical-mode run, the first picked directly from an existing `signal-discoverer` output
+  rather than a fresh discovery pass: category #4 ("AI-assisted job search and application tooling,"
+  confirmed genuinely new in discovery run 2 and unchanged through run 3). `complaints-findings.md`
+  (HN only — ProductHunt blocked by a new subagent-environment-isolation gap, distinct from the
+  worktree `.env`-copying issue, both now documented in `AGENTS.md`; 7 patterns, 24 sourced quotes)
+  and `builds-findings.md` (GitHub + Show HN + HF Spaces corroboration; 5 patterns, 35 cited
+  independent instances — the densest convergence this pipeline has found to date, including two
+  GitHub repos independently verified at 71,287 and 41,844 stars). Synthesized candidate **Signoff**
+  draws exactly one candidate from five distinct build shapes the evidence surfaced — three
+  heavily-saturated shapes (resume tailoring, tracking dashboards, interview prep; 23 combined
+  instances with zero matching complaints-side pull) were read as a saturation warning and explicitly
+  excluded rather than inflated into extra candidates. Archived at
+  `examples/2026-09-11T220526Z-job-search-tooling/`.
 - New standalone naming phase, `name-brand-vetter` (`docs/plans/0004-name-brand-vetting.md`): generates
   candidate product names from a concept (this repo's own `candidates/*.md` or an external one) and
   vets them through the user's own taxonomy — Build/Say/Picture/Travel/Market-easy judgment, then a

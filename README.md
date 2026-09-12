@@ -48,13 +48,15 @@ project's license status or public visibility. The tool answers "does a real gap
 **horizontal** (`signal-discoverer`, Phase 0) finds candidate categories from a broad, unfiltered
 pull — now across five sources (Show HN, ProductHunt, GitHub, cv.inc hackathon listings, Hugging
 Face Spaces) — without one being named up front; **vertical** (`complaint-miner` +
-`build-pattern-scanner` → `concept-synthesizer`) deep-dives one named category. Five concept
+`build-pattern-scanner` → `concept-synthesizer`) deep-dives one named category. Six concept
 candidates exist so far — see [`candidates/`](candidates/) and [`examples/`](examples/) for the
 archived runs behind them. `signal-discoverer` has run three times for real (9 candidate categories
-in its most recent run, holding steady since run 2); three categories from its first run were
-deep-dived in parallel via git worktrees. The most recent run's standout finding: a sponsor
-(MongoDB) funding two hackathons explicitly themed around agent/coding-agent memory — direct
-stated-demand confirmation of the category that's topped all three discovery runs.
+in its most recent run, holding steady since run 2); four categories have been deep-dived so far,
+three from the first run in parallel via git worktrees plus a fourth (job search/application
+tooling) picked directly from the existing discovery output. The most recent discovery run's
+standout finding: a sponsor (MongoDB) funding two hackathons explicitly themed around agent/
+coding-agent memory — direct stated-demand confirmation of the category that's topped all three
+discovery runs.
 A new standalone phase, `name-brand-vetter`, vets candidate product names against a two-tier
 clearance pass (cheap filter on every generated name; an expensive USPTO/EUIPO/RDAP/GitHub "PR-launch
 sweep" on 2-3 finalists only) — runnable any time a concept exists, this repo's own or an external

@@ -51,14 +51,18 @@ full generated list — see `docs/plans/0004-name-brand-vetting.md`'s two-tier d
    §Recommendation):
    - **Category clash** — judgment: does the name already mean something else prominent in the
      concept's stated category? (Not a trademark search — that's Tier 2.)
-   - **`.com` availability via RDAP** — `rdap.verisign.com/com/v1/domain/<name>.com` (no auth; a 404
-     response means unregistered/available, a 200 with an `events` array means taken). **Tooling
-     note, confirmed 2026-09-11**: `polyfetch fetch ... --json` on an RDAP 404 exits non-zero and
-     returns an error object, not a plain success payload — treat that as the "available" signal
-     itself, don't expect a 200-shaped JSON body. Pin `--tier httpx --max-attempts 1` so a correctly-
-     terminal 404 doesn't trigger a slower-tier fallback retry. Reading the `registration` event's
-     date on a *taken* name is optional context, not required — skip it for candidates already cut on
-     this check alone unless time allows a follow-up `--show-body` fetch.
+   - **`.com` availability via RDAP** — look up `.com`'s current RDAP base URL from the IANA bootstrap
+     registry (`data.iana.org/rdap/dns.json`, the same mechanism Tier 2's TLD spread uses below), then
+     query `<base>/domain/<name>.com` — **do not hardcode a specific registry's RDAP host** (e.g.
+     `rdap.verisign.com`); the bootstrap is the source of truth and registry operators can change, so a
+     hardcoded absolute URL silently goes stale. A 404 response means unregistered/available, a 200
+     with an `events` array means taken. **Tooling note, confirmed 2026-09-11**: `polyfetch fetch
+     ... --json` on an RDAP 404 exits non-zero and returns an error object, not a plain success
+     payload — treat that as the "available" signal itself, don't expect a 200-shaped JSON body. Pin
+     `--tier httpx --max-attempts 1` so a correctly-terminal 404 doesn't trigger a slower-tier fallback
+     retry. Reading the `registration` event's date on a *taken* name is optional context, not
+     required — skip it for candidates already cut on this check alone unless time allows a follow-up
+     `--show-body` fetch.
    - **GitHub name collision** — `gh search repos <name> --match name --limit 10 --json
      fullName,description,stargazersCount,updatedAt` (the `--match name` flag matters: a bare `gh
      search repos <name>` also matches descriptions/READMEs, noisy for a common word) and `gh api -X

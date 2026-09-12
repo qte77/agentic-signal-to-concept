@@ -52,6 +52,21 @@ nothing to do with the token itself. Confirmed the hard way (2026-09-04): copyin
 dispatching left a timing race that blocked ProductHunt in all three worktrees of that run anyway.
 Copy it as part of worktree setup, before Phase 1 launches, every time.
 
+**A second, distinct `.env`/ProductHunt gap, confirmed 2026-09-11 — same working tree, no worktree
+involved.** A `complaint-miner` subagent dispatched via the Agent tool found `PRODUCTHUNT_API_TOKEN`
+unset in its own process environment even though the token *is* genuinely configured in the shared
+`.env` (confirmed directly by the orchestrating session) — the subagent's shell doesn't inherit it,
+and the subagent is separately blocked by this sandbox's own permission layer from reading `.env`
+directly (Read tool, Python `open()`, and `uv run --env-file .env` were all refused). This is not the
+worktree-copying gap above (no worktree was in play) and not owner-gating (the credential exists) —
+it's subagent-shell env-var isolation. **No fix found yet**: the orchestrating session can confirm the
+token's presence/non-emptiness without exposing its value (a Python regex check, never printing the
+value itself — piping a secret's actual value through conversation context to work around this is not
+an acceptable fix), but has no confirmed way to get it into a dispatched subagent's shell. Until a fix
+is found, treat ProductHunt as blocked for any `complaint-miner` run dispatched this way, flag it in
+the resulting candidate's Research constraints (not silently absorbed as "no PH signal"), and don't
+assume re-running fixes it without a real environment change.
+
 ## Running it
 
 Launch `complaint-miner` and `build-pattern-scanner` in a **single message with two Task tool

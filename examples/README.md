@@ -181,6 +181,24 @@ checking is confirmed blocked on X (raw-verified) and Instagram (WebSearch-corro
 such rather than treated as equally verified) — both become a manual/owner checklist item, not an
 automated step, in the new spec.
 
+## `2026-09-11T220526Z-job-search-tooling/`
+
+The first vertical-mode run picked directly from `signal-discoverer`'s existing discovery output
+(category #4, "AI-assisted job search and application tooling," present unchanged across discovery
+runs 2 and 3 — see `examples/2026-09-04T081918Z-discovery/categories.md`). `complaints-findings.md`
+(HN only — ProductHunt was blocked by a subagent-environment issue, not owner-gating, see `AGENTS.md`;
+7 patterns, 24 sourced quotes) and `builds-findings.md` (GitHub + Show HN + HF Spaces corroboration;
+5 patterns, 35 cited independent instances, including two GitHub repos independently verified at
+71,287 and 41,844 stars) are the real Phase 1 outputs, both verified clean with
+`scripts/verify_sourcing.py`. Both passes directly re-confirmed, with fresh first-person quotes, the
+discovery-stage hint that trust in unsupervised auto-apply agents is a live differentiator. The
+synthesized candidate,
+[`candidates/2026-09-11T220526Z-job-search-tooling-candidate.md`](../candidates/2026-09-11T220526Z-job-search-tooling-candidate.md)
+("Signoff"), draws exactly one candidate from five distinct build shapes the evidence surfaced —
+three heavily-saturated shapes (resume tailoring, tracking dashboards, interview prep — 23
+independent instances combined, zero matching complaints-side pull) are read as a saturation warning
+and explicitly excluded from the candidate's core, rather than inflated into extra candidates.
+
 ## `2026-09-11T203709Z-contextlint-names/`
 
 The first real end-to-end run of `name-brand-vetter` (arc 0004), against the `Contextlint`/agent-memory

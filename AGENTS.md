@@ -90,8 +90,8 @@ Once a concept exists (`candidates/*-candidate.md` from this repo, or an externa
 `name-brand-vetter` standalone: copy `config/name.example.md` to `config/name.md`, point it at the
 concept (Option A: this repo's candidate path; Option B: a standalone description — never this
 repo's own concept and an external one in the same run), and set the **Output ownership** field.
-**External concepts (e.g. sfclarity/sfsanity) must never have their naming-run output committed to
-this repo's tracked `names/`/`examples/`** — see the standing sfclarity/sfsanity boundary; the run
+**External concepts (e.g. an external project of the owner's) must never have their naming-run output committed to
+this repo's tracked `names/`/`examples/`** — see the standing external-concept boundary; the run
 itself is fine, only the output placement differs. See `.claude/agents/name-brand-vetter.md` for the
 full two-tier (cheap filter / PR-launch sweep) design.
 

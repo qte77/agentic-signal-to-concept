@@ -17,7 +17,7 @@ Read `config/name.md` (copy from `config/name.example.md`). Exactly one of:
   vetting names for a concept that didn't come from this repo's own `candidates/` output, including
   concepts belonging to external projects. **If the concept belongs to an external project, do not
   read or import that project's own files into this repo** — a plain-language description is enough
-  to work from. See the standing sfclarity/sfsanity boundary if the run is for one of those.
+  to work from. See the standing external-concept boundary if the run is for one of those.
 
 Also read the config's **Output ownership** field — required, governs the Output section below —
 and any Constraints (markets/languages for Travel, TLDs beyond the `.com` default, known trademark
@@ -180,8 +180,8 @@ Repeat this paragraph, not just a pointer to it, in every output document.
   `names/<date-time-iso>-<slug>-names.md` per `names/README.md`'s Expected structure. Gitignored by
   default; archive to `examples/<date-time-iso>-<slug>-names/` if worth keeping permanently, same
   convention as every other run type in this pipeline.
-- **External concept** (Output ownership = no, e.g. sfclarity/sfsanity): still write
+- **External concept** (Output ownership = no, e.g. an external project of the owner's): still write
   `names/<date-time-iso>-<slug>-names.md` (already gitignored, so this is harmless working output),
   but the file's own opening line must read **"DO NOT ARCHIVE — external concept, relocate manually"**
   and this spec must never propose or perform an `examples/` archive for it. The run's owner relocates
-  the file out of this repo themselves. See the standing sfclarity/sfsanity boundary.
+  the file out of this repo themselves. See the standing external-concept boundary.

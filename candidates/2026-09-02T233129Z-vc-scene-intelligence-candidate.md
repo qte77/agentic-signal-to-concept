@@ -15,9 +15,9 @@
   ICP — VCs, family offices, corp-dev — **did not directly surface as complainants** in this run's
   sources (see Evidence, "what this run could NOT confirm" below). Treat any ICP framing below as
   *inferred from adjacent and build-side evidence*, not as directly-sourced VC/FO/corp-dev pain.
-- **Founders/job-seekers** (sfclarity's existing free-tier ICP) are the ICP with **directly sourced**
+- **Founders/job-seekers** (an existing free-tier ICP of a related existing product) are the ICP with **directly sourced**
   HN complaint evidence about scene-signal noise (adjacent-ICP echo, see Evidence) — worth
-  considering whether this concept's real near-term ICP is closer to sfclarity's *existing* free
+  considering whether this concept's real near-term ICP is closer to that related existing product's *existing* free
   tier than to the capital-side bet this run set out to test.
 - **Builders of the 20 independent instances found** (Evidence, Patterns A/B) are themselves
   evidence of a *third* ICP: individual technologists building tools in this space for their own or
@@ -32,7 +32,7 @@
 
 - Problem-space: VCs/FOs/corp-dev tracking a local tech/startup scene (who's building, hiring,
   raising; genuinely emerging vs. hype) to source deals, scout, or decide where to spend time.
-  Framed against `sfclarity/docs/plans/0014-roadmap-gtm.md`'s own explicitly-unvalidated "Paying
+  Framed against a related existing product's own explicitly-unvalidated "Paying
   (capital)" ICP hypothesis — this run exists to find evidence for or against that bet, not to
   justify it.
 - Date window: last 12 months (default, unmodified).
@@ -75,7 +75,7 @@ above single-source):
    Builds Pattern A (tools built to help the *sourcing* side reach founders faster/more). A
    scene-intelligence product that only serves the allocator's sourcing need risks reproducing the
    exact noise problem founders already complain about — worth checking explicitly against
-   `0014-roadmap-gtm.md`'s own "forward-to-source only" invariant before treating Pattern A's
+   that related existing product's own "forward-to-source only" invariant before treating Pattern A's
    existence as pure validation.
 
 **What this run could NOT confirm** (stated plainly, per this spec's own hedge-preservation rule —
@@ -86,15 +86,15 @@ for this specific ICP is thin because that ICP largely doesn't post complaints o
 adjacent "signal vs. noise in a scene" pain that IS visible on HN comes from founders/job-seekers,
 not allocators. ProductHunt (blocked, token unset) is flagged as the most likely source to actually
 carry allocator-side complaint signal, and was not reached this run. **This run does not validate
-the paying-capital-product bet from `0014-roadmap-gtm.md`; it validates that a real, adjacent
+the paying-capital-product bet from that related existing product's own roadmap; it validates that a real, adjacent
 "scene visibility" gap exists and that many independent small builders are already attacking pieces
 of it — the specific question of whether VCs/FOs/corp-dev will pay for it remains open.**
 
-**Where sfclarity may differ from all 20+ found independent instances** (an observation, not a
+**Where a related existing product may differ from all 20+ found independent instances** (an observation, not a
 recommendation to build — read every instance's own description again before treating this as
 settled): none of the found GitHub repos or HN launches describe being built on top of an
 already-live, continuously-refreshed, multi-city events/jobs feed — most read as standalone,
-largely static or manually-curated maps/CRMs. sfclarity's own already-shipped free-tier
+largely static or manually-curated maps/CRMs. That related existing product's own already-shipped free-tier
 infrastructure (a live, daily-refreshed events feed already spanning SF with a multi-city roadmap)
 is a resource none of the 20+ found instances appear to have. Whether that's a real, defensible
 differentiator or just an artifact of what a GitHub/HN search can see is **not established by this

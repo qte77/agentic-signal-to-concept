@@ -7,10 +7,10 @@ name shortlist plus a PR-launch-sweep result for the 2-3 finalists that survive 
 `discovery/*.md` — working evidence for a run, not this repo's tracked product output by default. A
 naming run worth keeping permanently gets archived under `examples/<date-time-iso>-<slug>-names/`,
 matching the convention used for every other run type (see `examples/README.md`) — **but only when the
-concept is this repo's own**. A run vetting names for an external concept (sfclarity, sfsanity, or any
-other project not owned by this repo) must never be archived here or anywhere else in this repo's
+concept is this repo's own**. A run vetting names for an external concept (any project not owned by
+this repo) must never be archived here or anywhere else in this repo's
 tracked output — see `config/name.example.md`'s Output ownership section and the standing
-sfclarity/sfsanity boundary.
+external-concept boundary.
 
 ## Expected structure
 

@@ -4,8 +4,8 @@
 
 The user asked (2026-09-11) for a new capability: given a concept (this repo's own
 `candidates/*-candidate.md`, or a standalone external concept — the user explicitly said this repo is
-used, and will keep being used, as a research instrument for two external private projects of theirs,
-`sfclarity`/`sfsanity`, whose own content must never enter this repo — see
+used, and will keep being used, as a research instrument for external private projects of theirs,
+whose own content must never enter this repo — see
 `config/name.example.md` and the Standalone-input note below), generate and vet candidate product
 names against the user's own naming taxonomy (verbatim, reproduced in full under Design below), ending
 in one finalist name that is memorable, ownable, and cleared (category/trademark/domain) as far as an
@@ -38,9 +38,9 @@ unattended pass reasonably can clear it.
    correctly recorded as unverified, not cleared, in the archived output.
 6. **Next**: docs audit close-out (CHANGELOG/README, already mostly done inline as this arc shipped —
    confirm nothing's stale) and mark this arc closed once confirmed.
-7. **Owner gate throughout**: any run whose concept input is sfclarity/sfsanity-owned must not have its
-   output committed to this repo's tracked `names/`/`examples/` — see the `sfc-sfs-boundary` memory
-   and the Output section below. This repo's own naming runs (against its own `candidates/`) follow the
+7. **Owner gate throughout**: any run whose concept input belongs to an external private project of
+   the owner's must not have its output committed to this repo's tracked `names/`/`examples/` — see
+   the standing external-concept boundary and the Output section below. This repo's own naming runs (against its own `candidates/`) follow the
    normal gitignore-then-archive-to-`examples/` path.
 
 ## Why this arc exists
@@ -88,7 +88,7 @@ pipeline's own existing discipline of bounding expensive steps (`signal-discover
 ### Standalone input (not hardwired to this repo's own candidates)
 
 This capability is used both for this repo's own `candidates/*-candidate.md` output and for external
-concepts (sfclarity/sfsanity, per the `sfc-sfs-boundary` memory) — the spec's Input section must accept
+concepts (per the standing external-concept boundary) — the spec's Input section must accept
 either a `candidates/*-candidate.md` path **or** a standalone `config/name.md` concept description
 (mirroring `config/scope.example.md`'s copy-and-fill pattern), never assuming this repo's own pipeline
 just ran.
@@ -97,9 +97,9 @@ just ran.
 
 - This repo's own naming runs: gitignored working output (`names/<ts>-<slug>-names.md`, same treatment
   as `findings/*-findings.md`/`discovery/*.md`), archived to `examples/` if worth keeping permanently.
-- Runs on behalf of sfclarity/sfsanity: **never committed to this repo's tracked output at all** — the
-  owner relocates that output manually (e.g. into the sfclarity repo itself). See the `sfc-sfs-boundary`
-  memory for the precedent (`run/vc-scene-intelligence`).
+- Runs on behalf of an external private project of the owner's: **never committed to this repo's
+  tracked output at all** — the owner relocates that output manually (e.g. into that project's own
+  repo). See the standing external-concept boundary for the precedent (`run/vc-scene-intelligence`).
 
 ### Not legal advice (mirrors the patent-signal-research precedent, `examples/2026-09-07T043304Z-patent-signal-research/`)
 

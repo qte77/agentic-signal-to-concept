@@ -76,6 +76,8 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Changed
 
+- `.claude/agents/signal-discoverer.md`: the GitHub search command no longer carries the
+  token-unset wrapper; a stale token is an environment fix, not part of the agent spec.
 - `docs/plans/0002-signal-to-concept-v1.md` and `docs/plans/0003-broad-discovery.md` each merged
   with their separate `docs/handoffs/*.md` file into a single plan file, per
   `unattended-execution.md`'s updated one-file-per-arc rule (no more separate handoff ritual). Fixed

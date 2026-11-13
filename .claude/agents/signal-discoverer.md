@@ -56,8 +56,8 @@ one, use this spec's own default (30 days).
    plainly, don't silently drop PH from the output.
 3. **GitHub, unfiltered by topic (added 2026-09-04).** No new access/ToS work needed — this uses the
    same authenticated `gh` CLI already established in `build-pattern-scanner.md` step 1
-   (`env -u GH_TOKEN -u GITHUB_TOKEN gh api -X GET search/repositories -f q='...' --jq '...'`; see
-   that spec for why the env-unset prefix is needed in this workspace and the real search-API rate
+   (`gh api -X GET search/repositories -f q='...' --jq '...'`; see
+   that spec for the real search-API rate
    limits — 10/min unauth, 30/min auth). Query `created:>{cutoff} stars:>{threshold}
    sort:stars-desc`, no `topic:` qualifier — a star threshold (not a topic filter) is what keeps this
    bounded, the GitHub equivalent of Show HN's 1,000-hit Algolia cap. Pick the threshold so the result
@@ -186,7 +186,7 @@ one, use this spec's own default (30 days).
 Same as `complaint-miner`/`build-pattern-scanner`: `polyfetch-scrape` for HN's plain-GET Algolia
 calls (`uv run --directory ../polyfetch-scrape polyfetch fetch <url> --show-body`); a direct
 authenticated HTTP client for ProductHunt's GraphQL POST (`polyfetch`'s CLI has no header/body
-flags); the authenticated `gh` CLI for GitHub search (`env -u GH_TOKEN -u GITHUB_TOKEN gh api ...`).
+flags); the authenticated `gh` CLI for GitHub search (`gh api ...`).
 See `complaint-miner.md`'s "Fetch tooling" section and `build-pattern-scanner.md` step 1 for the
 fuller rationale on each.
 

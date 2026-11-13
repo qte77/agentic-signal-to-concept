@@ -7,6 +7,8 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Added
 
+- CodeQL workflow (`.github/workflows/codeql.yaml`) scanning `python`, `actions` on every
+  push, weekly and on demand; actions pinned to full commit SHAs.
 - Fourth vertical-mode run, the first picked directly from an existing `signal-discoverer` output
   rather than a fresh discovery pass: category #4 ("AI-assisted job search and application tooling,"
   confirmed genuinely new in discovery run 2 and unchanged through run 3). `complaints-findings.md`

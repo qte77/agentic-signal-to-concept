@@ -89,6 +89,11 @@ All notable changes to agentic-signal-to-concept. Format follows
   "the three subagent .md files" (there are four, since `signal-discoverer` shipped in arc 0003);
   `README.md`'s Status section still said "8 candidate categories" and didn't mention cv.inc/Hugging
   Face or the five shipped candidates.
+- `docs/plans/0002-signal-to-concept-v1.md`: merge and authentication steps rewritten to neutral
+  phrasing (merging is an owner gate once CI passes; authenticate git/gh as the machine requires) —
+  the underlying facts (the ruleset gate, the "never modify or disable the ruleset" prohibition)
+  are unchanged. `docs/plans/0001-concept.md`: added a closed-plan banner noting that commands in
+  it are one machine's history, not procedure.
 
 ### Added
 

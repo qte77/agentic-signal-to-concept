@@ -1,5 +1,7 @@
 # 0001 — agentic-signal-to-concept: pipeline concept
 
+> **Closed plan, kept as a record.** Commands in it are one machine's history, not procedure; for current steps see the repo's CONTRIBUTING and the newest plan.
+
 ## 0. Session handoff — 2026-09-01 (read this before touching anything)
 
 **What's real so far**: this repo exists on GitHub (`qte77/agentic-signal-to-concept`, public,

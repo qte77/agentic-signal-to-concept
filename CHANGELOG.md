@@ -78,6 +78,8 @@ All notable changes to agentic-signal-to-concept. Format follows
 
 ### Changed
 
+- `.github/workflows/test.yml`: top-level `permissions: contents: read`, so the job's token
+  is read-only instead of the repository default (CodeQL `actions/missing-workflow-permissions`).
 - `.claude/agents/signal-discoverer.md`: the GitHub search command no longer carries the
   token-unset wrapper; a stale token is an environment fix, not part of the agent spec.
 - `docs/plans/0002-signal-to-concept-v1.md` and `docs/plans/0003-broad-discovery.md` each merged
